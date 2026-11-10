@@ -246,7 +246,7 @@ app.get('/admin', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`LPU Campus Guide Full-Stack Server running at http://127.0.0.1:${PORT}`);
-  console.log(`Admin Dashboard available at http://127.0.0.1:${PORT}/admin (Default key: ${ADMIN_KEY})`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`LPU Campus Guide Full-Stack Server running on port ${PORT}`);
+  console.log(`Admin Dashboard available at /admin`);
 });
