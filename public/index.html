@@ -1,0 +1,2715 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f1" id="meta-theme-color">
+  <meta name="description" content="Full-stack student guide to Lovely Professional University (LPU) campus directions, live hostel dining hours, SQLite-backed weekly menus, 2026–27 fee estimator, and student mess reviews.">
+  <title>LPU Campus Guide — Hostels, Dining, Reviews & Directions (2026–27)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #162925;
+      --ink-soft: #31443f;
+      --muted: #606e67;
+      --paper: #f7f6f1;
+      --paper-subtle: #efeee6;
+      --card: #fffefa;
+      --card-hover: #ffffff;
+      --green: #225a46;
+      --green-dark: #143c2f;
+      --green-mid: #2c7057;
+      --mint: #e5efe5;
+      --mint-strong: #d4e6d5;
+      --lime: #d2e88d;
+      --orange: #ee9a55;
+      --terracotta: #c86f3f;
+      --terracotta-dark: #a9582d;
+      --line: #e3e3d8;
+      --line-soft: #eeeee6;
+      --topbar-bg: rgba(247, 246, 241, 0.88);
+      --shadow-sm: 0 6px 20px rgba(22, 41, 37, 0.05);
+      --shadow: 0 20px 56px rgba(22, 41, 37, 0.08);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --ink: #edf4f0;
+      --ink-soft: #c7d6ce;
+      --muted: #95aba0;
+      --paper: #0e1916;
+      --paper-subtle: #14231f;
+      --card: #152520;
+      --card-hover: #192d27;
+      --green: #38896a;
+      --green-dark: #132d23;
+      --green-mid: #47a07e;
+      --mint: #1d352c;
+      --mint-strong: #27473b;
+      --lime: #d2e88d;
+      --orange: #f2a360;
+      --terracotta: #b96234;
+      --terracotta-dark: #944b24;
+      --line: #233931;
+      --line-soft: #1d3029;
+      --topbar-bg: rgba(14, 25, 22, 0.88);
+      --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.25);
+      --shadow: 0 22px 60px rgba(0, 0, 0, 0.38);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--sans);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    a { color: inherit; }
+    button, select, input, textarea { font: inherit; }
+    svg { display: block; flex-shrink: 0; }
+
+    .wrap {
+      width: min(1160px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    /* Topbar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--line);
+      background: var(--topbar-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .nav {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.035em;
+    }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: #fffefa;
+      background: linear-gradient(145deg, #286a52, #174334);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      box-shadow: 0 8px 18px rgba(23, 67, 52, 0.22);
+    }
+    .brand small {
+      display: block;
+      margin-top: 1px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .navlinks {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .navlinks a.nav-item {
+      position: relative;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+      text-decoration: none;
+      padding: 6px 0;
+      transition: color 0.2s ease;
+    }
+    .navlinks a.nav-item:hover,
+    .navlinks a.nav-item.active {
+      color: var(--ink);
+    }
+    .navlinks a.nav-item.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--green);
+    }
+    .admin-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--ink) !important;
+      font-size: 12px;
+      font-weight: 750;
+      text-decoration: none;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .admin-pill:hover {
+      border-color: var(--green);
+      background: var(--mint);
+    }
+
+    .button,
+    a.nav-cta {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid #225a46;
+      border-radius: 999px;
+      color: #fffefa;
+      background: #225a46;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    a.nav-cta {
+      min-height: 40px;
+      padding: 0 15px;
+      color: #fffefa !important;
+    }
+    .button:hover,
+    a.nav-cta:hover {
+      background: #163f31;
+      border-color: #163f31;
+      transform: translateY(-1.5px);
+      box-shadow: 0 8px 20px rgba(22, 63, 49, 0.2);
+    }
+    [data-theme="dark"] .button,
+    [data-theme="dark"] a.nav-cta {
+      background: var(--lime);
+      border-color: var(--lime);
+      color: #13281f !important;
+    }
+    [data-theme="dark"] .button:hover,
+    [data-theme="dark"] a.nav-cta:hover {
+      background: #dfefaa;
+      border-color: #dfefaa;
+    }
+
+    .button.secondary {
+      color: var(--ink);
+      background: var(--card);
+      border-color: var(--line);
+    }
+    [data-theme="dark"] .button.secondary {
+      color: var(--ink) !important;
+      background: var(--card);
+      border-color: var(--line);
+    }
+    .button.secondary:hover {
+      background: var(--mint);
+      border-color: var(--green);
+      color: var(--ink);
+      box-shadow: none;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink);
+      background: var(--card);
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+    .icon-btn:hover {
+      background: var(--mint);
+      border-color: var(--green);
+      transform: translateY(-1px);
+    }
+    .menu-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink);
+      background: var(--card);
+      place-items: center;
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 54px 0 40px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.06fr 0.94fr;
+      gap: 30px;
+      align-items: stretch;
+    }
+    .hero-copy {
+      padding: 18px 0 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    [data-theme="dark"] .eyebrow { color: var(--lime); }
+    .eyebrow::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      content: "";
+      box-shadow: 0 0 0 3px rgba(238, 154, 85, 0.2);
+    }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1 {
+      max-width: 630px;
+      margin: 16px 0 18px;
+      font-size: clamp(42px, 5.2vw, 64px);
+      font-weight: 800;
+      line-height: 1.03;
+      letter-spacing: -0.038em;
+    }
+    h1 span { color: var(--green); }
+    [data-theme="dark"] h1 span { color: #7cd1ad; }
+    .hero-copy > p {
+      max-width: 550px;
+      margin-bottom: 26px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .hero-meta strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #9eab9f;
+    }
+    .api-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--mint);
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+    [data-theme="dark"] .api-badge { color: var(--lime); }
+
+    /* Hero Campus Artwork */
+    .hero-art {
+      position: relative;
+      min-height: 425px;
+      overflow: hidden;
+      border-radius: 30px;
+      background: linear-gradient(155deg, #2e6750 0%, #173f30 68%, #102d22 100%);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .hero-art-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .floating-card {
+      position: absolute;
+      z-index: 3;
+      top: 22px;
+      right: 22px;
+      width: 228px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: 20px;
+      background: rgba(255, 254, 250, 0.95);
+      color: #162925;
+      box-shadow: 0 16px 38px rgba(9, 28, 20, 0.24);
+      backdrop-filter: blur(10px);
+    }
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: #e5f4ea;
+      color: #1d6840;
+    }
+    .live-pill.closed {
+      background: #faeee2;
+      color: #9e5316;
+    }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.82); }
+    }
+    .floating-card strong {
+      display: block;
+      margin: 8px 0 3px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #162925;
+    }
+    .floating-card small {
+      display: block;
+      color: #5b6962;
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+    .slot-pills {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      margin-top: 12px;
+    }
+    .slot-pill {
+      text-align: center;
+      padding: 4px 0;
+      border-radius: 8px;
+      background: #eef2ec;
+      color: #5a6961;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .slot-pill.active {
+      background: #225a46;
+      color: #fffefa;
+    }
+    .slot-pill.next {
+      background: #faeee2;
+      color: #9e5316;
+      border: 1px solid rgba(158, 83, 22, 0.25);
+    }
+    .art-label {
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 38px 26px 24px;
+      background: linear-gradient(to top, rgba(11, 33, 25, 0.92) 0%, rgba(11, 33, 25, 0.62) 58%, transparent 100%);
+      color: #fffefa;
+    }
+    .art-label span {
+      display: block;
+      margin-bottom: 5px;
+      color: #d6ea96;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .art-label strong {
+      font-size: clamp(21px, 2.4vw, 25px);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+    }
+
+    /* Quickbar */
+    .quickbar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+      margin: 8px 0 92px;
+    }
+    .quick {
+      display: flex;
+      gap: 13px;
+      align-items: center;
+      padding: 17px 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .quick:hover {
+      transform: translateY(-2px);
+      border-color: var(--green);
+      background: var(--card-hover);
+    }
+    .quick-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: var(--green);
+      background: var(--mint);
+    }
+    [data-theme="dark"] .quick-icon { color: var(--lime); }
+    .quick b {
+      display: block;
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: -0.015em;
+    }
+    .quick small {
+      color: var(--muted);
+      font-size: 11.5px;
+    }
+
+    /* Sections */
+    section { scroll-margin-top: 96px; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 26px;
+    }
+    .section-head h2 {
+      max-width: 560px;
+      margin: 9px 0 0;
+      font-size: clamp(30px, 3.8vw, 43px);
+      font-weight: 800;
+      line-height: 1.07;
+      letter-spacing: -0.036em;
+    }
+    .section-head p {
+      max-width: 400px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    /* Map & Transit Section */
+    .map-section { margin-bottom: 98px; }
+    .map-grid {
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 18px;
+    }
+    .map-info {
+      padding: 28px;
+      border-radius: var(--radius);
+      color: #fffefa;
+      background: linear-gradient(160deg, #184434 0%, #102e23 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+    .map-info .eyebrow { color: var(--lime); }
+    .map-info h3 {
+      margin: 13px 0 8px;
+      font-size: 25px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+    .map-info > div > p {
+      color: #cfe0d7;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+    .address {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      margin-bottom: 18px;
+    }
+    .address-left {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+    }
+    .address-pin {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(210, 232, 141, 0.16);
+      color: var(--lime);
+    }
+    .address strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 12.5px;
+    }
+    .address small {
+      display: block;
+      color: #d2e0d8;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .copy-chip {
+      padding: 6px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fffefa;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.2s ease;
+    }
+    .copy-chip:hover { background: rgba(255, 255, 255, 0.18); }
+
+    .transit-box {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+    .transit-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: #acc4b8;
+      margin-bottom: 9px;
+    }
+    .transit-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 11px;
+    }
+    .transit-tab {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: transparent;
+      color: #d7e5dd;
+      font-size: 11px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .transit-tab:hover { border-color: rgba(210, 232, 141, 0.5); }
+    .transit-tab.active {
+      background: var(--lime);
+      border-color: var(--lime);
+      color: #132c22;
+      font-weight: 750;
+    }
+    .transit-detail strong {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--lime);
+    }
+    .transit-detail span {
+      color: #c7dad0;
+      font-size: 11.5px;
+    }
+    .map-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .map-info .button.lime-cta {
+      color: #132c22 !important;
+      background: var(--lime);
+      border-color: var(--lime);
+    }
+    .map-info .button.lime-cta:hover {
+      background: #dff0a6;
+      border-color: #dff0a6;
+    }
+    .map-info .button.ghost-light {
+      color: #fffefa !important;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+    .map-info .button.ghost-light:hover { background: rgba(255, 255, 255, 0.16); }
+
+    .map-frame {
+      position: relative;
+      min-height: 430px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #dfe7da;
+      box-shadow: var(--shadow);
+    }
+    .map-frame iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 430px;
+      border: 0;
+    }
+    .map-badge {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(22, 41, 37, 0.86);
+      color: #fffefa;
+      font-family: var(--mono);
+      font-size: 11px;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+
+    /* Hostel Dining & Meal Schedule */
+    .mess-section { margin-bottom: 98px; }
+    .meal-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+      margin-bottom: 18px;
+    }
+    .meal-time {
+      position: relative;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card);
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .meal-time.is-active {
+      border-color: var(--green);
+      box-shadow: 0 12px 30px rgba(34, 90, 70, 0.12);
+    }
+    .meal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .meal-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: var(--green);
+      background: var(--mint);
+    }
+    [data-theme="dark"] .meal-icon { color: var(--lime); }
+    .meal-badge {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: none;
+    }
+    .meal-time.is-active .meal-badge {
+      display: inline-block;
+      background: #e3f3e8;
+      color: #1b663e;
+    }
+    .meal-time.is-next .meal-badge {
+      display: inline-block;
+      background: #faeee2;
+      color: #9e5316;
+    }
+    .meal-time h3 {
+      margin: 14px 0 3px;
+      font-size: 14px;
+      font-weight: 750;
+    }
+    .meal-time strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+    [data-theme="dark"] .meal-time strong { color: #7cd1ad; }
+    .meal-time small {
+      display: block;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.45;
+    }
+
+    .note {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      color: var(--muted);
+      background: var(--paper-subtle);
+      font-size: 12.5px;
+    }
+    .note-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--mint-strong);
+      color: var(--green-dark);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .note-badge { color: var(--lime); }
+    .note strong { color: var(--ink); }
+
+    /* Interactive Sample Menu */
+    .food-layout {
+      display: grid;
+      grid-template-columns: 0.78fr 1.22fr;
+      gap: 18px;
+      margin-top: 22px;
+      scroll-margin-top: 96px;
+    }
+    .food-intro {
+      position: relative;
+      overflow: hidden;
+      min-height: 350px;
+      padding: 28px;
+      border-radius: var(--radius);
+      color: #fffefa;
+      background: linear-gradient(155deg, var(--terracotta) 0%, var(--terracotta-dark) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+    .food-intro .eyebrow { color: #fff1d6; }
+    .food-intro .eyebrow::before { background: #ffe09e; }
+    .food-intro h3 {
+      max-width: 270px;
+      margin: 15px 0 11px;
+      font-size: 28px;
+      line-height: 1.06;
+      letter-spacing: -0.045em;
+    }
+    .food-intro p {
+      max-width: 295px;
+      color: #ffead8;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .food-tags {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 18px;
+    }
+    .food-tags span {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      font-size: 11px;
+      font-weight: 700;
+      color: #fffaf3;
+    }
+    .food-art {
+      position: absolute;
+      right: -18px;
+      bottom: -18px;
+      width: 175px;
+      height: 175px;
+      opacity: 0.92;
+      pointer-events: none;
+    }
+
+    .menu-card {
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    .menu-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .menu-header h3 {
+      margin-bottom: 3px;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+    .menu-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .cuisine-switch {
+      display: inline-flex;
+      padding: 3px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--paper-subtle);
+    }
+    .cuisine-btn {
+      padding: 5px 11px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .cuisine-btn.active {
+      background: var(--card);
+      color: var(--ink);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    }
+    .day-tabs {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .day-btn {
+      position: relative;
+      padding: 7px 4px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--paper);
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .day-btn:hover { border-color: var(--green); color: var(--ink); }
+    .day-btn.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fffefa;
+    }
+    [data-theme="dark"] .day-btn.active {
+      background: var(--lime);
+      border-color: var(--lime);
+      color: #13281f;
+    }
+    .day-btn.is-today::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      right: 5px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--orange);
+    }
+    .menu-rows { display: grid; gap: 11px; }
+    .menu-row {
+      display: grid;
+      grid-template-columns: 104px 1fr;
+      gap: 12px;
+      align-items: baseline;
+      padding-bottom: 11px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .menu-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .menu-row b {
+      color: var(--green);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    [data-theme="dark"] .menu-row b { color: #7cd1ad; }
+    .menu-row span {
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Meal Plans & Estimator */
+    .plans-section { margin-bottom: 98px; }
+    .plan-wrap {
+      display: grid;
+      grid-template-columns: 1.38fr 0.82fr;
+      gap: 18px;
+    }
+    .plans-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    .plans-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+    .plans-title h3 { margin: 0; font-size: 17px; letter-spacing: -0.03em; }
+    .tag {
+      padding: 5px 11px;
+      border-radius: 999px;
+      color: var(--green);
+      background: var(--mint);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+    [data-theme="dark"] .tag { color: var(--lime); }
+
+    .price-row {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid var(--line-soft);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 16px 24px;
+      cursor: pointer;
+      color: var(--ink);
+      transition: background-color 0.16s ease;
+    }
+    .price-row:last-child { border-bottom: 0; }
+    .price-row:hover { background: var(--paper-subtle); }
+    .price-row.selected { background: var(--mint); }
+    .radio-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--muted);
+      display: grid;
+      place-items: center;
+    }
+    .price-row.selected .radio-dot { border-color: var(--green); }
+    .price-row.selected .radio-dot::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    [data-theme="dark"] .price-row.selected .radio-dot { border-color: var(--lime); }
+    [data-theme="dark"] .price-row.selected .radio-dot::after { background: var(--lime); }
+    .price-row b { display: block; font-size: 13.5px; margin-bottom: 2px; }
+    .price-row small { color: var(--muted); font-size: 11.5px; }
+    .price {
+      text-align: right;
+      font-family: var(--mono);
+      font-size: 16.5px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+    .price em {
+      display: block;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 10.5px;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .nonveg-card {
+      padding: 25px;
+      border-radius: var(--radius);
+      color: #fffefa;
+      background: linear-gradient(160deg, #243e32 0%, #172b22 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+    .nonveg-card .eyebrow { color: var(--lime); }
+    .nonveg-card h3 {
+      margin: 12px 0 8px;
+      font-size: 24px;
+      line-height: 1.08;
+      letter-spacing: -0.045em;
+    }
+    .nonveg-card > div > p { color: #d3dfd7; font-size: 12.5px; }
+    .mini-price { display: grid; gap: 6px; margin: 14px 0 16px; }
+    .mini-price div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      color: #dfeae2;
+      font-size: 12.5px;
+    }
+    .mini-price b { font-family: var(--mono); color: #fffefa; font-size: 13px; }
+    .nonveg-card .disclaimer {
+      margin: 0;
+      padding: 12px 13px;
+      border-radius: 13px;
+      color: #ffefd9;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    /* Estimator */
+    .estimator-card {
+      margin-top: 18px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    .estimator-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .estimator-top h3 { margin: 0 0 3px; font-size: 17px; letter-spacing: -0.03em; }
+    .estimator-top p { margin: 0; color: var(--muted); font-size: 12px; }
+    .edb-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+      user-select: none;
+    }
+    .edb-toggle input { accent-color: var(--green); width: 15px; height: 15px; margin: 0; cursor: pointer; }
+    .estimator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.25fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--paper);
+    }
+    .field-group label {
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+    .field-group select,
+    .form-input {
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 13.5px;
+      font-weight: 700;
+      outline: none;
+    }
+    .field-group select { cursor: pointer; }
+    .field-group select option { background: var(--card); color: var(--ink); }
+    .estimate-result {
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: var(--mint);
+      border: 1px solid var(--mint-strong);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+    .estimate-result small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .estimate-result strong {
+      display: block;
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      margin: 2px 0;
+    }
+    .estimate-meta { color: var(--ink-soft); font-size: 11.5px; font-weight: 600; }
+    .share-est-btn {
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--green);
+      background: var(--card);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+    }
+    .share-est-btn:hover { background: var(--green); color: #fffefa; }
+    .plan-footnote { margin: 14px 4px 0; color: var(--muted); font-size: 11.5px; line-height: 1.55; }
+
+    /* Extras */
+    .extras { margin-bottom: 98px; }
+    .extras-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    .extra {
+      padding: 23px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .extra:hover { transform: translateY(-2px); border-color: var(--green); }
+    .extra-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: 14px;
+      color: var(--green);
+      background: var(--mint);
+    }
+    [data-theme="dark"] .extra-icon { color: var(--lime); }
+    .extra h3 { margin-bottom: 6px; font-size: 15px; font-weight: 750; }
+    .extra p { margin-bottom: 0; color: var(--muted); font-size: 12.5px; line-height: 1.55; }
+
+    /* NEW: Student Mess Reviews (SQLite Backend) */
+    .reviews-section { margin-bottom: 98px; }
+    .reviews-layout {
+      display: grid;
+      grid-template-columns: 1.18fr 0.82fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .rating-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 22px;
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    .rating-score {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .rating-score strong {
+      font-family: var(--mono);
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--green);
+      letter-spacing: -0.04em;
+    }
+    [data-theme="dark"] .rating-score strong { color: var(--lime); }
+    .rating-stars { color: #e59238; font-size: 16px; letter-spacing: 2px; }
+    .reviews-list {
+      display: grid;
+      gap: 12px;
+    }
+    .review-card {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    .review-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .review-author b { font-size: 13.5px; }
+    .review-meta {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-left: 6px;
+    }
+    .chip-mini {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--mint);
+      color: var(--green);
+      font-size: 10.5px;
+      font-weight: 750;
+    }
+    [data-theme="dark"] .chip-mini { color: var(--lime); }
+    .review-card p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 12.8px;
+      line-height: 1.55;
+    }
+
+    .form-card {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    .form-card h3 {
+      margin-bottom: 4px;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+    .form-card > p {
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .form-stack {
+      display: grid;
+      gap: 11px;
+    }
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .input-box {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .input-box label {
+      font-size: 11px;
+      font-weight: 750;
+      color: var(--muted);
+    }
+    .input-box input,
+    .input-box select,
+    .input-box textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.18s ease;
+    }
+    .input-box input:focus,
+    .input-box select:focus,
+    .input-box textarea:focus {
+      border-color: var(--green);
+    }
+    .star-picker {
+      display: inline-flex;
+      gap: 6px;
+    }
+    .star-btn {
+      width: 36px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: #c4c9c2;
+      font-size: 17px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .star-btn.lit {
+      color: #e59238;
+      border-color: #e59238;
+      background: rgba(229, 146, 56, 0.1);
+    }
+    .form-msg {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green);
+      min-height: 18px;
+    }
+    .form-msg.err { color: #c0392b; }
+
+    /* FAQ + Ask Doubt Form */
+    .faq { margin-bottom: 92px; }
+    .faq-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .faq-chip {
+      padding: 6px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .faq-chip:hover { border-color: var(--green); color: var(--ink); }
+    .faq-chip.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fffefa;
+    }
+    [data-theme="dark"] .faq-chip.active {
+      background: var(--lime);
+      border-color: var(--lime);
+      color: #13281f;
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 22px;
+    }
+    details.faq-item {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+    }
+    details.faq-item[open] { border-color: var(--green); }
+    details.faq-item[hidden] { display: none; }
+    summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 13.5px;
+      font-weight: 750;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--mint);
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      content: "+";
+      font-size: 16px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] summary::after { color: var(--lime); }
+    details[open] summary::after { content: "−"; }
+    details p {
+      margin: 12px 10px 0 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+
+    .ask-banner {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-subtle);
+      align-items: center;
+    }
+    .ask-banner h3 { margin-bottom: 6px; font-size: 20px; letter-spacing: -0.03em; }
+    .ask-banner p { margin: 0; color: var(--muted); font-size: 13px; }
+    .ask-inline-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    /* Official Sources */
+    .sources {
+      margin: 0 0 70px;
+      padding: 24px 26px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--paper-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+    .sources h3 { margin-bottom: 5px; font-size: 14px; font-weight: 800; }
+    .sources p { margin: 0; color: var(--muted); font-size: 12px; }
+    .source-links { display: flex; flex-wrap: wrap; gap: 10px; }
+    .source-links a {
+      padding: 8px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 750;
+      text-decoration: none;
+      transition: border-color 0.18s ease, transform 0.18s ease;
+    }
+    [data-theme="dark"] .source-links a { color: var(--lime); }
+    .source-links a:hover { border-color: var(--green); transform: translateY(-1px); }
+
+    footer {
+      padding: 26px 0 36px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+    }
+    .footer-brand { color: var(--ink); font-weight: 800; }
+    .to-top { font-weight: 700; color: var(--green); text-decoration: none; }
+    [data-theme="dark"] .to-top { color: var(--lime); }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .hero-grid, .map-grid, .food-layout, .plan-wrap, .reviews-layout, .ask-banner { grid-template-columns: 1fr; }
+      .hero-art { min-height: 380px; }
+      .quickbar, .meal-grid { grid-template-columns: repeat(2, 1fr); }
+      .estimator-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 28px, 560px); }
+      .nav { height: 66px; }
+      .navlinks {
+        display: none;
+        position: absolute;
+        top: 66px;
+        left: 0;
+        right: 0;
+        padding: 16px 20px 22px;
+        border-bottom: 1px solid var(--line);
+        background: var(--paper);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        box-shadow: var(--shadow);
+      }
+      .navlinks.open { display: flex; }
+      .navlinks a.nav-item { padding: 10px 4px; font-size: 14px; }
+      .navlinks a.nav-item.active::after { display: none; }
+      .navlinks a.nav-cta { margin-top: 8px; text-align: center; }
+      .menu-toggle { display: grid; }
+      .hero { padding-top: 28px; }
+      h1 { font-size: clamp(38px, 10.8vw, 54px); }
+      .floating-card { top: 14px; right: 14px; width: 204px; padding: 13px; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 10px; }
+      .extras-grid, .faq-grid, .form-row-2 { grid-template-columns: 1fr; }
+      .menu-row { grid-template-columns: 1fr; gap: 3px; }
+      .estimate-result { flex-direction: column; align-items: flex-start; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar" id="top">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="LPU Campus Guide home">
+        <span class="brand-mark">LPU</span>
+        <span>Campus Guide<small>Hostels · Dining · Directions</small></span>
+      </a>
+
+      <div class="nav-right">
+        <nav class="navlinks" id="navlinks" aria-label="Main navigation">
+          <a class="nav-item" href="#map">Campus map</a>
+          <a class="nav-item" href="#mess">Dining</a>
+          <a class="nav-item" href="#menu">Menu</a>
+          <a class="nav-item" href="#plans">Fees</a>
+          <a class="nav-item" href="#reviews">Reviews</a>
+          <a class="nav-item" href="#faq">FAQs</a>
+          <a class="admin-pill" href="/admin">Admin Panel</a>
+          <a class="nav-cta" href="https://www.lpu.in/student-services/residence.php" target="_blank" rel="noreferrer">Official LPU ↗</a>
+        </nav>
+
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Switch light / dark theme">
+          <svg id="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">LPU student information · 2026–27</span>
+          <h1>Your guide to LPU.<br><span>Campus, hostels and dining.</span></h1>
+          <p>Plan your arrival on NH-44, check live hostel mess hours, explore SQLite-backed regional menus, estimate 2026–27 fees, and read real student mess reviews.</p>
+          <div class="hero-actions">
+            <a class="button" href="#mess">Explore dining <span aria-hidden="true">↓</span></a>
+            <a class="button secondary" href="#plans">Fee estimator</a>
+            <a class="button secondary" href="#reviews">Student reviews</a>
+          </div>
+          <div class="hero-meta">
+            <span><strong>Phagwara, Punjab</strong></span>
+            <i class="dot" aria-hidden="true"></i>
+            <span>2026–27 rates</span>
+            <i class="dot" aria-hidden="true"></i>
+            <span class="api-badge" id="db-status-badge">● Express + SQLite Ready</span>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-label="Illustrated Lovely Professional University campus">
+          <svg class="hero-art-svg" viewBox="0 0 600 460" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <circle cx="486" cy="68" r="56" fill="#F8DBA8" fill-opacity="0.24"/>
+            <circle cx="486" cy="68" r="32" fill="#F8DBA8" fill-opacity="0.42"/>
+            <ellipse cx="260" cy="210" rx="340" ry="190" transform="rotate(-18 260 210)" stroke="white" stroke-opacity="0.22" stroke-width="1.5"/>
+            <ellipse cx="320" cy="260" rx="310" ry="175" transform="rotate(16 320 260)" stroke="white" stroke-opacity="0.16" stroke-width="1.2"/>
+            <path d="M0 325C120 292 245 298 360 320C455 338 535 316 600 304V460H0V325Z" fill="#174434"/>
+            <rect x="86" y="182" width="156" height="162" rx="8" fill="#E9E6D3" fill-opacity="0.72" stroke="white" stroke-opacity="0.75" stroke-width="2"/>
+            <rect x="102" y="198" width="124" height="132" rx="4" fill="#235743" fill-opacity="0.22"/>
+            <g stroke="#204E3C" stroke-opacity="0.48" stroke-width="3">
+              <line x1="133" y1="198" x2="133" y2="330"/><line x1="164" y1="198" x2="164" y2="330"/><line x1="195" y1="198" x2="195" y2="330"/>
+              <line x1="102" y1="230" x2="226" y2="230"/><line x1="102" y1="262" x2="226" y2="262"/><line x1="102" y1="294" x2="226" y2="294"/>
+            </g>
+            <rect x="278" y="132" width="184" height="212" rx="9" fill="#EFEBD8" fill-opacity="0.78" stroke="white" stroke-opacity="0.82" stroke-width="2"/>
+            <rect x="296" y="150" width="148" height="180" rx="4" fill="#235743" fill-opacity="0.2"/>
+            <g stroke="#204E3C" stroke-opacity="0.46" stroke-width="3">
+              <line x1="333" y1="150" x2="333" y2="330"/><line x1="370" y1="150" x2="370" y2="330"/><line x1="407" y1="150" x2="407" y2="330"/>
+              <line x1="296" y1="186" x2="444" y2="186"/><line x1="296" y1="222" x2="444" y2="222"/><line x1="296" y1="258" x2="444" y2="258"/><line x1="296" y1="294" x2="444" y2="294"/>
+            </g>
+            <path d="M348 344V308C348 296 392 296 392 308V344" fill="#184232" stroke="white" stroke-opacity="0.7" stroke-width="2"/>
+            <g><rect x="52" y="314" width="7" height="30" rx="3" fill="#8B6F4E"/><circle cx="55" cy="296" r="24" fill="#5D8E64"/><circle cx="43" cy="306" r="16" fill="#467652"/><circle cx="68" cy="306" r="15" fill="#74A36F"/></g>
+            <g><rect x="504" y="306" width="8" height="36" rx="3" fill="#8B6F4E"/><circle cx="508" cy="285" r="28" fill="#5D8E64"/><circle cx="493" cy="298" r="19" fill="#467652"/><circle cx="524" cy="297" r="18" fill="#74A36F"/></g>
+            <path d="M0 342H600V460H0V342Z" fill="#123528"/>
+            <path d="M92 460C125 366 475 366 508 460" stroke="#F4EFE0" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round"/>
+            <path d="M108 460C138 380 462 380 492 460" fill="#194635"/>
+          </svg>
+
+          <div class="floating-card" aria-live="polite">
+            <span class="live-pill" id="hero-live-pill">
+              <span class="pulse-dot"></span>
+              <span id="hero-live-status">Dining schedule</span>
+            </span>
+            <strong id="hero-meal-title">Four meal periods</strong>
+            <small id="hero-meal-sub">Checking IST campus service hours…</small>
+            <div class="slot-pills" aria-label="Daily meal slots">
+              <span class="slot-pill" data-slot="breakfast">BF</span>
+              <span class="slot-pill" data-slot="lunch">LU</span>
+              <span class="slot-pill" data-slot="snacks">SN</span>
+              <span class="slot-pill" data-slot="dinner">DN</span>
+            </div>
+          </div>
+
+          <div class="art-label">
+            <span>Lovely Professional University</span>
+            <strong>Campus life, clearly explained.</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Jump Bar -->
+    <div class="wrap quickbar" aria-label="Quick guide">
+      <a class="quick" href="#map">
+        <span class="quick-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        </span>
+        <span><b>Campus location</b><small>NH-44 route &amp; rail distances</small></span>
+      </a>
+      <a class="quick" href="#mess">
+        <span class="quick-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </span>
+        <span><b>Dining hours</b><small>Live IST mess schedule</small></span>
+      </a>
+      <a class="quick" href="#plans">
+        <span class="quick-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="8" y1="11" x2="10" y2="11"></line><line x1="14" y1="11" x2="16" y2="11"></line><line x1="8" y1="16" x2="10" y2="16"></line><line x1="14" y1="16" x2="16" y2="16"></line></svg>
+        </span>
+        <span><b>Meal plans &amp; fees</b><small>2026–27 session estimator</small></span>
+      </a>
+      <a class="quick" href="#reviews">
+        <span class="quick-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </span>
+        <span><b>Student reviews</b><small>Live SQLite ratings &amp; feedback</small></span>
+      </a>
+    </div>
+
+    <!-- Campus Map & Transit -->
+    <section class="map-section wrap" id="map">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Campus location</span>
+          <h2>Find your way<br>to LPU.</h2>
+        </div>
+        <p>Lovely Professional University sits directly on the Jalandhar–Delhi Grand Trunk Road (NH-44) in Phagwara, well connected by rail and highway buses.</p>
+      </div>
+
+      <div class="map-grid">
+        <div class="map-info">
+          <div>
+            <span class="eyebrow">Locate the campus</span>
+            <h3>Plan your arrival with transit distances.</h3>
+            <p>Copy the official address or check travel times from nearby railway stations and airports before you arrive.</p>
+
+            <div class="address">
+              <div class="address-left">
+                <span class="address-pin" aria-hidden="true">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </span>
+                <span>
+                  <strong>Lovely Professional University</strong>
+                  <small>Jalandhar–Delhi G.T. Road (NH-44)<br>Phagwara, Punjab 144411, India</small>
+                </span>
+              </div>
+              <button class="copy-chip" id="copy-address-btn" type="button">Copy address</button>
+            </div>
+
+            <div class="transit-box">
+              <span class="transit-label">Distance from arrival hubs</span>
+              <div class="transit-tabs" role="tablist" aria-label="Transit hubs">
+                <button class="transit-tab active" type="button" data-hub="pgw">Phagwara Jn</button>
+                <button class="transit-tab" type="button" data-hub="jrc">Jalandhar Cantt</button>
+                <button class="transit-tab" type="button" data-hub="juc">Jalandhar City</button>
+                <button class="transit-tab" type="button" data-hub="air">Airports</button>
+              </div>
+              <div class="transit-detail">
+                <div>
+                  <strong id="transit-dist">~7 km · 12–15 min</strong>
+                  <div id="transit-note"><span>Direct autos &amp; cabs outside Phagwara Railway Station to Main Gate.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="map-actions">
+            <a class="button lime-cta" href="https://www.google.com/maps/dir/?api=1&destination=Lovely+Professional+University,+Phagwara,+Punjab" target="_blank" rel="noreferrer">Get directions ↗</a>
+            <a class="button ghost-light" href="https://www.lpu.in/contact-us/" target="_blank" rel="noreferrer">Official contact ↗</a>
+          </div>
+        </div>
+
+        <div class="map-frame">
+          <iframe
+            title="Map of Lovely Professional University, Phagwara"
+            src="https://maps.google.com/maps?q=Lovely%20Professional%20University%2C%20Phagwara%2C%20Punjab&t=&z=14&ie=UTF8&iwloc=&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+          <span class="map-badge">NH-44 · Phagwara–Jalandhar Highway</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hostel Dining & Timings -->
+    <section class="mess-section wrap" id="mess">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Hostel dining</span>
+          <h2>Meal times at<br>a glance.</h2>
+        </div>
+        <p>Published operational hours on LPU’s food-services page. Cards highlight the active or upcoming slot automatically in Indian Standard Time (IST).</p>
+      </div>
+
+      <div class="meal-grid">
+        <article class="meal-time" data-meal-card="breakfast">
+          <div class="meal-top">
+            <span class="meal-icon" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"></path><line x1="12" y1="2" x2="12" y2="9"></line><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"></line><line x1="1" y1="18" x2="3" y2="18"></line><line x1="21" y1="18" x2="23" y2="18"></line><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"></line><line x1="23" y1="22" x2="1" y2="22"></line></svg>
+            </span>
+            <span class="meal-badge">Up next</span>
+          </div>
+          <h3>Breakfast</h3>
+          <strong>7:15 – 9:30 AM</strong>
+          <small>Parantha, idli/poha, stuffed toast, curd, tea &amp; milk</small>
+        </article>
+
+        <article class="meal-time" data-meal-card="lunch">
+          <div class="meal-top">
+            <span class="meal-icon" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+            </span>
+            <span class="meal-badge">Up next</span>
+          </div>
+          <h3>Lunch</h3>
+          <strong>11:15 AM – 3:00 PM</strong>
+          <small>Rajmah/dal, seasonal subzi, raita, rice &amp; hot chapati</small>
+        </article>
+
+        <article class="meal-time" data-meal-card="snacks">
+          <div class="meal-top">
+            <span class="meal-icon" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"></path><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path><line x1="6" y1="2" x2="6" y2="4"></line><line x1="10" y1="2" x2="10" y2="4"></line><line x1="14" y1="2" x2="14" y2="4"></line></svg>
+            </span>
+            <span class="meal-badge">Up next</span>
+          </div>
+          <h3>Tea &amp; snacks</h3>
+          <strong>5:00 – 6:00 PM</strong>
+          <small>Masala tea or coffee with rotating hot evening snacks</small>
+        </article>
+
+        <article class="meal-time" data-meal-card="dinner">
+          <div class="meal-top">
+            <span class="meal-icon" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+            </span>
+            <span class="meal-badge">Up next</span>
+          </div>
+          <h3>Dinner</h3>
+          <strong>7:00 – 9:00 PM</strong>
+          <small>Dal, paneer/seasonal veg, chapati, rice, salad &amp; dessert</small>
+        </article>
+      </div>
+
+      <div class="note">
+        <span class="note-badge" aria-hidden="true">i</span>
+        <span><strong>Schedule note:</strong> Published food-services hours are shown above. Exact opening windows on Sundays, holidays, or specific boys/girls hostels can shift by 15–30 minutes—follow your hostel notice board or LPU Touch app.</span>
+      </div>
+
+      <!-- SQLite-Backed Weekly Sample Menu -->
+      <div class="food-layout" id="menu">
+        <div class="food-intro">
+          <div>
+            <span class="eyebrow">Menu overview · SQLite</span>
+            <h3>A varied menu across the week.</h3>
+            <p>Served dynamically from the backend database—editable anytime from the Admin Panel without touching HTML.</p>
+            <div class="food-tags">
+              <span>100% Vegetarian Campus</span>
+              <span>Automated Roti</span>
+              <span>Regional Cuisines</span>
+            </div>
+          </div>
+
+          <svg class="food-art" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="115" cy="115" r="78" stroke="white" stroke-opacity="0.24" stroke-width="2"/>
+            <circle cx="115" cy="115" r="62" fill="white" fill-opacity="0.1" stroke="white" stroke-opacity="0.38" stroke-width="2"/>
+            <circle cx="95" cy="92" r="16" fill="#FFE3B3" fill-opacity="0.45"/>
+            <circle cx="134" cy="94" r="15" fill="#FFE3B3" fill-opacity="0.35"/>
+            <circle cx="92" cy="130" r="14" fill="#FFE3B3" fill-opacity="0.3"/>
+            <path d="M118 122C118 112 148 112 148 122C148 138 118 138 118 122Z" fill="#FFF3DC" fill-opacity="0.5"/>
+          </svg>
+        </div>
+
+        <div class="menu-card">
+          <div class="menu-header">
+            <div>
+              <h3>Sample weekly menu explorer</h3>
+              <p>Loaded live from <code>/api/bootstrap</code> (SQLite).</p>
+            </div>
+            <div class="cuisine-switch" role="tablist" aria-label="Cuisine style">
+              <button class="cuisine-btn active" type="button" data-cuisine="north">North Indian</button>
+              <button class="cuisine-btn" type="button" data-cuisine="south">South Indian</button>
+            </div>
+          </div>
+
+          <div class="day-tabs" role="tablist" aria-label="Day of week">
+            <button class="day-btn" type="button" data-day="1">Mon</button>
+            <button class="day-btn" type="button" data-day="2">Tue</button>
+            <button class="day-btn" type="button" data-day="3">Wed</button>
+            <button class="day-btn" type="button" data-day="4">Thu</button>
+            <button class="day-btn" type="button" data-day="5">Fri</button>
+            <button class="day-btn" type="button" data-day="6">Sat</button>
+            <button class="day-btn" type="button" data-day="0">Sun</button>
+          </div>
+
+          <div class="menu-rows" id="menu-rows" aria-live="polite">
+            <div class="menu-row"><b>Breakfast</b><span id="m-breakfast">Loading menu…</span></div>
+            <div class="menu-row"><b>Lunch</b><span id="m-lunch">Loading menu…</span></div>
+            <div class="menu-row"><b>Snacks</b><span id="m-snacks">Loading menu…</span></div>
+            <div class="menu-row"><b>Dinner</b><span id="m-dinner">Loading menu…</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meal Plans & Interactive Estimator -->
+    <section class="plans-section wrap" id="plans">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Meal plans · 2026–27</span>
+          <h2>Compare the<br>listed options.</h2>
+        </div>
+        <p>Click any university mess plan below to calculate your full 2026–27 session budget—rates sync directly from SQLite.</p>
+      </div>
+
+      <div class="plan-wrap">
+        <div class="plans-card" id="veg-plans-list" role="radiogroup" aria-label="2026-27 Vegetarian Mess Plans">
+          <div class="plans-title">
+            <h3>Vegetarian mess · 2026–27</h3>
+            <span class="tag">SQLite synced</span>
+          </div>
+          <div id="veg-plans-rows">
+            <!-- Hydrated from /api/bootstrap -->
+          </div>
+        </div>
+
+        <aside class="nonveg-card">
+          <div>
+            <span class="eyebrow">Independent vendor</span>
+            <h3>Non-vegetarian meals nearby.</h3>
+            <p>LPU lists an independently operated non-vegetarian mess adjacent to campus, with payments made directly to the vendor.</p>
+            <div class="mini-price" id="nonveg-plans-rows">
+              <div><span>3 meals plan</span><b>₹75,000 / year</b></div>
+              <div><span>2 meals plan</span><b>₹65,000 / year</b></div>
+              <div><span>1 meal plan</span><b>₹55,000 / year</b></div>
+            </div>
+          </div>
+          <p class="disclaimer">LPU is a strictly vegetarian campus. The adjacent non-vegetarian dining facility is independently managed and subject to seat availability.</p>
+        </aside>
+      </div>
+
+      <div class="estimator-card" aria-label="Session budget estimator">
+        <div class="estimator-top">
+          <div>
+            <h3>Quick 2026–27 session budget estimator</h3>
+            <p>Combine a listed mess plan with optional standard hostel accommodation (~10-month academic session).</p>
+          </div>
+          <label class="edb-toggle">
+            <input type="checkbox" id="edb-check">
+            <span>Apply Early Decision room benefit (−₹10,000 est.)</span>
+          </label>
+        </div>
+
+        <div class="estimator-grid">
+          <div class="field-group">
+            <label for="calc-mess">Selected mess plan</label>
+            <select id="calc-mess"></select>
+          </div>
+
+          <div class="field-group">
+            <label for="calc-room">Optional hostel room (2026–27)</label>
+            <select id="calc-room"></select>
+          </div>
+
+          <div class="estimate-result" aria-live="polite">
+            <div>
+              <small>Estimated session total</small>
+              <strong id="est-total">₹1,48,000</strong>
+              <span class="estimate-meta" id="est-breakdown">~₹14,800/mo · 500 free electricity units</span>
+            </div>
+            <button class="share-est-btn" id="copy-est-btn" type="button">Copy summary</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="plan-footnote">Rates are reproduced from LPU’s 2026–27 residence information for guidance. Confirm exact payable fees on your LPU Admission / UMS portal before booking.</p>
+    </section>
+
+    <!-- More Campus Food Services -->
+    <section class="extras wrap" id="extras">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Campus food services</span>
+          <h2>More options<br>across campus.</h2>
+        </div>
+        <p>Beyond the hostel mess, LPU operates several student dining and support facilities across academic blocks and UniMall.</p>
+      </div>
+
+      <div class="extras-grid">
+        <article class="extra">
+          <span class="extra-icon" aria-hidden="true">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </span>
+          <h3>Packed breakfast</h3>
+          <p>Students with early morning labs, exams, or field visits can request a packed breakfast box through their hostel mess counter in advance.</p>
+        </article>
+
+        <article class="extra">
+          <span class="extra-icon" aria-hidden="true">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+          </span>
+          <h3>Wellness &amp; fasting menus</h3>
+          <p>Soft meals (such as khichdi or curd rice) are listed for unwell students, alongside festival specials and dedicated fasting-day meal arrangements.</p>
+        </article>
+
+        <article class="extra">
+          <span class="extra-icon" aria-hidden="true">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          </span>
+          <h3>Food courts, kiosks &amp; pantry</h3>
+          <p>Over 200+ kiosks, UniMall dining courts, juice bars, a student food bank/pantry, and in-campus evening delivery operate within university gates.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- NEW: Student Mess Reviews & Ratings (SQLite Backend) -->
+    <section class="reviews-section wrap" id="reviews">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Student feedback · Live DB</span>
+          <h2>Hostel mess<br>reviews &amp; ratings.</h2>
+        </div>
+        <p>Stored in SQLite via <code>POST /api/reviews</code>. Share your honest hostel dining experience for incoming batchmates.</p>
+      </div>
+
+      <div class="reviews-layout">
+        <div>
+          <div class="rating-banner">
+            <div class="rating-score">
+              <strong id="avg-rating-num">4.3</strong>
+              <div>
+                <div class="rating-stars" id="avg-rating-stars">★★★★☆</div>
+                <small id="total-reviews-count" style="color:var(--muted);font-size:12px;">Based on 4 student reviews</small>
+              </div>
+            </div>
+            <span class="tag">SQLite Live</span>
+          </div>
+
+          <div class="reviews-list" id="reviews-list">
+            <!-- Hydrated from /api/reviews -->
+          </div>
+        </div>
+
+        <aside class="form-card">
+          <h3>Write a mess review</h3>
+          <p>Saves straight into the SQLite database and updates the live average immediately.</p>
+          <form class="form-stack" id="review-form">
+            <div class="form-row-2">
+              <div class="input-box">
+                <label for="rev-name">Your name</label>
+                <input id="rev-name" type="text" placeholder="e.g. Aryan Khan" maxlength="60" required>
+              </div>
+              <div class="input-box">
+                <label for="rev-hostel">Hostel block</label>
+                <select id="rev-hostel" required>
+                  <option value="BH-1">Boys Hostel BH-1</option>
+                  <option value="BH-2">Boys Hostel BH-2</option>
+                  <option value="BH-3">Boys Hostel BH-3</option>
+                  <option value="BH-4">Boys Hostel BH-4</option>
+                  <option value="BH-5">Boys Hostel BH-5</option>
+                  <option value="BH-6">Boys Hostel BH-6</option>
+                  <option value="GH-1">Girls Hostel GH-1</option>
+                  <option value="GH-2">Girls Hostel GH-2</option>
+                  <option value="GH-3">Girls Hostel GH-3</option>
+                  <option value="GH-4">Girls Hostel GH-4</option>
+                  <option value="Apartments">Studio Apartments</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="input-box">
+              <label for="rev-plan">Mess plan / kitchen</label>
+              <select id="rev-plan" required>
+                <option value="Standard · 4 meals (North)">Standard · 4 meals (North Indian)</option>
+                <option value="Standard · 3 meals">Standard · 3 meals</option>
+                <option value="Standard · 2 meals">Standard · 2 meals</option>
+                <option value="South Indian Mess">South Indian Mess</option>
+                <option value="A la carte · 4 meals">A la carte · 4 meals</option>
+              </select>
+            </div>
+
+            <div class="input-box">
+              <label>Rating</label>
+              <div class="star-picker" id="star-picker" role="radiogroup" aria-label="Star rating">
+                <button type="button" class="star-btn lit" data-val="1">★</button>
+                <button type="button" class="star-btn lit" data-val="2">★</button>
+                <button type="button" class="star-btn lit" data-val="3">★</button>
+                <button type="button" class="star-btn lit" data-val="4">★</button>
+                <button type="button" class="star-btn lit" data-val="5">★</button>
+              </div>
+            </div>
+
+            <div class="input-box">
+              <label for="rev-comment">Your review</label>
+              <textarea id="rev-comment" rows="3" placeholder="How is the food quality, hygiene, and timing in your hostel?" maxlength="360" required></textarea>
+            </div>
+
+            <button class="button" type="submit">Submit review to DB</button>
+            <div class="form-msg" id="rev-msg" aria-live="polite"></div>
+          </form>
+        </aside>
+      </div>
+    </section>
+
+    <!-- FAQs + Ask a Doubt Backend Form -->
+    <section class="faq wrap" id="faq">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Frequently asked questions</span>
+          <h2>Before choosing<br>a meal plan.</h2>
+        </div>
+        <p>Key details to review before locking in your hostel dining preference, plus answered student doubts.</p>
+      </div>
+
+      <div class="faq-filters" role="tablist" aria-label="Filter FAQs">
+        <button class="faq-chip active" type="button" data-faq-filter="all">All questions</button>
+        <button class="faq-chip" type="button" data-faq-filter="food">Dining &amp; menu</button>
+        <button class="faq-chip" type="button" data-faq-filter="fees">Fees &amp; plans</button>
+        <button class="faq-chip" type="button" data-faq-filter="rules">Hostel policy</button>
+      </div>
+
+      <div class="faq-grid" id="faq-grid">
+        <details class="faq-item" data-cat="food">
+          <summary>Is the hostel mess strictly vegetarian?</summary>
+          <p>Yes. All dining halls inside LPU hostels and campus food courts serve strictly vegetarian food. A non-vegetarian mess is listed adjacent to campus through an independent vendor.</p>
+        </details>
+
+        <details class="faq-item" data-cat="rules">
+          <summary>Is taking a university mess plan compulsory?</summary>
+          <p>LPU states that students may opt for a university mess plan or manage meals independently via campus food courts and kiosks. Check any scholarship or specific residential terms before booking.</p>
+        </details>
+
+        <details class="faq-item" data-cat="food">
+          <summary>Where can I check the live daily menu?</summary>
+          <p>Once enrolled, students can view their assigned mess’s daily menu and log meal feedback directly in the <strong>LPU Touch</strong> mobile app or on the hostel dining notice board.</p>
+        </details>
+
+        <details class="faq-item" data-cat="fees">
+          <summary>Is the a la carte or South Indian mess in every hostel?</summary>
+          <p>No. A la carte counters and specialized regional messes (South Indian, Rajasthani, Eastern) operate at selected residential locations and require minimum student enrolment.</p>
+        </details>
+
+        <details class="faq-item" data-cat="fees">
+          <summary>How long does one session mess fee cover?</summary>
+          <p>A listed session plan covers one regular academic year (approximately 10 months across two semesters). Winter/summer vacation stay or mid-term upgrades follow university pro-rata rules.</p>
+        </details>
+
+        <details class="faq-item" data-cat="rules">
+          <summary>Can I upgrade from 2 or 3 meals to 4 meals later?</summary>
+          <p>Upgrades to a higher meal plan (for example adding evening snacks or moving to 4 meals) are generally permitted via UMS by paying the differential fee, whereas downgrades are restricted once opted.</p>
+        </details>
+      </div>
+
+      <!-- Ask a Question (Saves to SQLite queries table) -->
+      <div class="ask-banner">
+        <div>
+          <span class="eyebrow">Have a doubt?</span>
+          <h3>Ask a campus or hostel question.</h3>
+          <p>Questions submitted here are saved in SQLite (<code>POST /api/queries</code>) and can be answered from the <a href="/admin" style="color:var(--green);font-weight:700;">Admin Dashboard</a>. Resolved replies automatically appear in the FAQ list above!</p>
+        </div>
+
+        <form class="ask-inline-form" id="query-form">
+          <div class="form-row-2">
+            <div class="input-box">
+              <label for="q-name">Your name</label>
+              <input id="q-name" type="text" placeholder="Name & course" maxlength="70" required>
+            </div>
+            <div class="input-box">
+              <label for="q-contact">Email or WhatsApp</label>
+              <input id="q-contact" type="text" placeholder="you@example.com" maxlength="90" required>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="input-box">
+              <label for="q-topic">Topic</label>
+              <select id="q-topic">
+                <option value="Mess Plan">Mess Plan</option>
+                <option value="Hostel Room">Hostel Room</option>
+                <option value="Arrival / Transit">Arrival / Transit</option>
+                <option value="Dietary / Special">Dietary / Special</option>
+              </select>
+            </div>
+            <div class="input-box">
+              <label for="q-text">Question</label>
+              <input id="q-text" type="text" placeholder="Type your question…" maxlength="500" required>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <button class="button" type="submit">Send question</button>
+            <span class="form-msg" id="q-msg" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Official Resources -->
+    <section class="wrap sources" aria-labelledby="sources-heading">
+      <div>
+        <h3 id="sources-heading">Official LPU resources</h3>
+        <p>Fees, plans, and service hours can change each semester. Always verify current details on LPU’s official pages.</p>
+      </div>
+      <div class="source-links">
+        <a href="https://www.lpu.in/student-services/residence.php" target="_blank" rel="noreferrer">Hostel, mess plans &amp; fees ↗</a>
+        <a href="https://www.lpu.in/SUSTAINABLE/sdg2/student-food-insecurity-hunger.php" target="_blank" rel="noreferrer">Sample menu &amp; timings ↗</a>
+        <a href="https://www.lpu.in/contact-us/" target="_blank" rel="noreferrer">LPU address &amp; contact ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><span class="footer-brand">LPU Campus Guide</span> · Node.js + Express + SQLite Full-Stack Edition</span>
+      <span><a class="to-top" href="/admin">Admin Dashboard</a> · <a class="to-top" href="#top">Back to top ↑</a></span>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      // 1. Mobile Nav & Theme Toggle
+      const menuBtn = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('navlinks');
+      menuBtn.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+      navLinks.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('open');
+          menuBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const iconMoon = document.getElementById('icon-moon');
+      const iconSun = document.getElementById('icon-sun');
+      const metaTheme = document.getElementById('meta-theme-color');
+
+      function applyTheme(theme) {
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          iconMoon.style.display = 'none';
+          iconSun.style.display = 'block';
+          metaTheme.setAttribute('content', '#0e1916');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          iconMoon.style.display = 'block';
+          iconSun.style.display = 'none';
+          metaTheme.setAttribute('content', '#f7f6f1');
+        }
+      }
+      const savedTheme = localStorage.getItem('lpu-guide-theme');
+      if (savedTheme) applyTheme(savedTheme);
+      themeBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem('lpu-guide-theme', next);
+      });
+
+      // 2. Live IST Dining Status
+      let mealWindows = [
+        { id: 'breakfast', name: 'Breakfast', start: 435, end: 570, label: '7:15 – 9:30 AM' },
+        { id: 'lunch', name: 'Lunch', start: 675, end: 900, label: '11:15 AM – 3:00 PM' },
+        { id: 'snacks', name: 'Tea & Snacks', start: 1020, end: 1080, label: '5:00 – 6:00 PM' },
+        { id: 'dinner', name: 'Dinner', start: 1140, end: 1260, label: '7:00 – 9:00 PM' }
+      ];
+
+      function getISTTimeParts() {
+        const istString = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+        const istDate = new Date(istString);
+        return {
+          day: istDate.getDay(),
+          minutes: istDate.getHours() * 60 + istDate.getMinutes(),
+          formatted: istDate.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()
+        };
+      }
+
+      function formatDiff(mins) {
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        if (h > 0 && m > 0) return `${h}h ${m}m`;
+        return h > 0 ? `${h}h` : `${m}m`;
+      }
+
+      function updateDiningStatus() {
+        const { minutes, formatted } = getISTTimeParts();
+        const pill = document.getElementById('hero-live-pill');
+        const statusText = document.getElementById('hero-live-status');
+        const titleEl = document.getElementById('hero-meal-title');
+        const subEl = document.getElementById('hero-meal-sub');
+
+        let activeMeal = null;
+        let nextMeal = null;
+        let minsUntilNext = 0;
+
+        for (const m of mealWindows) {
+          if (minutes >= m.start && minutes < m.end) { activeMeal = m; break; }
+          if (minutes < m.start && !nextMeal) { nextMeal = m; minsUntilNext = m.start - minutes; }
+        }
+        if (!activeMeal && !nextMeal) {
+          nextMeal = mealWindows[0];
+          minsUntilNext = (24 * 60 - minutes) + nextMeal.start;
+        }
+
+        document.querySelectorAll('.slot-pill').forEach((el) => {
+          el.classList.remove('active', 'next');
+          if (activeMeal && el.dataset.slot === activeMeal.id) el.classList.add('active');
+          else if (!activeMeal && nextMeal && el.dataset.slot === nextMeal.id) el.classList.add('next');
+        });
+
+        document.querySelectorAll('[data-meal-card]').forEach((card) => {
+          card.classList.remove('is-active', 'is-next');
+          const badge = card.querySelector('.meal-badge');
+          if (activeMeal && card.dataset.mealCard === activeMeal.id) {
+            card.classList.add('is-active');
+            badge.textContent = 'Serving now';
+          } else if (!activeMeal && nextMeal && card.dataset.mealCard === nextMeal.id) {
+            card.classList.add('is-next');
+            badge.textContent = 'Up next';
+          }
+        });
+
+        if (activeMeal) {
+          pill.classList.remove('closed');
+          statusText.textContent = `Open now · ${formatted} IST`;
+          titleEl.textContent = `${activeMeal.name} is open`;
+          subEl.textContent = `Closes in ${formatDiff(activeMeal.end - minutes)} (${activeMeal.label})`;
+        } else {
+          pill.classList.add('closed');
+          statusText.textContent = `Closed · ${formatted} IST`;
+          titleEl.textContent = `Next: ${nextMeal.name}`;
+          subEl.textContent = `Opens in ${formatDiff(minsUntilNext)} (${nextMeal.label})`;
+        }
+      }
+      updateDiningStatus();
+      setInterval(updateDiningStatus, 30000);
+
+      // 3. Copy Address & Transit Tabs
+      const copyAddrBtn = document.getElementById('copy-address-btn');
+      copyAddrBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('Lovely Professional University, Jalandhar-Delhi G.T. Road, Phagwara, Punjab 144411, India');
+          copyAddrBtn.textContent = 'Copied ✓';
+          setTimeout(() => { copyAddrBtn.textContent = 'Copy address'; }, 2000);
+        } catch {
+          copyAddrBtn.textContent = 'Phagwara 144411';
+        }
+      });
+
+      const transitData = {
+        pgw: { dist: '~7 km · 12–15 min', note: 'Direct autos & cabs outside Phagwara Railway Station right to LPU Main Gate.' },
+        jrc: { dist: '~14 km · 20–25 min', note: 'Frequent highway buses & shared autos along NH-44 from Jalandhar Cantt.' },
+        juc: { dist: '~20 km · 30–35 min', note: 'Regular Phagwara/Ludhiana-bound buses & cabs drop directly at LPU.' },
+        air: { dist: 'ATQ ~110 km · IXC ~145 km', note: 'Amritsar (ATQ) & Chandigarh (IXC) airports connect smoothly via NH-44 highway.' }
+      };
+      document.querySelectorAll('.transit-tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.transit-tab').forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          const info = transitData[tab.dataset.hub];
+          document.getElementById('transit-dist').textContent = info.dist;
+          document.getElementById('transit-note').innerHTML = `<span>${info.note}</span>`;
+        });
+      });
+
+      // 4. State for SQLite-backed Menu, Plans, Rooms & Reviews
+      const menuDB = { north: {}, south: {} };
+      let activeCuisine = 'north';
+      let activeDay = getISTTimeParts().day;
+
+      document.querySelectorAll('.day-btn').forEach((btn) => {
+        const d = Number(btn.dataset.day);
+        if (d === activeDay) btn.classList.add('is-today', 'active');
+        btn.addEventListener('click', () => {
+          activeDay = d;
+          document.querySelectorAll('.day-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderMenu();
+        });
+      });
+
+      document.querySelectorAll('.cuisine-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeCuisine = btn.dataset.cuisine;
+          document.querySelectorAll('.cuisine-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderMenu();
+        });
+      });
+
+      function renderMenu() {
+        const entry = menuDB[activeCuisine]?.[activeDay];
+        if (!entry) return;
+        document.getElementById('m-breakfast').textContent = entry.breakfast;
+        document.getElementById('m-lunch').textContent = entry.lunch;
+        document.getElementById('m-snacks').textContent = entry.snacks;
+        document.getElementById('m-dinner').textContent = entry.dinner;
+      }
+
+      // Estimator Logic
+      const messSelect = document.getElementById('calc-mess');
+      const roomSelect = document.getElementById('calc-room');
+      const edbCheck = document.getElementById('edb-check');
+      const estTotalEl = document.getElementById('est-total');
+      const estBreakdownEl = document.getElementById('est-breakdown');
+
+      function formatINR(num) {
+        return '₹' + Number(num).toLocaleString('en-IN');
+      }
+
+      function updateEstimate() {
+        if (!messSelect.options.length || !roomSelect.options.length) return;
+        const messFee = Number(messSelect.value);
+        let roomFee = Number(roomSelect.value);
+        const edbApplied = edbCheck.checked && roomFee > 0;
+        if (edbApplied) roomFee = Math.max(0, roomFee - 10000);
+
+        const total = messFee + roomFee;
+        const monthly = Math.round(total / 10);
+        const selectedRoomOpt = roomSelect.options[roomSelect.selectedIndex];
+        const unitsText = selectedRoomOpt.dataset.units || '';
+
+        estTotalEl.textContent = formatINR(total);
+        estBreakdownEl.textContent = `~${formatINR(monthly)}/mo (10 mos) · ${unitsText}${edbApplied ? ' · EDB applied' : ''}`;
+
+        const selectedPlanKey = messSelect.options[messSelect.selectedIndex].dataset.planKey;
+        document.querySelectorAll('.price-row').forEach((row) => {
+          row.classList.toggle('selected', row.dataset.plan === selectedPlanKey);
+        });
+      }
+
+      messSelect.addEventListener('change', updateEstimate);
+      roomSelect.addEventListener('change', updateEstimate);
+      edbCheck.addEventListener('change', updateEstimate);
+
+      document.getElementById('copy-est-btn').addEventListener('click', async (e) => {
+        const btn = e.currentTarget;
+        const messLabel = messSelect.options[messSelect.selectedIndex]?.text || '';
+        const roomLabel = roomSelect.options[roomSelect.selectedIndex]?.text || '';
+        const summary = `LPU 2026–27 Estimate:\n• Mess: ${messLabel}\n• Hostel: ${roomLabel}\n• Total: ${estTotalEl.textContent} (${estBreakdownEl.textContent})`;
+        try {
+          await navigator.clipboard.writeText(summary);
+          btn.textContent = 'Copied ✓';
+          setTimeout(() => { btn.textContent = 'Copy summary'; }, 2000);
+        } catch {
+          btn.textContent = 'Done ✓';
+        }
+      });
+
+      function escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function starsString(n) {
+        return '★'.repeat(n) + '☆'.repeat(5 - n);
+      }
+
+      function renderReviews(summary, reviews) {
+        document.getElementById('avg-rating-num').textContent = Number(summary.average || 0).toFixed(1);
+        document.getElementById('avg-rating-stars').textContent = starsString(Math.round(summary.average || 0));
+        document.getElementById('total-reviews-count').textContent = `Based on ${summary.total} student review${summary.total === 1 ? '' : 's'}`;
+
+        const listEl = document.getElementById('reviews-list');
+        listEl.innerHTML = reviews.slice(0, 6).map((r) => `
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-author">
+                <b>${escapeHTML(r.student_name)}</b>
+                <span class="review-meta">
+                  <span class="chip-mini">${escapeHTML(r.hostel_block)}</span>
+                  <span class="chip-mini">${escapeHTML(r.mess_type)}</span>
+                </span>
+              </div>
+              <span class="rating-stars" aria-label="${r.rating} out of 5 stars">${starsString(r.rating)}</span>
+            </div>
+            <p>${escapeHTML(r.comment)}</p>
+          </article>
+        `).join('');
+      }
+
+      // Hydrate everything from Express + SQLite /api/bootstrap
+      async function loadBackendData() {
+        try {
+          const res = await fetch('/api/bootstrap');
+          if (!res.ok) throw new Error('API unreachable');
+          const data = await res.json();
+
+          // Menu
+          data.menu.forEach((row) => {
+            if (!menuDB[row.cuisine]) menuDB[row.cuisine] = {};
+            menuDB[row.cuisine][row.day_of_week] = row;
+          });
+          renderMenu();
+
+          // Plans
+          const vegPlans = data.plans.filter((p) => p.category === 'veg');
+          const nvPlans = data.plans.filter((p) => p.category === 'nonveg_vendor');
+
+          const vegContainer = document.getElementById('veg-plans-rows');
+          vegContainer.innerHTML = vegPlans.map((p, idx) => `
+            <button class="price-row ${idx === 0 ? 'selected' : ''}" type="button" data-plan="${escapeHTML(p.plan_key)}" data-fee="${p.fee}">
+              <span class="radio-dot" aria-hidden="true"></span>
+              <span>
+                <b>${escapeHTML(p.name)}</b>
+                <small>${escapeHTML(p.subtitle)}</small>
+              </span>
+              <span class="price">${formatINR(p.fee)} <em>${escapeHTML(p.period_label)}</em></span>
+            </button>
+          `).join('');
+
+          vegContainer.querySelectorAll('.price-row').forEach((row) => {
+            row.addEventListener('click', () => {
+              const key = row.dataset.plan;
+              for (let i = 0; i < messSelect.options.length; i++) {
+                if (messSelect.options[i].dataset.planKey === key) {
+                  messSelect.selectedIndex = i;
+                  break;
+                }
+              }
+              updateEstimate();
+            });
+          });
+
+          if (nvPlans.length) {
+            document.getElementById('nonveg-plans-rows').innerHTML = nvPlans.map((p) => `
+              <div><span>${escapeHTML(p.name)}</span><b>${formatINR(p.fee)} ${escapeHTML(p.period_label)}</b></div>
+            `).join('');
+          }
+
+          // Calculator selects
+          messSelect.innerHTML = vegPlans.map((p) =>
+            `<option value="${p.fee}" data-plan-key="${escapeHTML(p.plan_key)}">${escapeHTML(p.name)} (${formatINR(p.fee)})</option>`
+          ).join('') + `<option value="0" data-plan-key="none">Self-managed / No mess (₹0)</option>`;
+
+          roomSelect.innerHTML = data.rooms.map((r) =>
+            `<option value="${r.fee}" data-units="${escapeHTML(r.electricity_units)}" ${r.room_key === '4s_ac' ? 'selected' : ''}>${escapeHTML(r.name)}${r.fee > 0 ? ` (${formatINR(r.fee)})` : ''}</option>`
+          ).join('');
+
+          updateEstimate();
+
+          // Reviews
+          renderReviews(data.reviewSummary, data.reviews);
+
+          // Resolved Community Q&As appended into FAQ Grid
+          if (data.resolvedQueries && data.resolvedQueries.length) {
+            const faqGrid = document.getElementById('faq-grid');
+            data.resolvedQueries.forEach((q) => {
+              const det = document.createElement('details');
+              det.className = 'faq-item';
+              det.dataset.cat = 'food';
+              det.innerHTML = `
+                <summary>${escapeHTML(q.question)}</summary>
+                <p><strong>Answered for ${escapeHTML(q.name)}:</strong> ${escapeHTML(q.admin_reply)}</p>
+              `;
+              faqGrid.appendChild(det);
+            });
+          }
+
+          const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+          document.getElementById('db-status-badge').textContent = isLocal ? '● SQLite Connected' : '● Cloud DB Live';
+        } catch (err) {
+          document.getElementById('db-status-badge').textContent = '○ Offline Mode';
+        }
+      }
+      loadBackendData();
+
+      // 5. Submit Student Review Form -> POST /api/reviews
+      let chosenStars = 5;
+      const starBtns = document.querySelectorAll('.star-btn');
+      starBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          chosenStars = Number(btn.dataset.val);
+          starBtns.forEach((b) => b.classList.toggle('lit', Number(b.dataset.val) <= chosenStars));
+        });
+      });
+
+      document.getElementById('review-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msgEl = document.getElementById('rev-msg');
+        msgEl.className = 'form-msg';
+        msgEl.textContent = 'Saving to SQLite…';
+
+        const payload = {
+          student_name: document.getElementById('rev-name').value,
+          hostel_block: document.getElementById('rev-hostel').value,
+          mess_type: document.getElementById('rev-plan').value,
+          rating: chosenStars,
+          comment: document.getElementById('rev-comment').value
+        };
+
+        try {
+          const res = await fetch('/api/reviews', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const out = await res.json();
+          if (!res.ok) throw new Error(out.error || 'Could not save review');
+
+          msgEl.textContent = 'Review saved to SQLite ✓';
+          e.target.reset();
+          chosenStars = 5;
+          starBtns.forEach((b) => b.classList.add('lit'));
+
+          const listRes = await fetch('/api/reviews');
+          const listData = await listRes.json();
+          renderReviews(listData.summary, listData.reviews);
+        } catch (err) {
+          msgEl.className = 'form-msg err';
+          msgEl.textContent = err.message;
+        }
+      });
+
+      // 6. Submit Student Query Form -> POST /api/queries
+      document.getElementById('query-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msgEl = document.getElementById('q-msg');
+        msgEl.className = 'form-msg';
+        msgEl.textContent = 'Sending…';
+
+        const payload = {
+          name: document.getElementById('q-name').value,
+          contact: document.getElementById('q-contact').value,
+          topic: document.getElementById('q-topic').value,
+          question: document.getElementById('q-text').value
+        };
+
+        try {
+          const res = await fetch('/api/queries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const out = await res.json();
+          if (!res.ok) throw new Error(out.error || 'Failed to submit');
+          msgEl.textContent = 'Saved in SQLite! Check /admin to reply ✓';
+          e.target.reset();
+        } catch (err) {
+          msgEl.className = 'form-msg err';
+          msgEl.textContent = err.message;
+        }
+      });
+
+      // 7. FAQ Filter & Scroll Spy
+      document.querySelectorAll('.faq-chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const filter = chip.dataset.faqFilter;
+          document.querySelectorAll('.faq-chip').forEach((c) => c.classList.remove('active'));
+          chip.classList.add('active');
+          document.querySelectorAll('.faq-item').forEach((item) => {
+            item.hidden = !(filter === 'all' || item.dataset.cat === filter);
+          });
+        });
+      });
+
+      const sections = ['map', 'mess', 'menu', 'plans', 'reviews', 'faq']
+        .map((id) => document.getElementById(id))
+        .filter(Boolean);
+      const navItems = document.querySelectorAll('.navlinks a.nav-item');
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = `#${entry.target.id}`;
+              navItems.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === id));
+            }
+          });
+        },
+        { rootMargin: '-28% 0px -60% 0px' }
+      );
+      sections.forEach((sec) => observer.observe(sec));
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — LPU Campus Guide (SQLite)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #162925;
+      --muted: #606e67;
+      --paper: #f7f6f1;
+      --paper-subtle: #efeee6;
+      --card: #fffefa;
+      --green: #225a46;
+      --green-dark: #143c2f;
+      --mint: #e5efe5;
+      --orange: #ee9a55;
+      --line: #e3e3d8;
+      --mono: "JetBrains Mono", monospace;
+      --sans: "Plus Jakarta Sans", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.5;
+    }
+    button, input, select, textarea { font: inherit; }
+    .wrap { width: min(1120px, calc(100% - 36px)); margin-inline: auto; }
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: rgba(247, 246, 241, 0.92);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .nav {
+      height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--green);
+      color: #fffefa;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+    }
+    .brand small {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--green);
+      background: var(--green);
+      color: #fffefa;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--green-dark); }
+    .btn.ghost {
+      background: var(--card);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+    .btn.ghost:hover { border-color: var(--green); background: var(--mint); }
+    .btn.danger {
+      background: #fdf0ee;
+      color: #b53424;
+      border-color: #f1c6c0;
+      min-height: 32px;
+      padding: 0 12px;
+      font-size: 11.5px;
+    }
+
+    main { padding: 36px 0 64px; }
+
+    .auth-box {
+      max-width: 440px;
+      margin: 48px auto;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--card);
+      box-shadow: 0 16px 44px rgba(22, 41, 37, 0.07);
+    }
+    .auth-box h1 { margin: 0 0 6px; font-size: 24px; letter-spacing: -0.03em; }
+    .auth-box p { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .field label { font-size: 11px; font-weight: 750; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .field input, .field select, .field textarea {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 13.5px;
+      outline: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--green); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+    }
+    .stat-card small { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    .stat-card strong { display: block; margin-top: 4px; font-family: var(--mono); font-size: 26px; color: var(--green); }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fffefa;
+    }
+
+    .panel {
+      display: none;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--card);
+    }
+    .panel.active { display: block; }
+    .panel h2 { margin: 0 0 4px; font-size: 20px; letter-spacing: -0.03em; }
+    .panel > p { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+
+    .item-list { display: grid; gap: 12px; }
+    .item-card {
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--paper);
+    }
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .badge.pending { background: #faeee2; color: #9e5316; }
+    .badge.resolved { background: #e3f3e8; color: #1b663e; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .plan-edit-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.4fr 140px auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+    }
+    .status-toast {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--green);
+      margin-left: 10px;
+    }
+
+    @media (max-width: 780px) {
+      .stats-grid, .grid-2 { grid-template-columns: 1fr 1fr; }
+      .plan-edit-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .stats-grid, .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="/">
+        <span class="brand-mark">LPU</span>
+        <span>Admin Control Panel<small>SQLite Database Manager</small></span>
+      </a>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a class="btn ghost" href="/">← Open Live Site</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Passcode Login -->
+    <section class="auth-box" id="auth-box">
+      <h1>Unlock Admin Panel</h1>
+      <p>Manage weekly mess menus, 2026–27 fee rates, student reviews, and fresher queries in the live database.</p>
+      <form id="auth-form">
+        <div class="field">
+          <label for="admin-key">Admin Passcode</label>
+          <input id="admin-key" type="password" placeholder="Enter admin passcode…" required>
+        </div>
+        <button class="btn" type="submit" style="width:100%;">Unlock SQLite Dashboard</button>
+        <div id="auth-err" style="color:#b53424;font-size:12px;font-weight:700;margin-top:10px;"></div>
+      </form>
+    </section>
+
+    <!-- Dashboard -->
+    <div id="dashboard" style="display:none;">
+      <div class="stats-grid">
+        <div class="stat-card"><small>Pending Queries</small><strong id="st-pending">0</strong></div>
+        <div class="stat-card"><small>Total Queries</small><strong id="st-queries">0</strong></div>
+        <div class="stat-card"><small>Student Reviews</small><strong id="st-reviews">0</strong></div>
+        <div class="stat-card"><small>SQLite Menu Slots</small><strong id="st-menu">14</strong></div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" type="button" data-tab="queries">1. Student Queries</button>
+        <button class="tab-btn" type="button" data-tab="menu">2. Weekly Menu Editor</button>
+        <button class="tab-btn" type="button" data-tab="plans">3. Mess Fee Manager</button>
+        <button class="tab-btn" type="button" data-tab="reviews">4. Moderate Reviews</button>
+      </div>
+
+      <!-- Tab 1: Queries -->
+      <section class="panel active" id="tab-queries">
+        <h2>Student &amp; Fresher Queries</h2>
+        <p>Write an answer and mark as resolved—resolved answers automatically display in the public FAQs on the main page.</p>
+        <div class="item-list" id="queries-container"></div>
+      </section>
+
+      <!-- Tab 2: Menu Editor -->
+      <section class="panel" id="tab-menu">
+        <h2>Weekly Menu Editor</h2>
+        <p>Select any cuisine and day of the week, update dishes, and save directly to SQLite.</p>
+        <form id="menu-edit-form">
+          <div class="grid-2">
+            <div class="field">
+              <label for="ed-cuisine">Cuisine</label>
+              <select id="ed-cuisine">
+                <option value="north">North Indian</option>
+                <option value="south">South Indian</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ed-day">Day of Week</label>
+              <select id="ed-day">
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+                <option value="0">Sunday</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field"><label for="ed-b">Breakfast</label><input id="ed-b" type="text" required></div>
+          <div class="field"><label for="ed-l">Lunch</label><input id="ed-l" type="text" required></div>
+          <div class="field"><label for="ed-s">Tea &amp; Snacks</label><input id="ed-s" type="text" required></div>
+          <div class="field"><label for="ed-d">Dinner</label><input id="ed-d" type="text" required></div>
+
+          <button class="btn" type="submit">Save Menu to SQLite</button>
+          <span class="status-toast" id="menu-save-msg"></span>
+        </form>
+      </section>
+
+      <!-- Tab 3: Mess Fee Manager -->
+      <section class="panel" id="tab-plans">
+        <h2>2026–27 Mess Plans &amp; Fees</h2>
+        <p>Updating any fee here immediately updates the comparison table and budget calculator on the home page.</p>
+        <div class="item-list" id="plans-container"></div>
+      </section>
+
+      <!-- Tab 4: Reviews -->
+      <section class="panel" id="tab-reviews">
+        <h2>Moderate Student Reviews</h2>
+        <p>Inspect or remove student reviews stored in SQLite.</p>
+        <div class="item-list" id="reviews-admin-container"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      let adminKey = sessionStorage.getItem('lpu-admin-key') || '';
+      let stateData = null;
+
+      const authBox = document.getElementById('auth-box');
+      const dashboard = document.getElementById('dashboard');
+
+      function escapeHTML(s) {
+        const d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+      }
+
+      async function api(url, options = {}) {
+        const res = await fetch(url, {
+          ...options,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-key': adminKey,
+            ...(options.headers || {})
+          }
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Request failed');
+        return data;
+      }
+
+      async function loadOverview() {
+        const data = await api('/api/admin/overview');
+        stateData = data;
+        authBox.style.display = 'none';
+        dashboard.style.display = 'block';
+
+        document.getElementById('st-pending').textContent = data.counts.pendingQueries;
+        document.getElementById('st-queries').textContent = data.counts.totalQueries;
+        document.getElementById('st-reviews').textContent = data.counts.reviews;
+        document.getElementById('st-menu').textContent = data.counts.menuItems;
+
+        renderQueries();
+        populateMenuForm();
+        renderPlans();
+        renderAdminReviews();
+      }
+
+      document.getElementById('auth-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        adminKey = document.getElementById('admin-key').value.trim();
+        try {
+          await loadOverview();
+          sessionStorage.setItem('lpu-admin-key', adminKey);
+        } catch (err) {
+          document.getElementById('auth-err').textContent = err.message;
+        }
+      });
+
+      if (adminKey) {
+        loadOverview().catch(() => sessionStorage.removeItem('lpu-admin-key'));
+      }
+
+      // Tabs
+      document.querySelectorAll('.tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+          document.querySelectorAll('.panel').forEach((p) => p.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+        });
+      });
+
+      // 1. Queries
+      function renderQueries() {
+        const el = document.getElementById('queries-container');
+        if (!stateData.queries.length) {
+          el.innerHTML = '<p style="color:var(--muted);font-size:13px;">No student queries submitted yet.</p>';
+          return;
+        }
+        el.innerHTML = stateData.queries.map((q) => `
+          <div class="item-card">
+            <div class="item-head">
+              <div>
+                <strong>${escapeHTML(q.name)}</strong>
+                <span style="color:var(--muted);font-size:12px;"> · ${escapeHTML(q.contact)} · <b>${escapeHTML(q.topic)}</b></span>
+              </div>
+              <span class="badge ${q.status === 'resolved' ? 'resolved' : 'pending'}">${escapeHTML(q.status)}</span>
+            </div>
+            <p style="margin:0 0 10px;font-size:13.5px;"><strong>Q:</strong> ${escapeHTML(q.question)}</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <input type="text" id="reply-${q.id}" value="${escapeHTML(q.admin_reply || '')}" placeholder="Write public/helpful reply…" style="flex:1;min-width:220px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);">
+              <button class="btn" type="button" data-resolve="${q.id}">Save &amp; Resolve</button>
+            </div>
+          </div>
+        `).join('');
+
+        el.querySelectorAll('[data-resolve]').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.resolve;
+            const reply = document.getElementById(`reply-${id}`).value;
+            btn.textContent = 'Saving…';
+            await api(`/api/admin/queries/${id}`, {
+              method: 'PATCH',
+              body: JSON.stringify({ status: 'resolved', admin_reply: reply })
+            });
+            await loadOverview();
+          });
+        });
+      }
+
+      // 2. Menu Editor
+      const edCuisine = document.getElementById('ed-cuisine');
+      const edDay = document.getElementById('ed-day');
+
+      function populateMenuForm() {
+        const c = edCuisine.value;
+        const d = Number(edDay.value);
+        const found = stateData.menu.find((m) => m.cuisine === c && m.day_of_week === d);
+        if (!found) return;
+        document.getElementById('ed-b').value = found.breakfast;
+        document.getElementById('ed-l').value = found.lunch;
+        document.getElementById('ed-s').value = found.snacks;
+        document.getElementById('ed-d').value = found.dinner;
+      }
+      edCuisine.addEventListener('change', populateMenuForm);
+      edDay.addEventListener('change', populateMenuForm);
+
+      document.getElementById('menu-edit-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById('menu-save-msg');
+        msg.textContent = 'Saving…';
+        await api('/api/admin/menu', {
+          method: 'PUT',
+          body: JSON.stringify({
+            cuisine: edCuisine.value,
+            day_of_week: Number(edDay.value),
+            breakfast: document.getElementById('ed-b').value,
+            lunch: document.getElementById('ed-l').value,
+            snacks: document.getElementById('ed-s').value,
+            dinner: document.getElementById('ed-d').value
+          })
+        });
+        msg.textContent = 'Saved to SQLite ✓';
+        setTimeout(() => { msg.textContent = ''; }, 2500);
+        await loadOverview();
+      });
+
+      // 3. Plans Editor
+      function renderPlans() {
+        const el = document.getElementById('plans-container');
+        el.innerHTML = stateData.plans.map((p) => `
+          <div class="plan-edit-row">
+            <strong>${escapeHTML(p.name)} <small style="display:block;color:var(--muted);font-weight:500;">${escapeHTML(p.category)}</small></strong>
+            <input type="text" id="psub-${p.id}" value="${escapeHTML(p.subtitle)}" style="padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);">
+            <input type="number" id="pfee-${p.id}" value="${p.fee}" style="padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-family:var(--mono);font-weight:700;">
+            <button class="btn" type="button" data-save-plan="${p.id}">Update</button>
+          </div>
+        `).join('');
+
+        el.querySelectorAll('[data-save-plan]').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.savePlan;
+            btn.textContent = '…';
+            await api(`/api/admin/plans/${id}`, {
+              method: 'PUT',
+              body: JSON.stringify({
+                subtitle: document.getElementById(`psub-${id}`).value,
+                fee: Number(document.getElementById(`pfee-${id}`).value)
+              })
+            });
+            btn.textContent = 'Saved ✓';
+            setTimeout(() => { btn.textContent = 'Update'; }, 1500);
+          });
+        });
+      }
+
+      // 4. Moderate Reviews
+      function renderAdminReviews() {
+        const el = document.getElementById('reviews-admin-container');
+        el.innerHTML = stateData.reviews.map((r) => `
+          <div class="item-card">
+            <div class="item-head">
+              <div>
+                <strong>${escapeHTML(r.student_name)}</strong>
+                <span style="color:var(--muted);font-size:12px;"> · ${escapeHTML(r.hostel_block)} · ${escapeHTML(r.mess_type)} · ★ ${r.rating}/5</span>
+              </div>
+              <button class="btn danger" type="button" data-del-rev="${r.id}">Delete</button>
+            </div>
+            <p style="margin:0;font-size:13px;">${escapeHTML(r.comment)}</p>
+          </div>
+        `).join('');
+
+        el.querySelectorAll('[data-del-rev]').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            await api(`/api/admin/reviews/${btn.dataset.delRev}`, { method: 'DELETE' });
+            await loadOverview();
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
