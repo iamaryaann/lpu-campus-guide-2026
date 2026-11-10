@@ -74,32 +74,69 @@
     return { total, average };
   }
 
+  const CLOUD_API_ORIGIN = 'https://lpu-campus-guide-app-production.up.railway.app';
+  let activeApiBase = null;
   let serverAvailable = null;
+
+  async function probeAndFetch(base, cleanPath, options = {}) {
+    const url = `${base}${cleanPath}`;
+    const res = await fetch(url, options);
+    const ct = res.headers.get('content-type') || '';
+    if (!ct.includes('application/json')) {
+      return { notApi: true };
+    }
+    const data = await res.json();
+    if (!res.ok) {
+      if (res.status === 404 && cleanPath.includes('bootstrap')) {
+        return { notApi: true };
+      }
+      const apiErr = new Error(data.error || 'Request failed');
+      apiErr.isApiError = true;
+      throw apiErr;
+    }
+    return { data };
+  }
 
   async function tryServer(path, options = {}) {
     if (serverAvailable === false) return null;
-    try {
-      const res = await fetch(path, options);
-      const ct = res.headers.get('content-type') || '';
-      if (!ct.includes('application/json')) {
-        serverAvailable = false;
+    const cleanPath = path.replace(/^\./, '');
+
+    if (activeApiBase !== null) {
+      try {
+        const out = await probeAndFetch(activeApiBase, cleanPath, options);
+        if (out.notApi) return null;
+        return out.data;
+      } catch (err) {
+        if (err.isApiError || serverAvailable === true) throw err;
         return null;
       }
-      const data = await res.json();
-      if (!res.ok) {
-        if (res.status === 404 && path.includes('bootstrap')) {
-          serverAvailable = false;
-          return null;
-        }
-        throw new Error(data.error || 'Request failed');
-      }
-      serverAvailable = true;
-      return data;
-    } catch (err) {
-      if (serverAvailable === true) throw err;
-      serverAvailable = false;
-      return null;
     }
+
+    const candidates = ['.'];
+    if (typeof location !== 'undefined' && location.origin !== CLOUD_API_ORIGIN) {
+      candidates.push(CLOUD_API_ORIGIN);
+    }
+
+    for (const base of candidates) {
+      try {
+        const out = await probeAndFetch(base, cleanPath, options);
+        if (!out.notApi) {
+          activeApiBase = base;
+          serverAvailable = true;
+          return out.data;
+        }
+      } catch (err) {
+        if (err.isApiError) {
+          activeApiBase = base;
+          serverAvailable = true;
+          throw err;
+        }
+        // Network failure: try next candidate before falling back to localStorage
+      }
+    }
+
+    serverAvailable = false;
+    return null;
   }
 
   window.CampusAPI = {
