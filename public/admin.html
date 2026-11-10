@@ -233,12 +233,12 @@
 <body>
   <header class="topbar">
     <div class="wrap nav">
-      <a class="brand" href="/">
+      <a class="brand" href="./">
         <span class="brand-mark">LPU</span>
-        <span>Admin Control Panel<small>SQLite Database Manager</small></span>
+        <span>Admin Control Panel<small>Campus Guide Manager</small></span>
       </a>
       <div style="display:flex;gap:8px;align-items:center;">
-        <a class="btn ghost" href="/">← Open Live Site</a>
+        <a class="btn ghost" href="./">← Open Live Site</a>
       </div>
     </div>
   </header>
@@ -334,6 +334,7 @@
     </div>
   </main>
 
+  <script src="shared-store.js"></script>
   <script>
     (() => {
       let adminKey = sessionStorage.getItem('lpu-admin-key') || '';
@@ -348,22 +349,8 @@
         return d.innerHTML;
       }
 
-      async function api(url, options = {}) {
-        const res = await fetch(url, {
-          ...options,
-          headers: {
-            'Content-Type': 'application/json',
-            'x-admin-key': adminKey,
-            ...(options.headers || {})
-          }
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Request failed');
-        return data;
-      }
-
       async function loadOverview() {
-        const data = await api('/api/admin/overview');
+        const data = await window.CampusAPI.adminOverview(adminKey);
         stateData = data;
         authBox.style.display = 'none';
         dashboard.style.display = 'block';
@@ -433,10 +420,7 @@
             const id = btn.dataset.resolve;
             const reply = document.getElementById(`reply-${id}`).value;
             btn.textContent = 'Saving…';
-            await api(`/api/admin/queries/${id}`, {
-              method: 'PATCH',
-              body: JSON.stringify({ status: 'resolved', admin_reply: reply })
-            });
+            await window.CampusAPI.adminResolveQuery(adminKey, id, { status: 'resolved', admin_reply: reply });
             await loadOverview();
           });
         });
@@ -463,18 +447,15 @@
         e.preventDefault();
         const msg = document.getElementById('menu-save-msg');
         msg.textContent = 'Saving…';
-        await api('/api/admin/menu', {
-          method: 'PUT',
-          body: JSON.stringify({
-            cuisine: edCuisine.value,
-            day_of_week: Number(edDay.value),
-            breakfast: document.getElementById('ed-b').value,
-            lunch: document.getElementById('ed-l').value,
-            snacks: document.getElementById('ed-s').value,
-            dinner: document.getElementById('ed-d').value
-          })
+        await window.CampusAPI.adminSaveMenu(adminKey, {
+          cuisine: edCuisine.value,
+          day_of_week: Number(edDay.value),
+          breakfast: document.getElementById('ed-b').value,
+          lunch: document.getElementById('ed-l').value,
+          snacks: document.getElementById('ed-s').value,
+          dinner: document.getElementById('ed-d').value
         });
-        msg.textContent = 'Saved to SQLite ✓';
+        msg.textContent = 'Saved ✓';
         setTimeout(() => { msg.textContent = ''; }, 2500);
         await loadOverview();
       });
@@ -495,12 +476,9 @@
           btn.addEventListener('click', async () => {
             const id = btn.dataset.savePlan;
             btn.textContent = '…';
-            await api(`/api/admin/plans/${id}`, {
-              method: 'PUT',
-              body: JSON.stringify({
-                subtitle: document.getElementById(`psub-${id}`).value,
-                fee: Number(document.getElementById(`pfee-${id}`).value)
-              })
+            await window.CampusAPI.adminSavePlan(adminKey, id, {
+              subtitle: document.getElementById(`psub-${id}`).value,
+              fee: Number(document.getElementById(`pfee-${id}`).value)
             });
             btn.textContent = 'Saved ✓';
             setTimeout(() => { btn.textContent = 'Update'; }, 1500);
@@ -526,7 +504,7 @@
 
         el.querySelectorAll('[data-del-rev]').forEach((btn) => {
           btn.addEventListener('click', async () => {
-            await api(`/api/admin/reviews/${btn.dataset.delRev}`, { method: 'DELETE' });
+            await window.CampusAPI.adminDeleteReview(adminKey, btn.dataset.delRev);
             await loadOverview();
           });
         });

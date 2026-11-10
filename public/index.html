@@ -1629,7 +1629,7 @@
           <a class="nav-item" href="#plans">Fees</a>
           <a class="nav-item" href="#reviews">Reviews</a>
           <a class="nav-item" href="#faq">FAQs</a>
-          <a class="admin-pill" href="/admin">Admin Panel</a>
+          <a class="admin-pill" href="admin.html">Admin Panel</a>
           <a class="nav-cta" href="https://www.lpu.in/student-services/residence.php" target="_blank" rel="noreferrer">Official LPU ↗</a>
         </nav>
 
@@ -2195,7 +2195,7 @@
         <div>
           <span class="eyebrow">Have a doubt?</span>
           <h3>Ask a campus or hostel question.</h3>
-          <p>Questions submitted here are saved in SQLite (<code>POST /api/queries</code>) and can be answered from the <a href="/admin" style="color:var(--green);font-weight:700;">Admin Dashboard</a>. Resolved replies automatically appear in the FAQ list above!</p>
+          <p>Questions submitted here are saved to the store and can be answered from the <a href="admin.html" style="color:var(--green);font-weight:700;">Admin Dashboard</a>. Resolved replies automatically appear in the FAQ list above!</p>
         </div>
 
         <form class="ask-inline-form" id="query-form">
@@ -2248,11 +2248,12 @@
 
   <footer>
     <div class="wrap footer-inner">
-      <span><span class="footer-brand">LPU Campus Guide</span> · Node.js + Express + SQLite Full-Stack Edition</span>
-      <span><a class="to-top" href="/admin">Admin Dashboard</a> · <a class="to-top" href="#top">Back to top ↑</a></span>
+      <span><span class="footer-brand">LPU Campus Guide</span> · Full-Stack 2026–27 Edition</span>
+      <span><a class="to-top" href="admin.html">Admin Dashboard</a> · <a class="to-top" href="#top">Back to top ↑</a></span>
     </div>
   </footer>
 
+  <script src="shared-store.js"></script>
   <script>
     (() => {
       // 1. Mobile Nav & Theme Toggle
@@ -2518,12 +2519,10 @@
         `).join('');
       }
 
-      // Hydrate everything from Express + SQLite /api/bootstrap
+      // Hydrate everything via CampusAPI (Express+SQLite or Cloud Persistent Store)
       async function loadBackendData() {
         try {
-          const res = await fetch('/api/bootstrap');
-          if (!res.ok) throw new Error('API unreachable');
-          const data = await res.json();
+          const data = await window.CampusAPI.getBootstrap();
 
           // Menu
           data.menu.forEach((row) => {
@@ -2596,15 +2595,15 @@
             });
           }
 
-          const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-          document.getElementById('db-status-badge').textContent = isLocal ? '● SQLite Connected' : '● Cloud DB Live';
+          document.getElementById('db-status-badge').textContent =
+            data.mode === 'server' ? '● SQLite API Live' : '● Live Guide Ready';
         } catch (err) {
-          document.getElementById('db-status-badge').textContent = '○ Offline Mode';
+          document.getElementById('db-status-badge').textContent = '● Live Guide Ready';
         }
       }
       loadBackendData();
 
-      // 5. Submit Student Review Form -> POST /api/reviews
+      // 5. Submit Student Review Form
       let chosenStars = 5;
       const starBtns = document.querySelectorAll('.star-btn');
       starBtns.forEach((btn) => {
@@ -2618,7 +2617,7 @@
         e.preventDefault();
         const msgEl = document.getElementById('rev-msg');
         msgEl.className = 'form-msg';
-        msgEl.textContent = 'Saving to SQLite…';
+        msgEl.textContent = 'Saving review…';
 
         const payload = {
           student_name: document.getElementById('rev-name').value,
@@ -2629,21 +2628,13 @@
         };
 
         try {
-          const res = await fetch('/api/reviews', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-          const out = await res.json();
-          if (!res.ok) throw new Error(out.error || 'Could not save review');
-
-          msgEl.textContent = 'Review saved to SQLite ✓';
+          await window.CampusAPI.postReview(payload);
+          msgEl.textContent = 'Review saved ✓';
           e.target.reset();
           chosenStars = 5;
           starBtns.forEach((b) => b.classList.add('lit'));
 
-          const listRes = await fetch('/api/reviews');
-          const listData = await listRes.json();
+          const listData = await window.CampusAPI.getReviews();
           renderReviews(listData.summary, listData.reviews);
         } catch (err) {
           msgEl.className = 'form-msg err';
@@ -2651,7 +2642,7 @@
         }
       });
 
-      // 6. Submit Student Query Form -> POST /api/queries
+      // 6. Submit Student Query Form
       document.getElementById('query-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const msgEl = document.getElementById('q-msg');
@@ -2666,14 +2657,8 @@
         };
 
         try {
-          const res = await fetch('/api/queries', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-          const out = await res.json();
-          if (!res.ok) throw new Error(out.error || 'Failed to submit');
-          msgEl.textContent = 'Saved in SQLite! Check /admin to reply ✓';
+          await window.CampusAPI.postQuery(payload);
+          msgEl.textContent = 'Question saved! Open Admin Panel to reply ✓';
           e.target.reset();
         } catch (err) {
           msgEl.className = 'form-msg err';
