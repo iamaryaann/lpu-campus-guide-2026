@@ -1611,6 +1611,596 @@
       .estimate-result { flex-direction: column; align-items: flex-start; }
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
+
+    /* Feature 1: Campus Block & Landmark Finder */
+    .blocks-section { margin-bottom: 98px; }
+    .blocks-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .block-search-wrap {
+      position: relative;
+      flex: 1 1 310px;
+      max-width: 440px;
+    }
+    .block-search-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .block-search-input {
+      width: 100%;
+      padding: 11px 36px 11px 40px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s ease;
+    }
+    .block-search-input:focus { border-color: var(--green); }
+    .block-search-clear {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 16px;
+      cursor: pointer;
+      display: none;
+      padding: 4px 6px;
+    }
+    .block-cats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .blocks-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .block-card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .block-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--green);
+    }
+    .block-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .block-code {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--green);
+      color: #fffefa;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    [data-theme="dark"] .block-code {
+      background: var(--lime);
+      color: #13281f;
+    }
+    .block-cat-tag {
+      font-size: 10.5px;
+      font-weight: 750;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .block-card h3 {
+      margin: 8px 0 6px;
+      font-size: 15.5px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.28;
+    }
+    .block-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12.2px;
+      line-height: 1.5;
+    }
+    .block-meta-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .block-meta-pill {
+      padding: 4px 9px;
+      border-radius: 8px;
+      background: var(--paper-subtle);
+      border: 1px solid var(--line-soft);
+      color: var(--ink-soft);
+      font-size: 11px;
+      font-weight: 650;
+    }
+    .block-map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 750;
+      text-decoration: none;
+    }
+    [data-theme="dark"] .block-map-link { color: var(--lime); }
+    .block-map-link:hover { text-decoration: underline; }
+    .blocks-empty {
+      grid-column: 1 / -1;
+      padding: 28px;
+      text-align: center;
+      border: 1px dashed var(--line);
+      border-radius: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Feature 2: Live Today's Mess Food Poll */
+    .poll-box {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--paper-subtle);
+    }
+    .poll-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 11px;
+    }
+    .poll-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    .poll-slot-tabs {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .poll-slot-btn {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--muted);
+      font-size: 10.5px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .poll-slot-btn.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fffefa;
+    }
+    [data-theme="dark"] .poll-slot-btn.active {
+      background: var(--lime);
+      border-color: var(--lime);
+      color: #13281f;
+    }
+    .poll-bar-wrap {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(200, 111, 63, 0.22);
+      overflow: hidden;
+      margin-bottom: 11px;
+    }
+    .poll-bar-fill {
+      height: 100%;
+      width: 85%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--green), #43a37c);
+      transition: width 0.35s ease;
+    }
+    .poll-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .poll-btns {
+      display: inline-flex;
+      gap: 8px;
+    }
+    .vote-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .vote-btn:hover { border-color: var(--green); transform: translateY(-1px); }
+    .vote-btn.voted-up {
+      background: var(--mint);
+      border-color: var(--green);
+      color: var(--green);
+    }
+    [data-theme="dark"] .vote-btn.voted-up { color: var(--lime); }
+    .vote-btn.voted-down {
+      background: rgba(200, 111, 63, 0.15);
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+    }
+    .poll-stat-text {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Feature 6: Fresher Hostel Packing & Reporting Checklist */
+    .checklist-section { margin-bottom: 98px; }
+    .checklist-progress-card {
+      padding: 20px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .checklist-prog-left { flex: 1 1 280px; }
+    .checklist-prog-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+    .checklist-prog-head strong { font-size: 15px; font-weight: 800; }
+    .checklist-prog-head span {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green);
+    }
+    [data-theme="dark"] .checklist-prog-head span { color: var(--lime); }
+    .checklist-track {
+      height: 10px;
+      border-radius: 999px;
+      background: var(--paper-subtle);
+      border: 1px solid var(--line-soft);
+      overflow: hidden;
+    }
+    .checklist-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--green), #43a37c);
+      transition: width 0.3s ease;
+    }
+    .checklist-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 16px;
+    }
+    .check-group-card {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    .check-group-card h3 {
+      margin: 0 0 12px;
+      font-size: 15.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .check-items {
+      display: grid;
+      gap: 9px;
+    }
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 11px;
+      border-radius: 12px;
+      background: var(--paper);
+      border: 1px solid var(--line-soft);
+      cursor: pointer;
+      transition: border-color 0.16s ease, background-color 0.16s ease;
+      user-select: none;
+    }
+    .check-row:hover { border-color: var(--green); }
+    .check-row input {
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--green);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .check-row span {
+      font-size: 12.8px;
+      color: var(--ink);
+      font-weight: 600;
+      line-height: 1.42;
+    }
+    .check-row.done {
+      background: var(--mint);
+      border-color: var(--mint-strong);
+    }
+    .check-row.done span {
+      text-decoration: line-through;
+      opacity: 0.72;
+    }
+    .banned-alert {
+      padding: 18px 22px;
+      border-radius: 18px;
+      border: 1px solid rgba(200, 111, 63, 0.38);
+      background: rgba(200, 111, 63, 0.09);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+    .banned-alert strong {
+      display: block;
+      color: var(--terracotta-dark);
+      font-size: 13.5px;
+      margin-bottom: 3px;
+    }
+    [data-theme="dark"] .banned-alert strong { color: var(--orange); }
+    .banned-alert p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 12.2px;
+    }
+    .banned-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .banned-pills span {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid rgba(200, 111, 63, 0.35);
+      color: var(--terracotta-dark);
+      font-size: 11px;
+      font-weight: 750;
+    }
+    [data-theme="dark"] .banned-pills span { color: var(--orange); }
+
+    /* Feature 4: "Ask LPU Buddy" Floating Smart Chatbot */
+    .buddy-fab {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 90;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: linear-gradient(145deg, #225a46, #143c2f);
+      color: #fffefa;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 14px 34px rgba(16, 45, 34, 0.34);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .buddy-fab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(16, 45, 34, 0.44);
+    }
+    .buddy-fab-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 0 3px rgba(210, 232, 141, 0.28);
+    }
+    .buddy-panel {
+      position: fixed;
+      right: 22px;
+      bottom: 80px;
+      z-index: 95;
+      width: min(380px, calc(100vw - 28px));
+      height: 500px;
+      max-height: calc(100vh - 110px);
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      box-shadow: 0 24px 64px rgba(12, 28, 22, 0.28);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .buddy-panel.open { display: flex; }
+    .buddy-head {
+      padding: 15px 18px;
+      background: linear-gradient(145deg, #1e523f, #133629);
+      color: #fffefa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .buddy-head b {
+      display: block;
+      font-size: 14px;
+      letter-spacing: -0.02em;
+    }
+    .buddy-head small {
+      color: #cde2d7;
+      font-size: 11px;
+    }
+    .buddy-close {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fffefa;
+      font-size: 16px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .buddy-messages {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--paper);
+    }
+    .buddy-msg {
+      max-width: 88%;
+      padding: 10px 13px;
+      border-radius: 16px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+    .buddy-msg.bot {
+      align-self: flex-start;
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      border-bottom-left-radius: 5px;
+    }
+    .buddy-msg.user {
+      align-self: flex-end;
+      background: var(--green);
+      color: #fffefa;
+      border-bottom-right-radius: 5px;
+      font-weight: 600;
+    }
+    [data-theme="dark"] .buddy-msg.user {
+      background: var(--lime);
+      color: #13281f;
+    }
+    .buddy-chips {
+      display: flex;
+      gap: 6px;
+      padding: 8px 12px;
+      overflow-x: auto;
+      border-top: 1px solid var(--line-soft);
+      background: var(--card);
+      scrollbar-width: none;
+    }
+    .buddy-chips::-webkit-scrollbar { display: none; }
+    .buddy-chip {
+      white-space: nowrap;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--paper-subtle);
+      color: var(--ink-soft);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .buddy-chip:hover { border-color: var(--green); color: var(--ink); }
+    .buddy-form {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px 12px;
+      border-top: 1px solid var(--line);
+      background: var(--card);
+    }
+    .buddy-input {
+      flex: 1;
+      padding: 9px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 12.5px;
+      outline: none;
+    }
+    .buddy-input:focus { border-color: var(--green); }
+    .buddy-send {
+      padding: 0 15px;
+      border-radius: 999px;
+      border: 0;
+      background: var(--green);
+      color: #fffefa;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    [data-theme="dark"] .buddy-send { background: var(--lime); color: #13281f; }
+
+    @media (max-width: 960px) {
+      .blocks-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 760px) {
+      .blocks-grid, .checklist-grid { grid-template-columns: 1fr; }
+      .buddy-fab { right: 14px; bottom: 14px; padding: 11px 15px; }
+      .buddy-panel { right: 14px; bottom: 70px; }
+    }
+    @media print {
+      .topbar, .hero, .quickbar, .map-section, .blocks-section, .mess-section, .plans-section, .extras, .reviews-section, .faq, .sources, footer, .buddy-fab, .buddy-panel, .checklist-actions {
+        display: none !important;
+      }
+      .checklist-section { margin: 0 !important; }
+      body { background: #fff !important; color: #000 !important; }
+    }
   </style>
 </head>
 <body>
@@ -1624,10 +2214,12 @@
       <div class="nav-right">
         <nav class="navlinks" id="navlinks" aria-label="Main navigation">
           <a class="nav-item" href="#map">Campus map</a>
+          <a class="nav-item" href="#blocks">Blocks</a>
           <a class="nav-item" href="#mess">Dining</a>
           <a class="nav-item" href="#menu">Menu</a>
           <a class="nav-item" href="#plans">Fees</a>
           <a class="nav-item" href="#reviews">Reviews</a>
+          <a class="nav-item" href="#checklist">Checklist</a>
           <a class="nav-item" href="#faq">FAQs</a>
           <a class="admin-pill" href="admin.html">Admin Panel</a>
           <a class="nav-cta" href="https://www.lpu.in/student-services/residence.php" target="_blank" rel="noreferrer">Official LPU ↗</a>
@@ -1821,6 +2413,41 @@
       </div>
     </section>
 
+    <!-- Feature 1: Campus Block & Landmark Finder (SQLite-Backed) -->
+    <section class="blocks-section wrap" id="blocks">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Campus navigation · Block 1 to 57</span>
+          <h2>Find any block,<br>mall or hostel fast.</h2>
+        </div>
+        <p>LPU spans 600+ acres. Search by block number, course, hostel, or landmark to see the nearest gate, walking minutes, and ₹10 E-rickshaw route.</p>
+      </div>
+
+      <div class="blocks-toolbar">
+        <div class="block-search-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input class="block-search-input" id="block-search-input" type="search" placeholder="Search 'Block 34', 'CSE', 'Uni Mall', 'Hospital', 'BH-1', 'UMS'…" aria-label="Search campus blocks and landmarks">
+          <button class="block-search-clear" id="block-search-clear" type="button" aria-label="Clear block search">×</button>
+        </div>
+
+        <div class="block-cats" role="tablist" aria-label="Filter campus zones">
+          <button class="faq-chip active" type="button" data-block-cat="all">All zones</button>
+          <button class="faq-chip" type="button" data-block-cat="Academic">Academic</button>
+          <button class="faq-chip" type="button" data-block-cat="Hostels">Hostels</button>
+          <button class="faq-chip" type="button" data-block-cat="Admin">Admission / Admin</button>
+          <button class="faq-chip" type="button" data-block-cat="Food & Retail">Mall &amp; Food</button>
+          <button class="faq-chip" type="button" data-block-cat="Medical">Hospital</button>
+          <button class="faq-chip" type="button" data-block-cat="Landmarks">Arenas &amp; Sports</button>
+        </div>
+      </div>
+
+      <div class="blocks-grid" id="blocks-grid" aria-live="polite">
+        <!-- Hydrated from /api/bootstrap (campus_blocks) -->
+      </div>
+    </section>
+
     <!-- Hostel Dining & Timings -->
     <section class="mess-section wrap" id="mess">
       <div class="section-head">
@@ -1937,6 +2564,38 @@
             <div class="menu-row"><b>Lunch</b><span id="m-lunch">Loading menu…</span></div>
             <div class="menu-row"><b>Snacks</b><span id="m-snacks">Loading menu…</span></div>
             <div class="menu-row"><b>Dinner</b><span id="m-dinner">Loading menu…</span></div>
+          </div>
+
+          <!-- Feature 2: Live "Aaj Ka Khana Kaisa Tha?" Poll -->
+          <div class="poll-box" aria-label="Live today's mess food poll">
+            <div class="poll-top">
+              <div class="poll-title">
+                <span class="pulse-dot" style="color:var(--green)"></span>
+                <span>Aaj ka khana kaisa tha? · Live Poll</span>
+              </div>
+              <div class="poll-slot-tabs" role="tablist" aria-label="Select meal to rate">
+                <button class="poll-slot-btn" type="button" data-poll-slot="breakfast">Breakfast</button>
+                <button class="poll-slot-btn" type="button" data-poll-slot="lunch">Lunch</button>
+                <button class="poll-slot-btn" type="button" data-poll-slot="snacks">Snacks</button>
+                <button class="poll-slot-btn active" type="button" data-poll-slot="dinner">Dinner</button>
+              </div>
+            </div>
+            <div class="poll-bar-wrap" aria-hidden="true">
+              <div class="poll-bar-fill" id="poll-bar-fill"></div>
+            </div>
+            <div class="poll-actions">
+              <div class="poll-btns">
+                <button class="vote-btn" id="vote-up-btn" type="button">
+                  <span>👍 Mast tha</span>
+                  <b id="vote-up-count">0</b>
+                </button>
+                <button class="vote-btn" id="vote-down-btn" type="button">
+                  <span>👎 Average</span>
+                  <b id="vote-down-count">0</b>
+                </button>
+              </div>
+              <span class="poll-stat-text" id="poll-stat-text">Loading live votes…</span>
+            </div>
           </div>
         </div>
       </div>
@@ -2141,6 +2800,90 @@
       </div>
     </section>
 
+    <!-- Feature 6: Fresher Hostel Packing & Reporting Checklist -->
+    <section class="checklist-section wrap" id="checklist">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Fresher toolkit · 2026–27</span>
+          <h2>Hostel packing &amp;<br>reporting checklist.</h2>
+        </div>
+        <p>Tick items off as you pack—your progress stays saved on your phone. Share your summary on WhatsApp or save as a PDF before boarding.</p>
+      </div>
+
+      <div class="checklist-progress-card">
+        <div class="checklist-prog-left">
+          <div class="checklist-prog-head">
+            <strong>Reporting readiness</strong>
+            <span id="checklist-count-label">0 / 16 packed (0%)</span>
+          </div>
+          <div class="checklist-track" aria-hidden="true">
+            <div class="checklist-fill" id="checklist-fill"></div>
+          </div>
+        </div>
+        <div class="checklist-actions">
+          <button class="button" id="checklist-wa-btn" type="button">Share on WhatsApp ↗</button>
+          <button class="button secondary" id="checklist-copy-btn" type="button">Copy list</button>
+          <button class="button secondary" id="checklist-print-btn" type="button">Save PDF</button>
+          <button class="button secondary" id="checklist-reset-btn" type="button">Reset</button>
+        </div>
+      </div>
+
+      <div class="checklist-grid" id="checklist-grid">
+        <article class="check-group-card">
+          <h3><span>1. Reporting Documents (Block 32)</span><span class="tag">Must carry</span></h3>
+          <div class="check-items">
+            <label class="check-row"><input type="checkbox" data-check-id="doc1"><span>10th &amp; 12th Original Marksheets + 4 self-attested Xerox sets</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="doc2"><span>LPU Provisional Admission Letter &amp; Fee Payment Receipts</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="doc3"><span>Original Aadhaar Card + 6 passport-size photographs</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="doc4"><span>Anti-Ragging Affidavit, Character &amp; Medical Fitness Certificates</span></label>
+          </div>
+        </article>
+
+        <article class="check-group-card">
+          <h3><span>2. Hostel Room Essentials</span><span class="tag">BH / GH</span></h3>
+          <div class="check-items">
+            <label class="check-row"><input type="checkbox" data-check-id="rm1"><span>2 single bedsheets, pillow cover &amp; light quilt/blanket</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="rm2"><span>2 sturdy padlocks with spare keys (for almirah + room door)</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="rm3"><span>Surge-protected extension board &amp; multi-plug adapter</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="rm4"><span>Bucket, mug, cloth hangers &amp; laundry bag (available at Uni Mall too)</span></label>
+          </div>
+        </article>
+
+        <article class="check-group-card">
+          <h3><span>3. Day-1 UMS &amp; Hostel Setup</span><span class="tag">On arrival</span></h3>
+          <div class="check-items">
+            <label class="check-row"><input type="checkbox" data-check-id="ums1"><span>Install LPU Touch app &amp; verify UMS timetable + section</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="ums2"><span>Complete Hostel Warden check-in &amp; biometric punch registration</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="ums3"><span>Activate digital Mess Card &amp; confirm assigned dining hall</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="ums4"><span>Save Warden desk &amp; Uni Hospital (Block 6) 24×7 emergency numbers</span></label>
+          </div>
+        </article>
+
+        <article class="check-group-card">
+          <h3><span>4. Personal Care &amp; Academics</span><span class="tag">Daily use</span></h3>
+          <div class="check-items">
+            <label class="check-row"><input type="checkbox" data-check-id="pr1"><span>Basic first-aid kit, personal medicines &amp; ORS sachets</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="pr2"><span>Insulated water bottle &amp; umbrella (campus walks are 8–15 mins)</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="pr3"><span>Laptop, charger, earphones, notebooks &amp; lab coat (if engineering/pharma)</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="pr4"><span>1–2 sets of formal wear (required for MSB, Law, Placement &amp; presentations)</span></label>
+          </div>
+        </article>
+      </div>
+
+      <div class="banned-alert" role="note">
+        <div>
+          <strong>⚠️ Strictly Banned in LPU Hostels — Do NOT Pack These!</strong>
+          <p>High-wattage heating appliances are confiscated at hostel gates. Hot/cold RO dispensers &amp; laundry/ironing shops operate inside every hostel.</p>
+        </div>
+        <div class="banned-pills">
+          <span>✕ Electric Kettle</span>
+          <span>✕ Clothes Iron / Press</span>
+          <span>✕ Immersion Rod</span>
+          <span>✕ Induction / Heater</span>
+        </div>
+      </div>
+    </section>
+
     <!-- FAQs + Ask a Doubt Backend Form -->
     <section class="faq wrap" id="faq">
       <div class="section-head">
@@ -2252,6 +2995,41 @@
       <span><a class="to-top" href="admin.html">Admin Dashboard</a> · <a class="to-top" href="#top">Back to top ↑</a></span>
     </div>
   </footer>
+
+  <!-- Feature 4: "Ask LPU Buddy" Floating Smart Chatbot -->
+  <button class="buddy-fab" id="buddy-fab" type="button" aria-expanded="false" aria-controls="buddy-panel">
+    <span class="buddy-fab-dot" aria-hidden="true"></span>
+    <span>Ask LPU Buddy</span>
+  </button>
+
+  <section class="buddy-panel" id="buddy-panel" role="dialog" aria-label="Ask LPU Buddy Campus Assistant">
+    <div class="buddy-head">
+      <div>
+        <b>LPU Buddy · Smart Guide</b>
+        <small>Live SQLite · Hinglish &amp; English</small>
+      </div>
+      <button class="buddy-close" id="buddy-close" type="button" aria-label="Close chat">×</button>
+    </div>
+
+    <div class="buddy-messages" id="buddy-messages" aria-live="polite">
+      <div class="buddy-msg bot">
+        Namaste! 👋 Main <strong>LPU Buddy</strong> hoon. Aap mujhse mess menu, Block directions, 2026–27 fees, ya hostel rules Hinglish/English me pooch sakte ho!
+      </div>
+    </div>
+
+    <div class="buddy-chips" aria-label="Quick questions">
+      <button class="buddy-chip" type="button" data-ask="Aaj dinner me kya hai?">Aaj dinner me kya hai?</button>
+      <button class="buddy-chip" type="button" data-ask="Block 34 kahan hai?">Block 34 kahan hai?</button>
+      <button class="buddy-chip" type="button" data-ask="4-seater AC + 3 meal fee?">4-Seater AC + 3 Meal fee?</button>
+      <button class="buddy-chip" type="button" data-ask="Hostel me kettle allowed hai kya?">Banned items?</button>
+      <button class="buddy-chip" type="button" data-ask="Phagwara station se kaise aaye?">Phagwara Jn route</button>
+    </div>
+
+    <form class="buddy-form" id="buddy-form">
+      <input class="buddy-input" id="buddy-input" type="text" placeholder="Ask anything e.g. Block 32, fees, menu…" maxlength="260" autocomplete="off" required>
+      <button class="buddy-send" type="submit">Ask</button>
+    </form>
+  </section>
 
   <script src="shared-store.js"></script>
   <script>
@@ -2424,6 +3202,7 @@
           document.querySelectorAll('.cuisine-btn').forEach((b) => b.classList.remove('active'));
           btn.classList.add('active');
           renderMenu();
+          renderPoll();
         });
       });
 
@@ -2435,6 +3214,123 @@
         document.getElementById('m-snacks').textContent = entry.snacks;
         document.getElementById('m-dinner').textContent = entry.dinner;
       }
+
+      // Feature 1: Campus Blocks State & Filter
+      let allBlocks = [];
+      let activeBlockCat = 'all';
+      const blockSearchInput = document.getElementById('block-search-input');
+      const blockSearchClear = document.getElementById('block-search-clear');
+      const blocksGrid = document.getElementById('blocks-grid');
+
+      function renderBlocks() {
+        const q = blockSearchInput.value.trim().toLowerCase();
+        blockSearchClear.style.display = q ? 'block' : 'none';
+        const filtered = allBlocks.filter((b) => {
+          const catOk = activeBlockCat === 'all' || b.category.toLowerCase() === activeBlockCat.toLowerCase();
+          if (!catOk) return false;
+          if (!q) return true;
+          return `${b.code} ${b.title} ${b.highlights} ${b.nearest_gate} ${b.category}`.toLowerCase().includes(q);
+        });
+
+        if (!filtered.length) {
+          blocksGrid.innerHTML = `<div class="blocks-empty">No campus block matched "<strong>${escapeHTML(blockSearchInput.value)}</strong>". Try "Block 34", "CSE", "Hospital", "Uni Mall", or "BH-1".</div>`;
+          return;
+        }
+
+        blocksGrid.innerHTML = filtered.map((b) => {
+          const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.map_query || (b.code + ' LPU Phagwara'))}`;
+          return `
+            <article class="block-card">
+              <div>
+                <div class="block-card-top">
+                  <span class="block-code">${escapeHTML(b.code)}</span>
+                  <span class="block-cat-tag">${escapeHTML(b.category)}</span>
+                </div>
+                <h3>${escapeHTML(b.title)}</h3>
+                <p>${escapeHTML(b.highlights)}</p>
+                <div class="block-meta-list">
+                  <span class="block-meta-pill">🚪 ${escapeHTML(b.nearest_gate)}</span>
+                  <span class="block-meta-pill">🚶 ${escapeHTML(b.walk_mins)}</span>
+                  <span class="block-meta-pill">🛺 ${escapeHTML(b.erickshaw_route)}</span>
+                </div>
+              </div>
+              <a class="block-map-link" href="${mapHref}" target="_blank" rel="noreferrer">Open in Google Maps ↗</a>
+            </article>
+          `;
+        }).join('');
+      }
+
+      blockSearchInput.addEventListener('input', renderBlocks);
+      blockSearchClear.addEventListener('click', () => {
+        blockSearchInput.value = '';
+        renderBlocks();
+        blockSearchInput.focus();
+      });
+      document.querySelectorAll('[data-block-cat]').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          activeBlockCat = chip.dataset.blockCat;
+          document.querySelectorAll('[data-block-cat]').forEach((c) => c.classList.remove('active'));
+          chip.classList.add('active');
+          renderBlocks();
+        });
+      });
+
+      // Feature 2: Live Daily Meal Poll ("Aaj Ka Khana Kaisa Tha?")
+      let todayPolls = [];
+      let todayPollDate = new Date().toISOString().slice(0, 10);
+      const istMinsNow = getISTTimeParts().minutes;
+      let activePollSlot = istMinsNow < 600 ? 'breakfast' : istMinsNow < 960 ? 'lunch' : istMinsNow < 1110 ? 'snacks' : 'dinner';
+
+      document.querySelectorAll('.poll-slot-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.pollSlot === activePollSlot);
+        btn.addEventListener('click', () => {
+          activePollSlot = btn.dataset.pollSlot;
+          document.querySelectorAll('.poll-slot-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderPoll();
+        });
+      });
+
+      function pollVoteStorageKey() {
+        return `lpu_poll_vote_${todayPollDate}_${activeCuisine}_${activePollSlot}`;
+      }
+
+      function renderPoll() {
+        const row = todayPolls.find((p) => p.cuisine === activeCuisine && p.meal_slot === activePollSlot) || { up_votes: 0, down_votes: 0 };
+        const up = Number(row.up_votes) || 0;
+        const down = Number(row.down_votes) || 0;
+        const total = up + down;
+        const pct = total > 0 ? Math.round((up / total) * 100) : 85;
+
+        document.getElementById('vote-up-count').textContent = String(up);
+        document.getElementById('vote-down-count').textContent = String(down);
+        document.getElementById('poll-bar-fill').style.width = `${pct}%`;
+        const cuisineName = activeCuisine === 'south' ? 'South' : 'North';
+        document.getElementById('poll-stat-text').textContent = `${pct}% Hit · ${total} votes (${cuisineName} ${activePollSlot})`;
+
+        const myVote = localStorage.getItem(pollVoteStorageKey());
+        document.getElementById('vote-up-btn').classList.toggle('voted-up', myVote === 'up');
+        document.getElementById('vote-down-btn').classList.toggle('voted-down', myVote === 'down');
+      }
+
+      async function handlePollVote(voteType) {
+        const key = pollVoteStorageKey();
+        const prev = localStorage.getItem(key) || '';
+        if (prev === voteType) return;
+        try {
+          const res = await window.CampusAPI.votePoll({
+            cuisine: activeCuisine,
+            meal_slot: activePollSlot,
+            vote: voteType,
+            previous_vote: prev
+          });
+          localStorage.setItem(key, voteType);
+          if (res && res.polls) todayPolls = res.polls;
+          renderPoll();
+        } catch {}
+      }
+      document.getElementById('vote-up-btn').addEventListener('click', () => handlePollVote('up'));
+      document.getElementById('vote-down-btn').addEventListener('click', () => handlePollVote('down'));
 
       // Estimator Logic
       const messSelect = document.getElementById('calc-mess');
@@ -2530,6 +3426,17 @@
             menuDB[row.cuisine][row.day_of_week] = row;
           });
           renderMenu();
+
+          // Campus Blocks & Today's Live Poll
+          if (data.blocks && data.blocks.length) {
+            allBlocks = data.blocks;
+            renderBlocks();
+          }
+          if (data.todayDate) todayPollDate = data.todayDate;
+          if (data.todayPolls && data.todayPolls.length) {
+            todayPolls = data.todayPolls;
+          }
+          renderPoll();
 
           // Plans
           const vegPlans = data.plans.filter((p) => p.category === 'veg');
@@ -2666,11 +3573,153 @@
         }
       });
 
-      // 7. FAQ Filter & Scroll Spy
-      document.querySelectorAll('.faq-chip').forEach((chip) => {
+      // 7. Feature 6: Fresher Hostel Packing & Reporting Checklist
+      const CHECK_STORAGE_KEY = 'lpu_fresher_checklist_v1';
+      const checkInputs = Array.from(document.querySelectorAll('[data-check-id]'));
+
+      function loadChecklistState() {
+        try {
+          return JSON.parse(localStorage.getItem(CHECK_STORAGE_KEY) || '{}');
+        } catch {
+          return {};
+        }
+      }
+
+      function saveChecklistState(state) {
+        try {
+          localStorage.setItem(CHECK_STORAGE_KEY, JSON.stringify(state));
+        } catch {}
+      }
+
+      function syncChecklistUI() {
+        const state = loadChecklistState();
+        let doneCount = 0;
+        checkInputs.forEach((inp) => {
+          const checked = Boolean(state[inp.dataset.checkId]);
+          inp.checked = checked;
+          inp.closest('.check-row')?.classList.toggle('done', checked);
+          if (checked) doneCount += 1;
+        });
+        const total = checkInputs.length;
+        const pct = total ? Math.round((doneCount / total) * 100) : 0;
+        document.getElementById('checklist-count-label').textContent = `${doneCount} / ${total} packed (${pct}%)`;
+        document.getElementById('checklist-fill').style.width = `${pct}%`;
+      }
+
+      checkInputs.forEach((inp) => {
+        inp.addEventListener('change', () => {
+          const state = loadChecklistState();
+          state[inp.dataset.checkId] = inp.checked;
+          saveChecklistState(state);
+          syncChecklistUI();
+        });
+      });
+      syncChecklistUI();
+
+      function buildChecklistText() {
+        const done = [];
+        const pending = [];
+        checkInputs.forEach((inp) => {
+          const txt = inp.parentElement.querySelector('span')?.textContent?.trim() || '';
+          if (inp.checked) done.push(`✅ ${txt}`);
+          else pending.push(`⬜ ${txt}`);
+        });
+        return `🎒 *LPU 2026–27 Fresher Packing & Reporting Checklist* (${done.length}/${checkInputs.length} ready)\n\n` +
+          (pending.length ? `*Remaining:*\n${pending.join('\n')}\n\n` : '') +
+          (done.length ? `*Packed:*\n${done.join('\n')}\n\n` : '') +
+          `Guide: ${location.href.split('#')[0]}`;
+      }
+
+      document.getElementById('checklist-wa-btn').addEventListener('click', () => {
+        const text = buildChecklistText();
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+      });
+
+      document.getElementById('checklist-copy-btn').addEventListener('click', async (e) => {
+        const btn = e.currentTarget;
+        try {
+          await navigator.clipboard.writeText(buildChecklistText());
+          btn.textContent = 'Copied ✓';
+          setTimeout(() => { btn.textContent = 'Copy list'; }, 2000);
+        } catch {}
+      });
+
+      document.getElementById('checklist-print-btn').addEventListener('click', () => {
+        window.print();
+      });
+
+      document.getElementById('checklist-reset-btn').addEventListener('click', () => {
+        saveChecklistState({});
+        syncChecklistUI();
+      });
+
+      // 8. Feature 4: "Ask LPU Buddy" Floating Smart Chatbot
+      const buddyFab = document.getElementById('buddy-fab');
+      const buddyPanel = document.getElementById('buddy-panel');
+      const buddyClose = document.getElementById('buddy-close');
+      const buddyForm = document.getElementById('buddy-form');
+      const buddyInput = document.getElementById('buddy-input');
+      const buddyMessages = document.getElementById('buddy-messages');
+
+      function formatBotMarkdown(raw) {
+        const safe = escapeHTML(raw);
+        return safe
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.+?)\*/g, '<em>$1</em>')
+          .replace(/\n/g, '<br>');
+      }
+
+      function appendBuddyMsg(role, content) {
+        const bubble = document.createElement('div');
+        bubble.className = `buddy-msg ${role}`;
+        if (role === 'bot') bubble.innerHTML = formatBotMarkdown(content);
+        else bubble.textContent = content;
+        buddyMessages.appendChild(bubble);
+        buddyMessages.scrollTop = buddyMessages.scrollHeight;
+        return bubble;
+      }
+
+      function toggleBuddy(forceState) {
+        const open = typeof forceState === 'boolean' ? forceState : !buddyPanel.classList.contains('open');
+        buddyPanel.classList.toggle('open', open);
+        buddyFab.setAttribute('aria-expanded', String(open));
+        if (open) setTimeout(() => buddyInput.focus(), 60);
+      }
+
+      buddyFab.addEventListener('click', () => toggleBuddy());
+      buddyClose.addEventListener('click', () => toggleBuddy(false));
+
+      async function sendBuddyQuestion(question) {
+        const trimmed = question.trim();
+        if (!trimmed) return;
+        appendBuddyMsg('user', trimmed);
+        buddyInput.value = '';
+        const thinking = appendBuddyMsg('bot', 'Checking live LPU database…');
+        try {
+          const res = await window.CampusAPI.askBuddy(trimmed);
+          thinking.innerHTML = formatBotMarkdown(res.reply || 'Check out the sections above for details!');
+        } catch {
+          thinking.textContent = 'Could not reach server right now—try checking the Menu or Block Finder above!';
+        }
+        buddyMessages.scrollTop = buddyMessages.scrollHeight;
+      }
+
+      buddyForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        sendBuddyQuestion(buddyInput.value);
+      });
+
+      document.querySelectorAll('.buddy-chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          sendBuddyQuestion(chip.dataset.ask);
+        });
+      });
+
+      // 9. FAQ Filter & Scroll Spy
+      document.querySelectorAll('[data-faq-filter]').forEach((chip) => {
         chip.addEventListener('click', () => {
           const filter = chip.dataset.faqFilter;
-          document.querySelectorAll('.faq-chip').forEach((c) => c.classList.remove('active'));
+          document.querySelectorAll('[data-faq-filter]').forEach((c) => c.classList.remove('active'));
           chip.classList.add('active');
           document.querySelectorAll('.faq-item').forEach((item) => {
             item.hidden = !(filter === 'all' || item.dataset.cat === filter);
@@ -2678,7 +3727,7 @@
         });
       });
 
-      const sections = ['map', 'mess', 'menu', 'plans', 'reviews', 'faq']
+      const sections = ['map', 'blocks', 'mess', 'menu', 'plans', 'reviews', 'checklist', 'faq']
         .map((id) => document.getElementById(id))
         .filter(Boolean);
       const navItems = document.querySelectorAll('.navlinks a.nav-item');

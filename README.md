@@ -38,6 +38,10 @@ npm start
 | `GET` | `/api/reviews` | Fetch student mess reviews & average star rating |
 | `POST` | `/api/reviews` | Submit a new student mess review (`1–5` stars) into SQLite |
 | `POST` | `/api/queries` | Save a student/fresher campus question into SQLite |
+| `GET` | `/api/blocks` | Search & filter LPU campus blocks, hostels & landmarks (`?q=34&category=Academic`) |
+| `GET` | `/api/polls` | Fetch live IST daily meal poll counts (`north` & `south` kitchens) |
+| `POST` | `/api/polls/vote` | Cast or switch a `👍 Hit` / `👎 Average` vote on today's meal |
+| `POST` | `/api/chat` | Ask **LPU Buddy** smart assistant (Hinglish & English QA from live SQLite) |
 | `GET` | `/api/admin/overview` | Protected overview for Admin Dashboard (`x-admin-key` header) |
 | `PUT` | `/api/admin/menu` | Edit any day/cuisine menu in SQLite |
 | `PUT` | `/api/admin/plans/:id` | Update any 2026–27 mess plan fee or subtitle |

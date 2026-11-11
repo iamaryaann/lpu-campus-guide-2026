@@ -51,6 +51,34 @@
     ],
     queries: [
       { id: 1, name: 'Aman Gupta (B.Tech CSE Fresher)', contact: 'aman.fresher@example.com', topic: 'Mess Plan', question: 'Can I book Standard 3 meals right now during Early Decision and upgrade to 4 meals after reaching campus?', status: 'resolved', admin_reply: 'Yes! UMS allows upgrading from 2/3 meals to 4 meals or A la carte by paying the pro-rata difference.' }
+    ],
+    blocks: [
+      { code: 'Block 32', title: 'Admission & UMS Student Relationship Hub', category: 'Admin', nearest_gate: 'Main Gate 1A', walk_mins: '6 min walk', erickshaw_route: 'Gate 1A → Block 32 Plaza (₹10)', highlights: 'Fresher reporting, document verification, fee counter, ID card & biometric desk', map_query: 'Block 32 Lovely Professional University Phagwara' },
+      { code: 'Block 34', title: 'School of Computer Science & Engineering (CSE)', category: 'Academic', nearest_gate: 'Main Gate 1B', walk_mins: '11 min walk', erickshaw_route: 'Gate 1B → Block 34 Stand (₹10)', highlights: 'CSE/IT labs, coding studios, placement cells, basement Nescafe & print shop', map_query: 'Block 34 Lovely Professional University Phagwara' },
+      { code: 'Block 33 & 36', title: 'ECE, Robotics & Mechanical Engineering', category: 'Academic', nearest_gate: 'Main Gate 1B', walk_mins: '12 min walk', erickshaw_route: 'Gate 1B → Engineering Spine (₹10)', highlights: 'Electronics labs, CAD studios, workshops & student innovation garages', map_query: 'Block 33 Lovely Professional University Phagwara' },
+      { code: 'Block 14', title: 'Mittal School of Business (MSB)', category: 'Academic', nearest_gate: 'Main Gate 1A', walk_mins: '7 min walk', erickshaw_route: 'Gate 1A → MSB Chowk (₹10)', highlights: 'MBA/BBA/B.Com lecture theatres, finance terminal lab & corporate auditoriums', map_query: 'Mittal School of Business LPU Phagwara' },
+      { code: 'Block 15 · Uni Mall', title: 'Uni Mall & Central Food Plaza', category: 'Food & Retail', nearest_gate: 'Main Gate 1A', walk_mins: '8 min walk', erickshaw_route: 'Gate 1A → Uni Mall Drop (₹10)', highlights: 'Multi-storey student mall: food courts, banks/ATMs, stationery, salon & bowling', map_query: 'Uni Mall Lovely Professional University' },
+      { code: 'Block 37', title: 'Central Library & Knowledge Centre', category: 'Academic', nearest_gate: 'Main Gate 1B', walk_mins: '10 min walk', erickshaw_route: 'Uni Mall → Library Square (₹10)', highlights: '9-storey central library, silent reading halls, e-journals & exam study zones', map_query: 'Central Library Lovely Professional University' },
+      { code: 'Block 6 · Hospital', title: 'Uni Hospital (24×7 Medical & Pharmacy)', category: 'Medical', nearest_gate: 'Main Gate 1A', walk_mins: '4 min walk', erickshaw_route: 'Right inside Gate 1A · 24×7 Ambulance', highlights: '24×7 emergency & OPD doctors, in-house chemist shop, physiotherapy & sick bay', map_query: 'Uni Hospital Lovely Professional University' },
+      { code: 'Unipolis & SDM', title: 'Baldev Raj Mittal Unipolis & SDM Auditorium', category: 'Landmarks', nearest_gate: 'Main Gate 1A', walk_mins: '5 min walk', erickshaw_route: 'Gate 1A Main Avenue', highlights: 'Freshers Induction, convocations, YouthVibe fests & major celebrity events', map_query: 'Unipolis Lovely Professional University' },
+      { code: 'RoboPark', title: 'RoboPark & Innovation Lawn', category: 'Landmarks', nearest_gate: 'Main Gate 1B', walk_mins: '9 min walk', erickshaw_route: 'Uni Mall → Block 32 Crossing (₹10)', highlights: 'Giant scrap-metal robot sculptures, open-air hangout lawn & tech expos', map_query: 'Lovely Professional University Phagwara' },
+      { code: 'Indoor Stadium', title: 'Shanti Devi Mittal Sports Complex & Pool', category: 'Landmarks', nearest_gate: 'Gate 2', walk_mins: '13 min walk', erickshaw_route: 'Gate 1B → Sports Complex Shuttle (₹10)', highlights: 'Olympic-size pool, badminton courts, gym, shooting range & basketball arena', map_query: 'Indoor Sports Complex Lovely Professional University' },
+      { code: 'BH-1 to BH-4', title: 'Boys Hostels (Central Residential Zone)', category: 'Hostels', nearest_gate: 'Main Gate 1B', walk_mins: '13 min walk', erickshaw_route: 'Gate 1B → Boys Hostel Spine (₹10)', highlights: '4/3/2-seater AC & cooler rooms, North/South mess halls, laundry, tuck shop & gym', map_query: 'Boys Hostel BH1 Lovely Professional University' },
+      { code: 'BH-5 to BH-8 & Apts', title: 'Boys Hostels (North Spine) & Studio Apartments', category: 'Hostels', nearest_gate: 'Gate 2', walk_mins: '17 min walk', erickshaw_route: 'Gate 1B / Gate 2 → BH-6 Shuttle (₹10)', highlights: 'High-rise hostel blocks, A la carte dining counters, night canteens & outdoor courts', map_query: 'Boys Hostel BH5 Lovely Professional University' },
+      { code: 'GH-1 to GH-6', title: 'Girls Hostels (Gated Central Zone)', category: 'Hostels', nearest_gate: 'Main Gate 1A', walk_mins: '8 min walk', erickshaw_route: 'Gate 1A → Girls Hostel Gate (₹10)', highlights: '24×7 biometric security near Uni Mall, in-house mess, tuck shops, parlor & study room', map_query: 'Girls Hostel GH1 Lovely Professional University' },
+      { code: 'Block 29 & 30', title: 'Chancellor’s Office & Examination Wing', category: 'Admin', nearest_gate: 'Main Gate 1A', walk_mins: '6 min walk', erickshaw_route: 'Gate 1A → Admin Plaza', highlights: 'Examination controller, transcripts, international office & central administration', map_query: 'Block 30 Lovely Professional University' },
+      { code: 'Block 25–28', title: 'Law, Architecture, Design & Hotel Mgmt', category: 'Academic', nearest_gate: 'Main Gate 1A', walk_mins: '9 min walk', erickshaw_route: 'Uni Mall → Design Spine (₹10)', highlights: 'Moot court, fashion & interior studios, culinary kitchens & training restaurant', map_query: 'School of Design Lovely Professional University' },
+      { code: 'Block 55–57', title: 'Agriculture, Pharmacy & Bioengineering', category: 'Academic', nearest_gate: 'Gate 2', walk_mins: '15 min walk', erickshaw_route: 'Main Gate → Block 55 E-Rickshaw (₹10)', highlights: 'Pharmaceutical labs, polyhouses, agronomy research plots & food-tech labs', map_query: 'Block 55 Lovely Professional University' }
+    ],
+    todayPolls: [
+      { cuisine: 'north', meal_slot: 'breakfast', up_votes: 22, down_votes: 3 },
+      { cuisine: 'north', meal_slot: 'lunch', up_votes: 29, down_votes: 5 },
+      { cuisine: 'north', meal_slot: 'snacks', up_votes: 19, down_votes: 2 },
+      { cuisine: 'north', meal_slot: 'dinner', up_votes: 34, down_votes: 4 },
+      { cuisine: 'south', meal_slot: 'breakfast', up_votes: 18, down_votes: 2 },
+      { cuisine: 'south', meal_slot: 'lunch', up_votes: 21, down_votes: 3 },
+      { cuisine: 'south', meal_slot: 'snacks', up_votes: 15, down_votes: 2 },
+      { cuisine: 'south', meal_slot: 'dinner', up_votes: 24, down_votes: 3 }
     ]
   };
 
@@ -151,10 +179,46 @@
         menu: st.menu,
         plans: st.plans,
         rooms: st.rooms,
+        blocks: st.blocks || SEED_STATE.blocks,
+        todayPolls: st.todayPolls || SEED_STATE.todayPolls,
         reviewSummary: summarize(st.reviews),
         reviews: st.reviews.slice(0, 12),
         resolvedQueries: st.queries.filter((q) => q.status === 'resolved' && q.admin_reply),
         mode: 'cloud-static'
+      };
+    },
+
+    async votePoll(payload) {
+      const srv = await tryServer('./api/polls/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (srv) return srv;
+
+      const st = readLocalStore();
+      if (!st.todayPolls) st.todayPolls = JSON.parse(JSON.stringify(SEED_STATE.todayPolls));
+      const row = st.todayPolls.find((p) => p.cuisine === payload.cuisine && p.meal_slot === payload.meal_slot);
+      if (row && payload.previous_vote !== payload.vote) {
+        if (payload.previous_vote === 'up') row.up_votes = Math.max(0, row.up_votes - 1);
+        if (payload.previous_vote === 'down') row.down_votes = Math.max(0, row.down_votes - 1);
+        if (payload.vote === 'up') row.up_votes += 1;
+        if (payload.vote === 'down') row.down_votes += 1;
+        writeLocalStore(st);
+      }
+      return { message: 'Vote saved!', polls: st.todayPolls };
+    },
+
+    async askBuddy(message) {
+      const srv = await tryServer('./api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      if (srv) return srv;
+
+      return {
+        reply: '👋 Main LPU Buddy hoon! Offline mode me aap upar Block Finder, Daily Menu, ya Fee Estimator check kar sakte hain.'
       };
     },
 
