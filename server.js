@@ -476,7 +476,22 @@ app.get('/admin', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`LPU Campus Guide Full-Stack Server running on port ${PORT}`);
   console.log(`Admin Dashboard available at /admin`);
 });
+
+function gracefulShutdown(signal) {
+  console.log(`Received ${signal}, checkpointing SQLite and shutting down cleanly...`);
+  server.close(() => {
+    try { db.close(); } catch {}
+    process.exit(0);
+  });
+  setTimeout(() => {
+    try { db.close(); } catch {}
+    process.exit(0);
+  }, 4000).unref();
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));

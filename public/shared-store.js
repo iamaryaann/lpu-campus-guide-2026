@@ -217,8 +217,61 @@
       });
       if (srv) return srv;
 
+      const st = readLocalStore();
+      const blocks = st.blocks || SEED_STATE.blocks;
+      const q = String(message || '').toLowerCase();
+      const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
+      const istNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+      const todayDay = istNow.getDay();
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+      if (/(kettle|iron|press|heater|induction|rod|banned|allowed|document|reporting|pack|checklist)/.test(q)) {
+        return {
+          reply: '⚠️ **Hostel Rules & Checklist:**\n• **Banned:** Electric kettle, clothes iron, immersion rod, induction & heater.\n• **Available inside Hostel:** Hot/cold RO water dispensers + laundry/ironing shop.\n• **Reporting Docs (Block 32):** 10th/12th marksheets, allotment letter, Aadhaar + 6 photos, medical & anti-ragging forms.'
+        };
+      }
+
+      const matchedBlock = blocks.find((b) =>
+        q.includes(b.code.toLowerCase()) ||
+        (b.code === 'Block 34' && /\b(34|cse|computer)\b/.test(q)) ||
+        (b.code === 'Block 32' && /\b(32|ums|admission)\b/.test(q)) ||
+        (b.code.includes('Uni Mall') && /mall|atm|food court/.test(q)) ||
+        (b.code.includes('Hospital') && /hospital|medical|doctor/.test(q)) ||
+        (b.code === 'Block 37' && /library/.test(q))
+      );
+      if (matchedBlock && !/(fee|kitna|price|cost)/.test(q)) {
+        return {
+          reply: `📍 **${matchedBlock.code} — ${matchedBlock.title}**\n• **Nearest Gate:** ${matchedBlock.nearest_gate} (${matchedBlock.walk_mins})\n• **E-Rickshaw:** ${matchedBlock.erickshaw_route}\n• **Inside:** ${matchedBlock.highlights}`
+        };
+      }
+
+      if (/(phagwara|jalandhar|cantt|station|train|airport|reach|kaise aaye|auto)/.test(q)) {
+        return {
+          reply: '🚆 **How to Reach LPU (NH-44):**\n• **Phagwara Jn:** ~7 km (12–15 min by direct auto/cab)\n• **Jalandhar Cantt:** ~14 km (20–25 min via NH-44 bus/auto)\n• **Jalandhar City:** ~20 km (30–35 min).'
+        };
+      }
+
+      if (/(fee|fees|kitna|price|cost|seater|cooler|mess plan|carte|non-?veg|edb)/.test(q)) {
+        const r = /3\s*-?\s*seater/.test(q) ? st.rooms.find((x) => x.room_key === '3s_ac') : st.rooms.find((x) => x.room_key === '4s_ac');
+        const p = /3\s*meal/.test(q) ? st.plans.find((x) => x.plan_key === 'std3') : st.plans.find((x) => x.plan_key === 'std4');
+        const tot = (r?.fee || 103000) + (p?.fee || 45000);
+        return {
+          reply: `💰 **2026–27 Session Estimate:**\n• **Hostel:** ${r.name} (${inr(r.fee)})\n• **Mess:** ${p.name} (${inr(p.fee)})\n• **Total:** **${inr(tot)}** (~${inr(Math.round(tot / 10))}/mo · With EDB: **${inr(tot - 10000)}**)`
+        };
+      }
+
+      if (/(menu|khana|breakfast|lunch|snack|dinner|aaj|sunday|monday|tuesday|wednesday|thursday|friday|saturday)/.test(q)) {
+        const cuisine = /south|dosa|idli/.test(q) ? 'south' : 'north';
+        const row = st.menu.find((m) => m.cuisine === cuisine && m.day_of_week === todayDay);
+        if (row) {
+          return {
+            reply: `🍴 **Today (${dayNames[todayDay]}) · ${cuisine === 'south' ? 'South' : 'North'} Indian Menu:**\n• **Breakfast:** ${row.breakfast}\n• **Lunch:** ${row.lunch}\n• **Snacks:** ${row.snacks}\n• **Dinner:** ${row.dinner}`
+          };
+        }
+      }
+
       return {
-        reply: '👋 Main LPU Buddy hoon! Offline mode me aap upar Block Finder, Daily Menu, ya Fee Estimator check kar sakte hain.'
+        reply: '👋 **Namaste! Main LPU Buddy hoon.** Aap mujhse *"Aaj dinner me kya hai?"*, *"Block 34 kahan hai?"*, *"4-seater AC + 3 meal fee?"*, ya *"Banned items?"* pooch sakte hain!'
       };
     },
 
