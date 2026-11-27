@@ -57,9 +57,11 @@ lpu-campus-guide/
 ├── data/
 │   └── campus.db          # Auto-generated SQLite database (local / Railway volume)
 ├── public/
-│   ├── index.html         # Main campus guide frontend
-│   ├── admin.html         # Protected Admin Control Panel (/admin)
-│   └── shared-store.js    # API client with Cloud + localStorage fallback
+│   ├── index.html         # Semantic HTML5 frontend structure
+│   ├── style.css          # Warm-editorial CSS3 theme, responsive layout & dark mode
+│   ├── script.js          # Main Vanilla JS (IST clock, Block Finder, Poll, Estimator, Chatbot)
+│   ├── shared-store.js    # API client with Cloud SQLite + localStorage fallback
+│   └── admin.html         # Protected Admin Control Panel (/admin)
 ├── db.js                  # SQLite schema & initial seed data
 ├── server.js              # Express 5 REST API, CORS & static file server
 ├── package.json
