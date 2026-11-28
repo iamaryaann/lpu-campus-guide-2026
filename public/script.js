@@ -147,7 +147,7 @@
     });
   });
 
-  // 4. State for SQLite-backed Menu, Plans, Rooms & Reviews
+  // 4. State for Dynamic Menu, Plans, Rooms & Reviews
   const menuDB = { north: {}, south: {} };
   let activeCuisine = 'north';
   let activeDay = getISTTimeParts().day;
@@ -382,7 +382,7 @@
     `).join('');
   }
 
-  // Hydrate everything via CampusAPI (Express+SQLite or Cloud Persistent Store)
+  // Hydrate everything via CampusAPI (Express + JSON Store or Cloud Persistent Store)
   async function loadBackendData() {
     try {
       const data = await window.CampusAPI.getBootstrap();
@@ -470,7 +470,7 @@
       }
 
       document.getElementById('db-status-badge').textContent =
-        data.mode === 'server' ? '● SQLite API Live' : '● Live Guide Ready';
+        data.mode === 'server' ? '● Live API Connected' : '● Live Guide Ready';
     } catch (err) {
       document.getElementById('db-status-badge').textContent = '● Live Guide Ready';
     }

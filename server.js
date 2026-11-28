@@ -1,6 +1,6 @@
 const path = require('node:path');
 const express = require('express');
-const { db, getISTDateKey, ensureTodayPolls } = require('./db');
+const { state, saveStore, getISTDateKey, ensureTodayPolls } = require('./db');
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -20,6 +20,13 @@ function cleanText(val, maxLen = 400) {
   return String(val ?? '').trim().replace(/\s+/g, ' ').slice(0, maxLen);
 }
 
+function summarizeReviews() {
+  const total = state.reviews.length;
+  const sum = state.reviews.reduce((acc, r) => acc + Number(r.rating || 0), 0);
+  const average = total > 0 ? Math.round((sum / total) * 10) / 10 : 0;
+  return { total, average };
+}
+
 function requireAdmin(req, res, next) {
   const provided = req.headers['x-admin-key'];
   if (!provided || provided !== ADMIN_KEY) {
@@ -32,46 +39,31 @@ function requireAdmin(req, res, next) {
 app.get('/api/health', (_req, res) => {
   res.json({
     ok: true,
-    engine: 'Node.js + Express + SQLite (node:sqlite)',
+    engine: 'Node.js + Express + JSON Store',
     timestamp: new Date().toISOString()
   });
 });
 
 // Single fast bootstrap payload for frontend hydration
 app.get('/api/bootstrap', (_req, res) => {
-  const timings = db.prepare('SELECT * FROM meal_timings ORDER BY sort_order ASC').all();
-  const menuRows = db.prepare('SELECT * FROM weekly_menu ORDER BY cuisine ASC, day_of_week ASC').all();
-  const plans = db.prepare('SELECT * FROM mess_plans ORDER BY sort_order ASC').all();
-  const rooms = db.prepare('SELECT * FROM hostel_rooms ORDER BY sort_order ASC').all();
-  const blocks = db.prepare('SELECT * FROM campus_blocks ORDER BY sort_order ASC').all();
   const todayDate = getISTDateKey();
   const todayPolls = ensureTodayPolls(todayDate);
-  const reviewStats = db.prepare(`
-    SELECT COUNT(*) AS total, ROUND(COALESCE(AVG(rating), 0), 1) AS average
-    FROM reviews
-  `).get();
-  const reviews = db.prepare('SELECT * FROM reviews ORDER BY id DESC LIMIT 12').all();
-  const resolvedQueries = db.prepare(`
-    SELECT id, name, topic, question, admin_reply, created_at
-    FROM queries
-    WHERE status = 'resolved' AND admin_reply != ''
-    ORDER BY id DESC
-    LIMIT 6
-  `).all();
+  const reviewsSorted = [...state.reviews].sort((a, b) => b.id - a.id);
+  const resolvedQueries = state.queries
+    .filter((q) => q.status === 'resolved' && q.admin_reply)
+    .sort((a, b) => b.id - a.id)
+    .slice(0, 6);
 
   res.json({
-    timings,
-    menu: menuRows,
-    plans,
-    rooms,
-    blocks,
+    timings: state.meal_timings,
+    menu: state.weekly_menu,
+    plans: state.mess_plans,
+    rooms: state.hostel_rooms,
+    blocks: state.campus_blocks,
     todayDate,
     todayPolls,
-    reviewSummary: {
-      total: reviewStats.total,
-      average: reviewStats.average
-    },
-    reviews,
+    reviewSummary: summarizeReviews(),
+    reviews: reviewsSorted.slice(0, 12),
     resolvedQueries
   });
 });
@@ -80,31 +72,24 @@ app.get('/api/bootstrap', (_req, res) => {
 app.get('/api/menu', (req, res) => {
   const { cuisine, day } = req.query;
   if (cuisine && day !== undefined) {
-    const row = db
-      .prepare('SELECT * FROM weekly_menu WHERE cuisine = ? AND day_of_week = ?')
-      .get(String(cuisine), Number(day));
+    const row = state.weekly_menu.find(
+      (m) => m.cuisine === String(cuisine) && m.day_of_week === Number(day)
+    );
     if (!row) return res.status(404).json({ error: 'Menu entry not found.' });
     return res.json(row);
   }
-  const all = db.prepare('SELECT * FROM weekly_menu ORDER BY cuisine ASC, day_of_week ASC').all();
-  res.json(all);
+  res.json(state.weekly_menu);
 });
 
 // Query mess plans & hostel rooms
 app.get('/api/plans', (_req, res) => {
-  const plans = db.prepare('SELECT * FROM mess_plans ORDER BY sort_order ASC').all();
-  const rooms = db.prepare('SELECT * FROM hostel_rooms ORDER BY sort_order ASC').all();
-  res.json({ plans, rooms });
+  res.json({ plans: state.mess_plans, rooms: state.hostel_rooms });
 });
 
 // List student mess reviews
 app.get('/api/reviews', (_req, res) => {
-  const stats = db.prepare(`
-    SELECT COUNT(*) AS total, ROUND(COALESCE(AVG(rating), 0), 1) AS average
-    FROM reviews
-  `).get();
-  const reviews = db.prepare('SELECT * FROM reviews ORDER BY id DESC LIMIT 20').all();
-  res.json({ summary: stats, reviews });
+  const reviews = [...state.reviews].sort((a, b) => b.id - a.id).slice(0, 20);
+  res.json({ summary: summarizeReviews(), reviews });
 });
 
 // Submit a new student mess review
@@ -122,21 +107,23 @@ app.post('/api/reviews', (req, res) => {
     return res.status(400).json({ error: 'Rating must be between 1 and 5 stars.' });
   }
 
-  const result = db.prepare(`
-    INSERT INTO reviews (student_name, hostel_block, mess_type, rating, comment)
-    VALUES (?, ?, ?, ?, ?)
-  `).run(studentName, hostelBlock, messType, rating, comment);
-
-  const created = db.prepare('SELECT * FROM reviews WHERE id = ?').get(result.lastInsertRowid);
-  const stats = db.prepare(`
-    SELECT COUNT(*) AS total, ROUND(COALESCE(AVG(rating), 0), 1) AS average
-    FROM reviews
-  `).get();
+  const nextId = state.reviews.reduce((mx, r) => Math.max(mx, r.id), 0) + 1;
+  const created = {
+    id: nextId,
+    student_name: studentName,
+    hostel_block: hostelBlock,
+    mess_type: messType,
+    rating,
+    comment,
+    created_at: new Date().toISOString()
+  };
+  state.reviews.push(created);
+  saveStore();
 
   res.status(201).json({
     message: 'Review posted!',
     review: created,
-    summary: stats
+    summary: summarizeReviews()
   });
 });
 
@@ -151,14 +138,22 @@ app.post('/api/queries', (req, res) => {
     return res.status(400).json({ error: 'Please enter your name, email/phone, and question.' });
   }
 
-  const result = db.prepare(`
-    INSERT INTO queries (name, contact, topic, question)
-    VALUES (?, ?, ?, ?)
-  `).run(name, contact, topic, question);
+  const nextId = state.queries.reduce((mx, q) => Math.max(mx, q.id), 0) + 1;
+  state.queries.push({
+    id: nextId,
+    name,
+    contact,
+    topic,
+    question,
+    status: 'pending',
+    admin_reply: '',
+    created_at: new Date().toISOString()
+  });
+  saveStore();
 
   res.status(201).json({
     message: 'Question saved! You can view & answer it in the Admin Dashboard (/admin).',
-    id: Number(result.lastInsertRowid)
+    id: nextId
   });
 });
 
@@ -166,7 +161,7 @@ app.post('/api/queries', (req, res) => {
 app.get('/api/blocks', (req, res) => {
   const q = cleanText(req.query.q || '', 80).toLowerCase();
   const category = cleanText(req.query.category || '', 40);
-  let rows = db.prepare('SELECT * FROM campus_blocks ORDER BY sort_order ASC').all();
+  let rows = [...state.campus_blocks];
   if (category && category.toLowerCase() !== 'all') {
     rows = rows.filter((b) => b.category.toLowerCase() === category.toLowerCase());
   }
@@ -178,7 +173,7 @@ app.get('/api/blocks', (req, res) => {
   res.json({ blocks: rows });
 });
 
-// Live Daily Meal Poll ("Aaj Ka Khana Kaisa Tha?")
+// Live Daily Meal Poll
 app.get('/api/polls', (_req, res) => {
   const todayDate = getISTDateKey();
   const polls = ensureTodayPolls(todayDate);
@@ -204,42 +199,23 @@ app.post('/api/polls/vote', (req, res) => {
   const todayDate = getISTDateKey();
   ensureTodayPolls(todayDate);
 
-  if (prevVote === vote) {
-    const polls = db.prepare('SELECT * FROM meal_polls WHERE poll_date = ?').all(todayDate);
-    return res.json({ message: 'Vote already counted.', todayDate, polls });
+  const row = state.meal_polls.find(
+    (p) => p.poll_date === todayDate && p.cuisine === cuisine && p.meal_slot === mealSlot
+  );
+
+  if (row && prevVote !== vote) {
+    if (prevVote === 'up') row.up_votes = Math.max(0, row.up_votes - 1);
+    if (prevVote === 'down') row.down_votes = Math.max(0, row.down_votes - 1);
+    if (vote === 'up') row.up_votes += 1;
+    if (vote === 'down') row.down_votes += 1;
+    saveStore();
   }
 
-  if (prevVote === 'up') {
-    db.prepare(`
-      UPDATE meal_polls
-      SET up_votes = MAX(0, up_votes - 1), down_votes = down_votes + 1
-      WHERE poll_date = ? AND cuisine = ? AND meal_slot = ?
-    `).run(todayDate, cuisine, mealSlot);
-  } else if (prevVote === 'down') {
-    db.prepare(`
-      UPDATE meal_polls
-      SET down_votes = MAX(0, down_votes - 1), up_votes = up_votes + 1
-      WHERE poll_date = ? AND cuisine = ? AND meal_slot = ?
-    `).run(todayDate, cuisine, mealSlot);
-  } else if (vote === 'up') {
-    db.prepare(`
-      UPDATE meal_polls
-      SET up_votes = up_votes + 1
-      WHERE poll_date = ? AND cuisine = ? AND meal_slot = ?
-    `).run(todayDate, cuisine, mealSlot);
-  } else {
-    db.prepare(`
-      UPDATE meal_polls
-      SET down_votes = down_votes + 1
-      WHERE poll_date = ? AND cuisine = ? AND meal_slot = ?
-    `).run(todayDate, cuisine, mealSlot);
-  }
-
-  const polls = db.prepare('SELECT * FROM meal_polls WHERE poll_date = ?').all(todayDate);
+  const polls = state.meal_polls.filter((p) => p.poll_date === todayDate);
   res.json({ message: 'Vote recorded!', todayDate, polls });
 });
 
-// "Ask LPU Buddy" Smart Campus Assistant (SQLite-backed Hinglish + English QA)
+// "Ask LPU Buddy" Smart Campus Assistant (JavaScript JSON Store backed)
 function buildBuddyAnswer(rawMessage) {
   const q = rawMessage.toLowerCase();
   const istNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
@@ -247,16 +223,13 @@ function buildBuddyAnswer(rawMessage) {
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
-  // 1. Check for Banned Items / Hostel Rules / Packing / Reporting Docs
   if (/(kettle|iron|press|heater|induction|rod|toaster|banned|not allowed|mana hai|curfew|in-time|intime|document|reporting|pack|checklist|laundry)/.test(q)) {
     if (/(document|reporting|admission doc)/.test(q)) {
-      return `📋 **Reporting Documents Checklist (Block 32):**\n• 10th & 12th Original Marksheets + 4 self-attested copies\n• Provisional Allotment Letter & Fee Receipt\n• Aadhaar Card + 6 passport-size photos\n• Anti-Ragging Affidavit & Medical Fitness Certificate\n*(Tip: Page ke **Fresher Checklist** section me tick lagake WhatsApp par save kar lo!)*`;
+      return `📋 **Reporting Documents Checklist (Block 32):**\n• 10th & 12th Original Marksheets + 4 self-attested copies\n• Provisional Allotment Letter & Fee Receipt\n• Aadhaar Card + 6 passport-size photos\n• Anti-Ragging Affidavit & Medical Fitness Certificate`;
     }
-    return `⚠️ **Hostel Rules & Banned Items:**\n• **Strictly Banned:** Electric kettle, immersion rod, clothes iron/press, induction cooktop, heater & toaster (security gate par confiscate ho jate hain).\n• **Campus Alternatives:** Har hostel floor par hot/cold RO water dispenser laga hai, aur har hostel ke andar dedicated **Laundry & Pressing shop** hai.\n• **Pack Zaroor Karein:** 2 strong padlocks (almirah + room), single bedsheets, surge-protected extension board, aur toiletries.`;
+    return `⚠️ **Hostel Rules & Banned Items:**\n• **Strictly Banned:** Electric kettle, immersion rod, clothes iron/press, induction cooktop, heater & toaster.\n• **Campus Alternatives:** Hot/cold RO water dispensers on every hostel floor + dedicated **Laundry & Pressing shop** inside each hostel.\n• **Must Pack:** 2 strong padlocks, single bedsheets, surge-protected extension board & toiletries.`;
   }
 
-  // 2. Check for Block / Landmark / Hostel / Gate Location
-  const blocks = db.prepare('SELECT * FROM campus_blocks ORDER BY sort_order ASC').all();
   const blockKeywords = [
     { re: /\b(block\s*32|\b32\b|ums|reporting|admission block)/, code: 'Block 32' },
     { re: /\b(block\s*34|\b34\b|cse|computer science|\bit\b|coding)/, code: 'Block 34' },
@@ -277,25 +250,23 @@ function buildBuddyAnswer(rawMessage) {
   ];
   for (const item of blockKeywords) {
     if (item.re.test(q) && !/(fee|kitna|price|cost|budget)/.test(q)) {
-      const b = blocks.find((row) => row.code === item.code);
+      const b = state.campus_blocks.find((row) => row.code === item.code);
       if (b) {
         return `📍 **${b.code} — ${b.title}**\n• **Nearest Entry:** ${b.nearest_gate} (${b.walk_mins})\n• **E-Rickshaw:** ${b.erickshaw_route}\n• **Inside:** ${b.highlights}`;
       }
     }
   }
 
-  // 3. Check for Transit / Station / Airport / Directions
   if (/(phagwara|jalandhar|cantt|station|train|airport|amritsar|chandigarh|reach|kaise aaye|kaise pahunch|auto|cab|nh-?44|address)/.test(q)) {
-    return `🚆 **How to Reach LPU (NH-44, Phagwara):**\n• **Phagwara Jn (PGW):** ~7 km (12–15 min) — Station ke bahar se direct auto/cab Main Gate tak milti hai.\n• **Jalandhar Cantt (JRC):** ~14 km (20–25 min) — NH-44 highway bus ya shared auto seedha LPU gate par utarti hai.\n• **Jalandhar City (JUC):** ~20 km (30–35 min).\n• **Airports:** Amritsar (ATQ ~110 km) & Chandigarh (IXC ~145 km).`;
+    return `🚆 **How to Reach LPU (NH-44, Phagwara):**\n• **Phagwara Jn (PGW):** ~7 km (12–15 min by direct auto/cab to Main Gate)\n• **Jalandhar Cantt (JRC):** ~14 km (20–25 min via NH-44 highway bus or shared auto)\n• **Jalandhar City (JUC):** ~20 km (30–35 min)\n• **Airports:** Amritsar (ATQ ~110 km) & Chandigarh (IXC ~145 km).`;
   }
 
-  // 4. Check for Fees / Hostel + Mess Calculation
   if (/(fee|fees|kitna|price|cost|kharcha|budget|seater|cooler|mess plan|a la carte|alacarte|non-?veg|chicken|edb)/.test(q)) {
-    const plans = db.prepare('SELECT * FROM mess_plans ORDER BY sort_order ASC').all();
-    const rooms = db.prepare('SELECT * FROM hostel_rooms ORDER BY sort_order ASC').all();
+    const plans = state.mess_plans;
+    const rooms = state.hostel_rooms;
 
     if (/(non-?veg|chicken|egg|mutton)/.test(q)) {
-      return `🍗 **Non-Veg Option Info:**\nLPU campus ke andar mess 100% vegetarian hai, par campus ke bilkul bahar independent vendor non-veg mess chalata hai:\n• **3 Meals:** ₹75,000/yr · **2 Meals:** ₹65,000/yr · **1 Meal:** ₹55,000/yr.`;
+      return `🍗 **Non-Veg Option Info:**\nInside campus all dining halls are 100% vegetarian, while an independent vendor adjacent to campus offers:\n• **3 Meals:** ₹75,000/yr · **2 Meals:** ₹65,000/yr · **1 Meal:** ₹55,000/yr.`;
     }
 
     let pickedRoom = null;
@@ -321,10 +292,9 @@ function buildBuddyAnswer(rawMessage) {
       return `💰 **2026–27 Estimated Session Fee (~10 Months):**\n• **Hostel:** ${r.name} — **${inr(r.fee)}** (${r.electricity_units})\n• **Mess:** ${p.name} — **${inr(p.fee)}**\n• **Combined Total:** **${inr(total)}** (~${inr(Math.round(total / 10))}/month)\n• **With EDB Benefit (−₹10k):** **${inr(withEdb)}**`;
     }
 
-    return `💰 **2026–27 Mess & Hostel Rates Overview:**\n• **Veg Mess Plans:** Standard 2-Meal (**₹37,800**), 3-Meal (**₹41,400**), 4-Meal (**₹45,000**), A la carte (**₹52,200**)\n• **Hostel Rooms:** 4-Seater Cooler (**₹93,000**), 4-Seater AC (**₹1,03,000**), 3-Seater AC (**₹1,23,000**), 2-Seater AC (**₹1,43,000**), 1-Seater AC (**₹1,63,000**).\n*(Mujhse exact combo pucho jaise: "3 seater AC + 3 meal fee?")*`;
+    return `💰 **2026–27 Mess & Hostel Rates Overview:**\n• **Veg Mess Plans:** Standard 2-Meal (**₹37,800**), 3-Meal (**₹41,400**), 4-Meal (**₹45,000**), A la carte (**₹52,200**)\n• **Hostel Rooms:** 4-Seater Cooler (**₹93,000**), 4-Seater AC (**₹1,03,000**), 3-Seater AC (**₹1,23,000**), 2-Seater AC (**₹1,43,000**), 1-Seater AC (**₹1,63,000**).`;
   }
 
-  // 5. Check for Menu / Today's Khana / Meal Timings
   if (/(menu|khana|breakfast|nashta|lunch|snacks|chai|dinner|raat|parantha|paneer|biryani|dosa|south indian|north indian|timing|kab khulta|mess open|aaj|kal|sunday|monday|tuesday|wednesday|thursday|friday|saturday)/.test(q)) {
     const cuisine = /south|dosa|idli|sambar|uttapam/.test(q) ? 'south' : 'north';
     let targetDay = todayDay;
@@ -333,76 +303,61 @@ function buildBuddyAnswer(rawMessage) {
       if (q.includes(name.toLowerCase())) targetDay = idx;
     });
 
-    const row = db
-      .prepare('SELECT * FROM weekly_menu WHERE cuisine = ? AND day_of_week = ?')
-      .get(cuisine, targetDay);
+    const row = state.weekly_menu.find((m) => m.cuisine === cuisine && m.day_of_week === targetDay);
     const cuisineLabel = cuisine === 'south' ? 'South Indian' : 'North Indian';
     const dayLabel = targetDay === todayDay ? `Today (${dayNames[targetDay]})` : dayNames[targetDay];
 
     if (row) {
-      if (/dinner|raat/.test(q)) {
-        return `🍽️ **${dayLabel} · ${cuisineLabel} Dinner (7:00 – 9:00 PM):**\n${row.dinner}`;
-      }
-      if (/lunch|dopahar/.test(q)) {
-        return `🍛 **${dayLabel} · ${cuisineLabel} Lunch (11:15 AM – 3:00 PM):**\n${row.lunch}`;
-      }
-      if (/breakfast|nashta|subah/.test(q)) {
-        return `🥞 **${dayLabel} · ${cuisineLabel} Breakfast (7:15 – 9:30 AM):**\n${row.breakfast}`;
-      }
-      if (/snack|chai|sham/.test(q)) {
-        return `☕ **${dayLabel} · ${cuisineLabel} Snacks (5:00 – 6:00 PM):**\n${row.snacks}`;
-      }
-      return `🍴 **${dayLabel} · ${cuisineLabel} Mess Menu:**\n• **Breakfast (7:15–9:30 AM):** ${row.breakfast}\n• **Lunch (11:15 AM–3:00 PM):** ${row.lunch}\n• **Snacks (5:00–6:00 PM):** ${row.snacks}\n• **Dinner (7:00–9:00 PM):** ${row.dinner}`;
+      if (/dinner|raat/.test(q)) return `🍽️ **${dayLabel} · ${cuisineLabel} Dinner (7:00 – 9:00 PM):**\n${row.dinner}`;
+      if (/lunch|dopahar/.test(q)) return `🍛 **${dayLabel} · ${cuisineLabel} Lunch (11:15 AM – 3:00 PM):**\n${row.lunch}`;
+      if (/breakfast|nashta|subah/.test(q)) return `🥞 **${dayLabel} · ${cuisineLabel} Breakfast (7:15 – 9:30 AM):**\n${row.breakfast}`;
+      if (/snack|chai|sham/.test(q)) return `☕ **${dayLabel} · ${cuisineLabel} Snacks (5:00 – 6:00 PM):**\n${row.snacks}`;
+      return `🍴 **${dayLabel} · ${cuisineLabel} Mess Menu:**\n• **Breakfast:** ${row.breakfast}\n• **Lunch:** ${row.lunch}\n• **Snacks:** ${row.snacks}\n• **Dinner:** ${row.dinner}`;
     }
   }
 
-  // 6. Check for Reviews / Mess Rating / Poll
   if (/(review|rating|worth|kaisa hai|accha hai|poll)/.test(q)) {
-    const stats = db.prepare('SELECT COUNT(*) AS total, ROUND(COALESCE(AVG(rating), 0), 1) AS average FROM reviews').get();
+    const stats = summarizeReviews();
     const todayPolls = ensureTodayPolls(getISTDateKey());
     const totUp = todayPolls.reduce((s, r) => s + r.up_votes, 0);
     const totAll = todayPolls.reduce((s, r) => s + r.up_votes + r.down_votes, 0);
     const hitPct = totAll ? Math.round((totUp / totAll) * 100) : 86;
-    return `⭐ **Live Student Mess Pulse:**\n• **Overall Rating:** **${stats.average} / 5 ★** (${stats.total} student reviews in SQLite)\n• **Today's Live Food Poll:** **${hitPct}% Hit 👍** across campus kitchens.\n• Top student picks: Morning Aloo Parantha, South Indian Filter Coffee + Dosa, aur Sunday Veg Biryani!`;
+    return `⭐ **Live Student Mess Pulse:**\n• **Overall Rating:** **${stats.average} / 5 ★** (${stats.total} student reviews)\n• **Today's Live Food Poll:** **${hitPct}% Worth it 👍** across campus kitchens.`;
   }
 
-  // Default helpful response
-  return `👋 **Namaste! Main LPU Buddy hoon** (Live SQLite connected). Aap mujhse Hinglish ya English me kuch bhi pooch sakte ho:\n• *"Aaj dinner me kya hai?"* ya *"Sunday South Indian menu"*\n• *"Block 34 kahan hai?"* ya *"Uni Hospital / Library kis gate ke paas hai?"*\n• *"4-seater AC + 3 meal ka total kharcha?"*\n• *"Hostel me kettle/iron allowed hai kya?"* ya *"Phagwara station se kaise aaye?"*`;
+  return `👋 **Hello! I am LPU Buddy** (Live API connected). Ask me in English or Hinglish:\n• *"What's for dinner today?"* or *"Sunday South Indian menu"*\n• *"Where is Block 34?"* or *"Nearest gate to Uni Hospital?"*\n• *"4-seater AC + 3 meal total fee?"*\n• *"Hostel banned items?"* or *"Route from Phagwara Jn?"*`;
 }
 
 app.post('/api/chat', (req, res) => {
   const message = cleanText(req.body.message, 300);
-  if (!message) {
-    return res.status(400).json({ error: 'Please enter a question.' });
-  }
-  const reply = buildBuddyAnswer(message);
-  res.json({ reply, timestamp: new Date().toISOString() });
+  if (!message) return res.status(400).json({ error: 'Please enter a question.' });
+  res.json({ reply: buildBuddyAnswer(message), timestamp: new Date().toISOString() });
 });
 
 // ---------------- ADMIN API ----------------
 
 app.get('/api/admin/overview', requireAdmin, (_req, res) => {
-  const menu = db.prepare('SELECT * FROM weekly_menu ORDER BY cuisine ASC, day_of_week ASC').all();
-  const plans = db.prepare('SELECT * FROM mess_plans ORDER BY sort_order ASC').all();
-  const reviews = db.prepare('SELECT * FROM reviews ORDER BY id DESC').all();
-  const queries = db.prepare('SELECT * FROM queries ORDER BY status ASC, id DESC').all();
+  const reviews = [...state.reviews].sort((a, b) => b.id - a.id);
+  const queries = [...state.queries].sort((a, b) => {
+    if (a.status !== b.status) return a.status === 'pending' ? -1 : 1;
+    return b.id - a.id;
+  });
 
   res.json({
     counts: {
-      menuItems: menu.length,
-      plans: plans.length,
+      menuItems: state.weekly_menu.length,
+      plans: state.mess_plans.length,
       reviews: reviews.length,
       pendingQueries: queries.filter((q) => q.status === 'pending').length,
       totalQueries: queries.length
     },
-    menu,
-    plans,
+    menu: state.weekly_menu,
+    plans: state.mess_plans,
     reviews,
     queries
   });
 });
 
-// Update a day's menu in SQLite
 app.put('/api/admin/menu', requireAdmin, (req, res) => {
   const cuisine = cleanText(req.body.cuisine, 20);
   const day = Number(req.body.day_of_week);
@@ -418,20 +373,17 @@ app.put('/api/admin/menu', requireAdmin, (req, res) => {
     return res.status(400).json({ error: 'All four meal descriptions are required.' });
   }
 
-  db.prepare(`
-    UPDATE weekly_menu
-    SET breakfast = ?, lunch = ?, snacks = ?, dinner = ?, updated_at = datetime('now')
-    WHERE cuisine = ? AND day_of_week = ?
-  `).run(breakfast, lunch, snacks, dinner, cuisine, day);
+  const row = state.weekly_menu.find((m) => m.cuisine === cuisine && m.day_of_week === day);
+  if (!row) return res.status(404).json({ error: 'Menu slot not found.' });
+  row.breakfast = breakfast;
+  row.lunch = lunch;
+  row.snacks = snacks;
+  row.dinner = dinner;
+  saveStore();
 
-  const updated = db
-    .prepare('SELECT * FROM weekly_menu WHERE cuisine = ? AND day_of_week = ?')
-    .get(cuisine, day);
-
-  res.json({ message: 'Menu updated in SQLite database.', entry: updated });
+  res.json({ message: 'Menu updated in JSON data store.', entry: row });
 });
 
-// Update a mess plan's fee or subtitle in SQLite
 app.put('/api/admin/plans/:id', requireAdmin, (req, res) => {
   const id = Number(req.params.id);
   const fee = Number(req.body.fee);
@@ -441,57 +393,52 @@ app.put('/api/admin/plans/:id', requireAdmin, (req, res) => {
     return res.status(400).json({ error: 'Valid plan ID, non-negative fee, and subtitle are required.' });
   }
 
-  const info = db.prepare('UPDATE mess_plans SET fee = ?, subtitle = ? WHERE id = ?').run(Math.round(fee), subtitle, id);
-  if (info.changes === 0) return res.status(404).json({ error: 'Plan not found.' });
+  const plan = state.mess_plans.find((p) => p.id === id);
+  if (!plan) return res.status(404).json({ error: 'Plan not found.' });
+  plan.fee = Math.round(fee);
+  plan.subtitle = subtitle;
+  saveStore();
 
-  const updated = db.prepare('SELECT * FROM mess_plans WHERE id = ?').get(id);
-  res.json({ message: 'Mess plan updated in SQLite.', plan: updated });
+  res.json({ message: 'Mess plan updated.', plan });
 });
 
-// Reply & resolve a student query
 app.patch('/api/admin/queries/:id', requireAdmin, (req, res) => {
   const id = Number(req.params.id);
   const status = req.body.status === 'pending' ? 'pending' : 'resolved';
   const adminReply = cleanText(req.body.admin_reply, 500);
 
-  const info = db
-    .prepare('UPDATE queries SET status = ?, admin_reply = ? WHERE id = ?')
-    .run(status, adminReply, id);
+  const query = state.queries.find((q) => q.id === id);
+  if (!query) return res.status(404).json({ error: 'Query not found.' });
+  query.status = status;
+  query.admin_reply = adminReply;
+  saveStore();
 
-  if (info.changes === 0) return res.status(404).json({ error: 'Query not found.' });
-  const updated = db.prepare('SELECT * FROM queries WHERE id = ?').get(id);
-  res.json({ message: 'Query updated.', query: updated });
+  res.json({ message: 'Query updated.', query });
 });
 
-// Delete a review
 app.delete('/api/admin/reviews/:id', requireAdmin, (req, res) => {
   const id = Number(req.params.id);
-  const info = db.prepare('DELETE FROM reviews WHERE id = ?').run(id);
-  if (info.changes === 0) return res.status(404).json({ error: 'Review not found.' });
-  res.json({ message: 'Review removed from database.' });
+  const idx = state.reviews.findIndex((r) => r.id === id);
+  if (idx < 0) return res.status(404).json({ error: 'Review not found.' });
+  state.reviews.splice(idx, 1);
+  saveStore();
+  res.json({ message: 'Review removed.' });
 });
 
-// Clean /admin URL route
 app.get('/admin', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+  res.sendFile('admin.html', { root: path.join(__dirname, 'public') });
 });
 
 const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`LPU Campus Guide Full-Stack Server running on port ${PORT}`);
+  console.log(`LPU Campus Guide Server running on port ${PORT}`);
   console.log(`Admin Dashboard available at /admin`);
 });
 
-function gracefulShutdown(signal) {
-  console.log(`Received ${signal}, checkpointing SQLite and shutting down cleanly...`);
-  server.close(() => {
-    try { db.close(); } catch {}
-    process.exit(0);
-  });
-  setTimeout(() => {
-    try { db.close(); } catch {}
-    process.exit(0);
-  }, 4000).unref();
+function gracefulShutdown() {
+  try { saveStore(); } catch {}
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(0), 3000).unref();
 }
 
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);

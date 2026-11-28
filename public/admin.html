@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Dashboard — LPU Campus Guide (SQLite)</title>
+  <title>Admin Dashboard — LPU Campus Guide (Admin Panel)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -253,7 +253,7 @@
           <label for="admin-key">Admin Passcode</label>
           <input id="admin-key" type="password" placeholder="Enter admin passcode…" required>
         </div>
-        <button class="btn" type="submit" style="width:100%;">Unlock SQLite Dashboard</button>
+        <button class="btn" type="submit" style="width:100%;">Unlock Admin Dashboard</button>
         <div id="auth-err" style="color:#b53424;font-size:12px;font-weight:700;margin-top:10px;"></div>
       </form>
     </section>
@@ -264,7 +264,7 @@
         <div class="stat-card"><small>Pending Queries</small><strong id="st-pending">0</strong></div>
         <div class="stat-card"><small>Total Queries</small><strong id="st-queries">0</strong></div>
         <div class="stat-card"><small>Student Reviews</small><strong id="st-reviews">0</strong></div>
-        <div class="stat-card"><small>SQLite Menu Slots</small><strong id="st-menu">14</strong></div>
+        <div class="stat-card"><small>Weekly Menu Slots</small><strong id="st-menu">14</strong></div>
       </div>
 
       <div class="tabs">
@@ -284,7 +284,7 @@
       <!-- Tab 2: Menu Editor -->
       <section class="panel" id="tab-menu">
         <h2>Weekly Menu Editor</h2>
-        <p>Select any cuisine and day of the week, update dishes, and save directly to SQLite.</p>
+        <p>Select any cuisine and day of the week, update dishes, and save directly to the live store.</p>
         <form id="menu-edit-form">
           <div class="grid-2">
             <div class="field">
@@ -313,7 +313,7 @@
           <div class="field"><label for="ed-s">Tea &amp; Snacks</label><input id="ed-s" type="text" required></div>
           <div class="field"><label for="ed-d">Dinner</label><input id="ed-d" type="text" required></div>
 
-          <button class="btn" type="submit">Save Menu to SQLite</button>
+          <button class="btn" type="submit">Save Menu Changes</button>
           <span class="status-toast" id="menu-save-msg"></span>
         </form>
       </section>
@@ -328,7 +328,7 @@
       <!-- Tab 4: Reviews -->
       <section class="panel" id="tab-reviews">
         <h2>Moderate Student Reviews</h2>
-        <p>Inspect or remove student reviews stored in SQLite.</p>
+        <p>Inspect or remove student reviews submitted by students.</p>
         <div class="item-list" id="reviews-admin-container"></div>
       </section>
     </div>

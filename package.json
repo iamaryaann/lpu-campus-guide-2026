@@ -1,26 +1,24 @@
 {
   "name": "lpu-campus-guide",
   "version": "2.0.0",
-  "description": "Full-stack LPU Campus Guide (2026-27) with Node.js, Express, SQLite, live mess status, menu explorer, fee estimator, student reviews, and admin dashboard.",
+  "description": "Full-stack LPU Campus Guide (2026-27) built with HTML5, CSS3, Vanilla JavaScript, Node.js, Express, and JSON storage.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
   "engines": {
-    "node": ">=22.5.0"
+    "node": ">=20.0.0"
   },
   "keywords": [
     "lpu",
     "campus-guide",
+    "html-css-javascript",
     "express",
-    "sqlite",
     "nodejs"
   ],
   "license": "MIT",
   "dependencies": {
-    "@netlify/blobs": "^11.1.9",
-    "@netlify/functions": "^6.1.1",
     "express": "^5.1.0"
   }
 }

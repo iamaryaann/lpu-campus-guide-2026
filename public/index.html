@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f7f6f1" id="meta-theme-color">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
-  <meta name="description" content="Full-stack student guide to Lovely Professional University (LPU) campus directions, live hostel dining hours, SQLite-backed weekly menus, 2026–27 fee estimator, and student mess reviews.">
+  <meta name="description" content="Full-stack student guide to Lovely Professional University (LPU) campus directions, live hostel dining hours, interactive weekly menus, 2026–27 fee estimator, and student mess reviews.">
   <title>LPU Campus Guide — Hostels, Dining, Reviews & Directions (2026–27)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,7 +63,7 @@
         <div class="hero-copy">
           <span class="eyebrow">LPU student information · 2026–27</span>
           <h1>Your guide to LPU.<br><span>Campus, hostels and dining.</span></h1>
-          <p>Plan your arrival on NH-44, check live hostel mess hours, explore SQLite-backed regional menus, estimate 2026–27 fees, and read real student mess reviews.</p>
+          <p>Plan your arrival on NH-44, check live hostel mess hours, explore regional weekly menus, estimate 2026–27 fees, and read real student mess reviews.</p>
           <div class="hero-actions">
             <a class="button" href="#mess">Explore dining <span aria-hidden="true">↓</span></a>
             <a class="button secondary" href="#plans">Fee estimator</a>
@@ -74,7 +74,7 @@
             <i class="dot" aria-hidden="true"></i>
             <span>2026–27 rates</span>
             <i class="dot" aria-hidden="true"></i>
-            <span class="api-badge" id="db-status-badge">● Express + SQLite Ready</span>
+            <span class="api-badge" id="db-status-badge">● Live JS + Express Ready</span>
           </div>
         </div>
 
@@ -152,7 +152,7 @@
         <span class="quick-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
         </span>
-        <span><b>Student reviews</b><small>Live SQLite ratings &amp; feedback</small></span>
+        <span><b>Student reviews</b><small>Live student ratings &amp; feedback</small></span>
       </a>
     </div>
 
@@ -222,7 +222,7 @@
       </div>
     </section>
 
-    <!-- Feature 1: Campus Block & Landmark Finder (SQLite-Backed) -->
+    <!-- Feature 1: Campus Block & Landmark Finder (Dynamic JS) -->
     <section class="blocks-section wrap" id="blocks">
       <div class="section-head">
         <div>
@@ -322,11 +322,11 @@
         <span><strong>Schedule note:</strong> Published food-services hours are shown above. Exact opening windows on Sundays, holidays, or specific boys/girls hostels can shift by 15–30 minutes—follow your hostel notice board or LPU Touch app.</span>
       </div>
 
-      <!-- SQLite-Backed Weekly Sample Menu -->
+      <!-- Dynamic Weekly Sample Menu -->
       <div class="food-layout" id="menu">
         <div class="food-intro">
           <div>
-            <span class="eyebrow">Menu overview · SQLite</span>
+            <span class="eyebrow">Menu overview · Weekly Guide</span>
             <h3>A varied menu across the week.</h3>
             <p>Served dynamically from the backend database—editable anytime from the Admin Panel without touching HTML.</p>
             <div class="food-tags">
@@ -350,7 +350,7 @@
           <div class="menu-header">
             <div>
               <h3>Sample weekly menu explorer</h3>
-              <p>Loaded live from <code>/api/bootstrap</code> (SQLite).</p>
+              <p>Loaded dynamically via JavaScript (<code>/api/bootstrap</code>).</p>
             </div>
             <div class="cuisine-switch" role="tablist" aria-label="Cuisine style">
               <button class="cuisine-btn active" type="button" data-cuisine="north">North Indian</button>
@@ -417,14 +417,14 @@
           <span class="eyebrow">Meal plans · 2026–27</span>
           <h2>Compare the<br>listed options.</h2>
         </div>
-        <p>Click any university mess plan below to calculate your full 2026–27 session budget—rates sync directly from SQLite.</p>
+        <p>Click any university mess plan below to calculate your full 2026–27 session budget—rates sync dynamically via JavaScript.</p>
       </div>
 
       <div class="plan-wrap">
         <div class="plans-card" id="veg-plans-list" role="radiogroup" aria-label="2026-27 Vegetarian Mess Plans">
           <div class="plans-title">
             <h3>Vegetarian mess · 2026–27</h3>
-            <span class="tag">SQLite synced</span>
+            <span class="tag">2026–27 Official</span>
           </div>
           <div id="veg-plans-rows">
             <!-- Hydrated from /api/bootstrap -->
@@ -520,14 +520,14 @@
       </div>
     </section>
 
-    <!-- NEW: Student Mess Reviews & Ratings (SQLite Backend) -->
+    <!-- NEW: Student Mess Reviews & Ratings (Live Feed) -->
     <section class="reviews-section wrap" id="reviews">
       <div class="section-head">
         <div>
           <span class="eyebrow">Student feedback · Live DB</span>
           <h2>Hostel mess<br>reviews &amp; ratings.</h2>
         </div>
-        <p>Stored in SQLite via <code>POST /api/reviews</code>. Share your honest hostel dining experience for incoming batchmates.</p>
+        <p>Powered by JavaScript &amp; <code>POST /api/reviews</code>. Share your honest hostel dining experience for incoming batchmates.</p>
       </div>
 
       <div class="reviews-layout">
@@ -540,7 +540,7 @@
                 <small id="total-reviews-count" style="color:var(--muted);font-size:12px;">Based on 4 student reviews</small>
               </div>
             </div>
-            <span class="tag">SQLite Live</span>
+            <span class="tag">Verified Feed</span>
           </div>
 
           <div class="reviews-list" id="reviews-list">
@@ -550,7 +550,7 @@
 
         <aside class="form-card">
           <h3>Write a mess review</h3>
-          <p>Saves straight into the SQLite database and updates the live average immediately.</p>
+          <p>Saves straight to the cloud data store and updates the live average immediately.</p>
           <form class="form-stack" id="review-form">
             <div class="form-row-2">
               <div class="input-box">
@@ -742,7 +742,7 @@
         </details>
       </div>
 
-      <!-- Ask a Question (Saves to SQLite queries table) -->
+      <!-- Ask a Question (Saves to backend queries store) -->
       <div class="ask-banner">
         <div>
           <span class="eyebrow">Have a doubt?</span>
@@ -815,7 +815,7 @@
     <div class="buddy-head">
       <div>
         <b>LPU Buddy · Smart Guide</b>
-        <small>Live SQLite · Hinglish &amp; English</small>
+        <small>Smart JS Guide · Hinglish &amp; English</small>
       </div>
       <button class="buddy-close" id="buddy-close" type="button" aria-label="Close chat">×</button>
     </div>
