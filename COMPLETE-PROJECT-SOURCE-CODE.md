@@ -1,0 +1,5356 @@
+# LPU Campus Guide (2026–27) — Complete Source Code
+
+- **Team Members:** Aryan, Rimjhim & Piyush
+- **Languages Used:** HTML5, CSS3, JavaScript (ES6+ & Node.js / Express), JSON
+- **Live Website:** https://lpu-campus-guide-app-production.up.railway.app
+- **GitHub Repository:** https://github.com/iamaryaann/lpu-campus-guide-2026
+
+---
+
+## 1. Project Configuration (package.json)
+
+```json
+{
+  "name": "lpu-campus-guide",
+  "version": "2.0.0",
+  "description": "Full-stack LPU Campus Guide (2026-27) built with HTML5, CSS3, Vanilla JavaScript, Node.js, Express, and JSON storage.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "lpu",
+    "campus-guide",
+    "html-css-javascript",
+    "express",
+    "nodejs"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
+```
+
+---
+
+## 2. Main Frontend Structure (public/index.html — HTML5)
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f1" id="meta-theme-color">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <meta name="description" content="Full-stack student guide to Lovely Professional University (LPU) campus directions, live hostel dining hours, interactive weekly menus, 2026–27 fee estimator, and student mess reviews.">
+  <title>LPU Campus Guide — Hostels, Dining, Reviews & Directions (2026–27)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar" id="top">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="LPU Campus Guide home">
+        <span class="brand-mark">LPU</span>
+        <span>Campus Guide<small>Hostels · Dining · Directions</small></span>
+      </a>
+
+      <div class="nav-right">
+        <nav class="navlinks" id="navlinks" aria-label="Main navigation">
+          <a class="nav-item" href="#map">Campus map</a>
+          <a class="nav-item" href="#blocks">Blocks</a>
+          <a class="nav-item" href="#mess">Dining</a>
+          <a class="nav-item" href="#menu">Menu</a>
+          <a class="nav-item" href="#plans">Fees</a>
+          <a class="nav-item" href="#reviews">Reviews</a>
+          <a class="nav-item" href="#checklist">Checklist</a>
+          <a class="nav-item" href="#faq">FAQs</a>
+          <a class="admin-pill" href="admin.html">Admin Panel</a>
+          <a class="nav-cta" href="https://www.lpu.in/student-services/residence.php" target="_blank" rel="noreferrer">Official LPU ↗</a>
+        </nav>
+
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Switch light / dark theme">
+          <svg id="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">LPU student information · 2026–27</span>
+          <h1>Your guide to LPU.<br><span>Campus, hostels and dining.</span></h1>
+          <p>Plan your arrival on NH-44, check live hostel mess hours, explore regional weekly menus, estimate 2026–27 fees, and read real student mess reviews.</p>
+          <div class="hero-actions">
+            <a class="button" href="#mess">Explore dining <span aria-hidden="true">↓</span></a>
+            <a class="button secondary" href="#plans">Fee estimator</a>
+            <a class="button secondary" href="#reviews">Student reviews</a>
+          </div>
+          <div class="hero-meta">
+            <span><strong>Phagwara, Punjab</strong></span>
+            <i class="dot" aria-hidden="true"></i>
+            <span>2026–27 rates</span>
+            <i class="dot" aria-hidden="true"></i>
+            <span class="api-badge" id="db-status-badge">● Live JS + Express Ready</span>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-label="Illustrated Lovely Professional University campus">
+          <svg class="hero-art-svg" viewBox="0 0 600 460" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <circle cx="486" cy="68" r="56" fill="#F8DBA8" fill-opacity="0.24"/>
+            <circle cx="486" cy="68" r="32" fill="#F8DBA8" fill-opacity="0.42"/>
+            <ellipse cx="260" cy="210" rx="340" ry="190" transform="rotate(-18 260 210)" stroke="white" stroke-opacity="0.22" stroke-width="1.5"/>
+            <ellipse cx="320" cy="260" rx="310" ry="175" transform="rotate(16 320 260)" stroke="white" stroke-opacity="0.16" stroke-width="1.2"/>
+            <path d="M0 325C120 292 245 298 360 320C455 338 535 316 600 304V460H0V325Z" fill="#174434"/>
+            <rect x="86" y="182" width="156" height="162" rx="8" fill="#E9E6D3" fill-opacity="0.72" stroke="white" stroke-opacity="0.75" stroke-width="2"/>
+            <rect x="102" y="198" width="124" height="132" rx="4" fill="#235743" fill-opacity="0.22"/>
+            <g stroke="#204E3C" stroke-opacity="0.48" stroke-width="3">
+              <line x1="133" y1="198" x2="133" y2="330"/><line x1="164" y1="198" x2="164" y2="330"/><line x1="195" y1="198" x2="195" y2="330"/>
+              <line x1="102" y1="230" x2="226" y2="230"/><line x1="102" y1="262" x2="226" y2="262"/><line x1="102" y1="294" x2="226" y2="294"/>
+            </g>
+            <rect x="278" y="132" width="184" height="212" rx="9" fill="#EFEBD8" fill-opacity="0.78" stroke="white" stroke-opacity="0.82" stroke-width="2"/>
+            <rect x="296" y="150" width="148" height="180" rx="4" fill="#235743" fill-opacity="0.2"/>
+            <g stroke="#204E3C" stroke-opacity="0.46" stroke-width="3">
+              <line x1="333" y1="150" x2="333" y2="330"/><line x1="370" y1="150" x2="370" y2="330"/><line x1="407" y1="150" x2="407" y2="330"/>
+              <line x1="296" y1="186" x2="444" y2="186"/><line x1="296" y1="222" x2="444" y2="222"/><line x1="296" y1="258" x2="444" y2="258"/><line x1="296" y1="294" x2="444" y2="294"/>
+            </g>
+            <path d="M348 344V308C348 296 392 296 392 308V344" fill="#184232" stroke="white" stroke-opacity="0.7" stroke-width="2"/>
+            <g><rect x="52" y="314" width="7" height="30" rx="3" fill="#8B6F4E"/><circle cx="55" cy="296" r="24" fill="#5D8E64"/><circle cx="43" cy="306" r="16" fill="#467652"/><circle cx="68" cy="306" r="15" fill="#74A36F"/></g>
+            <g><rect x="504" y="306" width="8" height="36" rx="3" fill="#8B6F4E"/><circle cx="508" cy="285" r="28" fill="#5D8E64"/><circle cx="493" cy="298" r="19" fill="#467652"/><circle cx="524" cy="297" r="18" fill="#74A36F"/></g>
+            <path d="M0 342H600V460H0V342Z" fill="#123528"/>
+            <path d="M92 460C125 366 475 366 508 460" stroke="#F4EFE0" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round"/>
+            <path d="M108 460C138 380 462 380 492 460" fill="#194635"/>
+          </svg>
+
+          <div class="floating-card" aria-live="polite">
+            <span class="live-pill" id="hero-live-pill">
+              <span class="pulse-dot"></span>
+              <span id="hero-live-status">Dining schedule</span>
+            </span>
+            <strong id="hero-meal-title">Four meal periods</strong>
+            <small id="hero-meal-sub">Checking IST campus service hours…</small>
+            <div class="slot-pills" aria-label="Daily meal slots">
+              <span class="slot-pill" data-slot="breakfast">BF</span>
+              <span class="slot-pill" data-slot="lunch">LU</span>
+              <span class="slot-pill" data-slot="snacks">SN</span>
+              <span class="slot-pill" data-slot="dinner">DN</span>
+            </div>
+          </div>
+
+          <div class="art-label">
+            <span>Lovely Professional University</span>
+            <strong>Campus life, clearly explained.</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Jump Bar -->
+    <div class="wrap quickbar" aria-label="Quick guide">
+      <a class="quick" href="#map">
+        <span class="quick-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        </span>
+        <span><b>Campus location</b><small>NH-44 route &amp; rail distances</small></span>
+      </a>
+      <a class="quick" href="#mess">
+        <span class="quick-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </span>
+        <span><b>Dining hours</b><small>Live IST mess schedule</small></span>
+      </a>
+      <a class="quick" href="#plans">
+        <span class="quick-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="8" y1="11" x2="10" y2="11"></line><line x1="14" y1="11" x2="16" y2="11"></line><line x1="8" y1="16" x2="10" y2="16"></line><line x1="14" y1="16" x2="16" y2="16"></line></svg>
+        </span>
+        <span><b>Meal plans &amp; fees</b><small>2026–27 session estimator</small></span>
+      </a>
+      <a class="quick" href="#reviews">
+        <span class="quick-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </span>
+        <span><b>Student reviews</b><small>Live student ratings &amp; feedback</small></span>
+      </a>
+    </div>
+
+    <!-- Campus Map & Transit -->
+    <section class="map-section wrap" id="map">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Campus location</span>
+          <h2>Find your way<br>to LPU.</h2>
+        </div>
+        <p>Lovely Professional University sits directly on the Jalandhar–Delhi Grand Trunk Road (NH-44) in Phagwara, well connected by rail and highway buses.</p>
+      </div>
+
+      <div class="map-grid">
+        <div class="map-info">
+          <div>
+            <span class="eyebrow">Locate the campus</span>
+            <h3>Plan your arrival with transit distances.</h3>
+            <p>Copy the official address or check travel times from nearby railway stations and airports before you arrive.</p>
+
+            <div class="address">
+              <div class="address-left">
+                <span class="address-pin" aria-hidden="true">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </span>
+                <span>
+                  <strong>Lovely Professional University</strong>
+                  <small>Jalandhar–Delhi G.T. Road (NH-44)<br>Phagwara, Punjab 144411, India</small>
+                </span>
+              </div>
+              <button class="copy-chip" id="copy-address-btn" type="button">Copy address</button>
+            </div>
+
+            <div class="transit-box">
+              <span class="transit-label">Distance from arrival hubs</span>
+              <div class="transit-tabs" role="tablist" aria-label="Transit hubs">
+                <button class="transit-tab active" type="button" data-hub="pgw">Phagwara Jn</button>
+                <button class="transit-tab" type="button" data-hub="jrc">Jalandhar Cantt</button>
+                <button class="transit-tab" type="button" data-hub="juc">Jalandhar City</button>
+                <button class="transit-tab" type="button" data-hub="air">Airports</button>
+              </div>
+              <div class="transit-detail">
+                <div>
+                  <strong id="transit-dist">~7 km · 12–15 min</strong>
+                  <div id="transit-note"><span>Direct autos &amp; cabs outside Phagwara Railway Station to Main Gate.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="map-actions">
+            <a class="button lime-cta" href="https://www.google.com/maps/dir/?api=1&destination=Lovely+Professional+University,+Phagwara,+Punjab" target="_blank" rel="noreferrer">Get directions ↗</a>
+            <a class="button ghost-light" href="https://www.lpu.in/contact-us/" target="_blank" rel="noreferrer">Official contact ↗</a>
+          </div>
+        </div>
+
+        <div class="map-frame">
+          <iframe
+            title="Map of Lovely Professional University, Phagwara"
+            src="https://maps.google.com/maps?q=Lovely%20Professional%20University%2C%20Phagwara%2C%20Punjab&t=&z=14&ie=UTF8&iwloc=&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+          <span class="map-badge">NH-44 · Phagwara–Jalandhar Highway</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature 1: Campus Block & Landmark Finder (Dynamic JS) -->
+    <section class="blocks-section wrap" id="blocks">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Campus navigation · Block 1 to 57</span>
+          <h2>Find any block,<br>mall or hostel fast.</h2>
+        </div>
+        <p>LPU spans 600+ acres. Search by block number, course, hostel, or landmark to see the nearest gate, walking minutes, and ₹10 E-rickshaw route.</p>
+      </div>
+
+      <div class="blocks-toolbar">
+        <div class="block-search-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input class="block-search-input" id="block-search-input" type="search" placeholder="Search 'Block 34', 'CSE', 'Uni Mall', 'Hospital', 'BH-1', 'UMS'…" aria-label="Search campus blocks and landmarks">
+          <button class="block-search-clear" id="block-search-clear" type="button" aria-label="Clear block search">×</button>
+        </div>
+
+        <div class="block-cats" role="tablist" aria-label="Filter campus zones">
+          <button class="faq-chip active" type="button" data-block-cat="all">All zones</button>
+          <button class="faq-chip" type="button" data-block-cat="Academic">Academic</button>
+          <button class="faq-chip" type="button" data-block-cat="Hostels">Hostels</button>
+          <button class="faq-chip" type="button" data-block-cat="Admin">Admission / Admin</button>
+          <button class="faq-chip" type="button" data-block-cat="Food & Retail">Mall &amp; Food</button>
+          <button class="faq-chip" type="button" data-block-cat="Medical">Hospital</button>
+          <button class="faq-chip" type="button" data-block-cat="Landmarks">Arenas &amp; Sports</button>
+        </div>
+      </div>
+
+      <div class="blocks-grid" id="blocks-grid" aria-live="polite">
+        <!-- Hydrated from /api/bootstrap (campus_blocks) -->
+      </div>
+    </section>
+
+    <!-- Hostel Dining & Timings -->
+    <section class="mess-section wrap" id="mess">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Hostel dining</span>
+          <h2>Meal times at<br>a glance.</h2>
+        </div>
+        <p>Published operational hours on LPU’s food-services page. Cards highlight the active or upcoming slot automatically in Indian Standard Time (IST).</p>
+      </div>
+
+      <div class="meal-grid">
+        <article class="meal-time" data-meal-card="breakfast">
+          <div class="meal-top">
+            <span class="meal-icon" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"></path><line x1="12" y1="2" x2="12" y2="9"></line><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"></line><line x1="1" y1="18" x2="3" y2="18"></line><line x1="21" y1="18" x2="23" y2="18"></line><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"></line><line x1="23" y1="22" x2="1" y2="22"></line></svg>
+            </span>
+            <span class="meal-badge">Up next</span>
+          </div>
+          <h3>Breakfast</h3>
+          <strong>7:15 – 9:30 AM</strong>
+          <small>Parantha, idli/poha, stuffed toast, curd, tea &amp; milk</small>
+        </article>
+
+        <article class="meal-time" data-meal-card="lunch">
+          <div class="meal-top">
+            <span class="meal-icon" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+            </span>
+            <span class="meal-badge">Up next</span>
+          </div>
+          <h3>Lunch</h3>
+          <strong>11:15 AM – 3:00 PM</strong>
+          <small>Rajmah/dal, seasonal subzi, raita, rice &amp; hot chapati</small>
+        </article>
+
+        <article class="meal-time" data-meal-card="snacks">
+          <div class="meal-top">
+            <span class="meal-icon" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"></path><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path><line x1="6" y1="2" x2="6" y2="4"></line><line x1="10" y1="2" x2="10" y2="4"></line><line x1="14" y1="2" x2="14" y2="4"></line></svg>
+            </span>
+            <span class="meal-badge">Up next</span>
+          </div>
+          <h3>Tea &amp; snacks</h3>
+          <strong>5:00 – 6:00 PM</strong>
+          <small>Masala tea or coffee with rotating hot evening snacks</small>
+        </article>
+
+        <article class="meal-time" data-meal-card="dinner">
+          <div class="meal-top">
+            <span class="meal-icon" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+            </span>
+            <span class="meal-badge">Up next</span>
+          </div>
+          <h3>Dinner</h3>
+          <strong>7:00 – 9:00 PM</strong>
+          <small>Dal, paneer/seasonal veg, chapati, rice, salad &amp; dessert</small>
+        </article>
+      </div>
+
+      <div class="note">
+        <span class="note-badge" aria-hidden="true">i</span>
+        <span><strong>Schedule note:</strong> Published food-services hours are shown above. Exact opening windows on Sundays, holidays, or specific boys/girls hostels can shift by 15–30 minutes—follow your hostel notice board or LPU Touch app.</span>
+      </div>
+
+      <!-- Dynamic Weekly Sample Menu -->
+      <div class="food-layout" id="menu">
+        <div class="food-intro">
+          <div>
+            <span class="eyebrow">Menu overview · Weekly Guide</span>
+            <h3>A varied menu across the week.</h3>
+            <p>Served dynamically from the backend database—editable anytime from the Admin Panel without touching HTML.</p>
+            <div class="food-tags">
+              <span>100% Vegetarian Campus</span>
+              <span>Automated Roti</span>
+              <span>Regional Cuisines</span>
+            </div>
+          </div>
+
+          <svg class="food-art" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="115" cy="115" r="78" stroke="white" stroke-opacity="0.24" stroke-width="2"/>
+            <circle cx="115" cy="115" r="62" fill="white" fill-opacity="0.1" stroke="white" stroke-opacity="0.38" stroke-width="2"/>
+            <circle cx="95" cy="92" r="16" fill="#FFE3B3" fill-opacity="0.45"/>
+            <circle cx="134" cy="94" r="15" fill="#FFE3B3" fill-opacity="0.35"/>
+            <circle cx="92" cy="130" r="14" fill="#FFE3B3" fill-opacity="0.3"/>
+            <path d="M118 122C118 112 148 112 148 122C148 138 118 138 118 122Z" fill="#FFF3DC" fill-opacity="0.5"/>
+          </svg>
+        </div>
+
+        <div class="menu-card">
+          <div class="menu-header">
+            <div>
+              <h3>Sample weekly menu explorer</h3>
+              <p>Loaded dynamically via JavaScript (<code>/api/bootstrap</code>).</p>
+            </div>
+            <div class="cuisine-switch" role="tablist" aria-label="Cuisine style">
+              <button class="cuisine-btn active" type="button" data-cuisine="north">North Indian</button>
+              <button class="cuisine-btn" type="button" data-cuisine="south">South Indian</button>
+            </div>
+          </div>
+
+          <div class="day-tabs" role="tablist" aria-label="Day of week">
+            <button class="day-btn" type="button" data-day="1">Mon</button>
+            <button class="day-btn" type="button" data-day="2">Tue</button>
+            <button class="day-btn" type="button" data-day="3">Wed</button>
+            <button class="day-btn" type="button" data-day="4">Thu</button>
+            <button class="day-btn" type="button" data-day="5">Fri</button>
+            <button class="day-btn" type="button" data-day="6">Sat</button>
+            <button class="day-btn" type="button" data-day="0">Sun</button>
+          </div>
+
+          <div class="menu-rows" id="menu-rows" aria-live="polite">
+            <div class="menu-row"><b>Breakfast</b><span id="m-breakfast">Loading menu…</span></div>
+            <div class="menu-row"><b>Lunch</b><span id="m-lunch">Loading menu…</span></div>
+            <div class="menu-row"><b>Snacks</b><span id="m-snacks">Loading menu…</span></div>
+            <div class="menu-row"><b>Dinner</b><span id="m-dinner">Loading menu…</span></div>
+          </div>
+
+          <!-- Feature 2: Live "Aaj Ka Khana Kaisa Tha?" Poll -->
+          <div class="poll-box" aria-label="Live today's mess food poll">
+            <div class="poll-top">
+              <div class="poll-title">
+                <span class="pulse-dot" style="color:var(--green)"></span>
+                <span>Aaj ka khana kaisa tha? · Live Poll</span>
+              </div>
+              <div class="poll-slot-tabs" role="tablist" aria-label="Select meal to rate">
+                <button class="poll-slot-btn" type="button" data-poll-slot="breakfast">Breakfast</button>
+                <button class="poll-slot-btn" type="button" data-poll-slot="lunch">Lunch</button>
+                <button class="poll-slot-btn" type="button" data-poll-slot="snacks">Snacks</button>
+                <button class="poll-slot-btn active" type="button" data-poll-slot="dinner">Dinner</button>
+              </div>
+            </div>
+            <div class="poll-bar-wrap" aria-hidden="true">
+              <div class="poll-bar-fill" id="poll-bar-fill"></div>
+            </div>
+            <div class="poll-actions">
+              <div class="poll-btns">
+                <button class="vote-btn" id="vote-up-btn" type="button">
+                  <span>👍 Mast tha</span>
+                  <b id="vote-up-count">0</b>
+                </button>
+                <button class="vote-btn" id="vote-down-btn" type="button">
+                  <span>👎 Average</span>
+                  <b id="vote-down-count">0</b>
+                </button>
+              </div>
+              <span class="poll-stat-text" id="poll-stat-text">Loading live votes…</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meal Plans & Interactive Estimator -->
+    <section class="plans-section wrap" id="plans">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Meal plans · 2026–27</span>
+          <h2>Compare the<br>listed options.</h2>
+        </div>
+        <p>Click any university mess plan below to calculate your full 2026–27 session budget—rates sync dynamically via JavaScript.</p>
+      </div>
+
+      <div class="plan-wrap">
+        <div class="plans-card" id="veg-plans-list" role="radiogroup" aria-label="2026-27 Vegetarian Mess Plans">
+          <div class="plans-title">
+            <h3>Vegetarian mess · 2026–27</h3>
+            <span class="tag">2026–27 Official</span>
+          </div>
+          <div id="veg-plans-rows">
+            <!-- Hydrated from /api/bootstrap -->
+          </div>
+        </div>
+
+        <aside class="nonveg-card">
+          <div>
+            <span class="eyebrow">Independent vendor</span>
+            <h3>Non-vegetarian meals nearby.</h3>
+            <p>LPU lists an independently operated non-vegetarian mess adjacent to campus, with payments made directly to the vendor.</p>
+            <div class="mini-price" id="nonveg-plans-rows">
+              <div><span>3 meals plan</span><b>₹75,000 / year</b></div>
+              <div><span>2 meals plan</span><b>₹65,000 / year</b></div>
+              <div><span>1 meal plan</span><b>₹55,000 / year</b></div>
+            </div>
+          </div>
+          <p class="disclaimer">LPU is a strictly vegetarian campus. The adjacent non-vegetarian dining facility is independently managed and subject to seat availability.</p>
+        </aside>
+      </div>
+
+      <div class="estimator-card" aria-label="Session budget estimator">
+        <div class="estimator-top">
+          <div>
+            <h3>Quick 2026–27 session budget estimator</h3>
+            <p>Combine a listed mess plan with optional standard hostel accommodation (~10-month academic session).</p>
+          </div>
+          <label class="edb-toggle">
+            <input type="checkbox" id="edb-check">
+            <span>Apply Early Decision room benefit (−₹10,000 est.)</span>
+          </label>
+        </div>
+
+        <div class="estimator-grid">
+          <div class="field-group">
+            <label for="calc-mess">Selected mess plan</label>
+            <select id="calc-mess"></select>
+          </div>
+
+          <div class="field-group">
+            <label for="calc-room">Optional hostel room (2026–27)</label>
+            <select id="calc-room"></select>
+          </div>
+
+          <div class="estimate-result" aria-live="polite">
+            <div>
+              <small>Estimated session total</small>
+              <strong id="est-total">₹1,48,000</strong>
+              <span class="estimate-meta" id="est-breakdown">~₹14,800/mo · 500 free electricity units</span>
+            </div>
+            <button class="share-est-btn" id="copy-est-btn" type="button">Copy summary</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="plan-footnote">Rates are reproduced from LPU’s 2026–27 residence information for guidance. Confirm exact payable fees on your LPU Admission / UMS portal before booking.</p>
+    </section>
+
+    <!-- More Campus Food Services -->
+    <section class="extras wrap" id="extras">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Campus food services</span>
+          <h2>More options<br>across campus.</h2>
+        </div>
+        <p>Beyond the hostel mess, LPU operates several student dining and support facilities across academic blocks and UniMall.</p>
+      </div>
+
+      <div class="extras-grid">
+        <article class="extra">
+          <span class="extra-icon" aria-hidden="true">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </span>
+          <h3>Packed breakfast</h3>
+          <p>Students with early morning labs, exams, or field visits can request a packed breakfast box through their hostel mess counter in advance.</p>
+        </article>
+
+        <article class="extra">
+          <span class="extra-icon" aria-hidden="true">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+          </span>
+          <h3>Wellness &amp; fasting menus</h3>
+          <p>Soft meals (such as khichdi or curd rice) are listed for unwell students, alongside festival specials and dedicated fasting-day meal arrangements.</p>
+        </article>
+
+        <article class="extra">
+          <span class="extra-icon" aria-hidden="true">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          </span>
+          <h3>Food courts, kiosks &amp; pantry</h3>
+          <p>Over 200+ kiosks, UniMall dining courts, juice bars, a student food bank/pantry, and in-campus evening delivery operate within university gates.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- NEW: Student Mess Reviews & Ratings (Live Feed) -->
+    <section class="reviews-section wrap" id="reviews">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Student feedback · Live DB</span>
+          <h2>Hostel mess<br>reviews &amp; ratings.</h2>
+        </div>
+        <p>Powered by JavaScript &amp; <code>POST /api/reviews</code>. Share your honest hostel dining experience for incoming batchmates.</p>
+      </div>
+
+      <div class="reviews-layout">
+        <div>
+          <div class="rating-banner">
+            <div class="rating-score">
+              <strong id="avg-rating-num">4.3</strong>
+              <div>
+                <div class="rating-stars" id="avg-rating-stars">★★★★☆</div>
+                <small id="total-reviews-count" style="color:var(--muted);font-size:12px;">Based on 4 student reviews</small>
+              </div>
+            </div>
+            <span class="tag">Verified Feed</span>
+          </div>
+
+          <div class="reviews-list" id="reviews-list">
+            <!-- Hydrated from /api/reviews -->
+          </div>
+        </div>
+
+        <aside class="form-card">
+          <h3>Write a mess review</h3>
+          <p>Saves straight to the cloud data store and updates the live average immediately.</p>
+          <form class="form-stack" id="review-form">
+            <div class="form-row-2">
+              <div class="input-box">
+                <label for="rev-name">Your name</label>
+                <input id="rev-name" type="text" placeholder="e.g. Aryan Khan" maxlength="60" required>
+              </div>
+              <div class="input-box">
+                <label for="rev-hostel">Hostel block</label>
+                <select id="rev-hostel" required>
+                  <option value="BH-1">Boys Hostel BH-1</option>
+                  <option value="BH-2">Boys Hostel BH-2</option>
+                  <option value="BH-3">Boys Hostel BH-3</option>
+                  <option value="BH-4">Boys Hostel BH-4</option>
+                  <option value="BH-5">Boys Hostel BH-5</option>
+                  <option value="BH-6">Boys Hostel BH-6</option>
+                  <option value="GH-1">Girls Hostel GH-1</option>
+                  <option value="GH-2">Girls Hostel GH-2</option>
+                  <option value="GH-3">Girls Hostel GH-3</option>
+                  <option value="GH-4">Girls Hostel GH-4</option>
+                  <option value="Apartments">Studio Apartments</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="input-box">
+              <label for="rev-plan">Mess plan / kitchen</label>
+              <select id="rev-plan" required>
+                <option value="Standard · 4 meals (North)">Standard · 4 meals (North Indian)</option>
+                <option value="Standard · 3 meals">Standard · 3 meals</option>
+                <option value="Standard · 2 meals">Standard · 2 meals</option>
+                <option value="South Indian Mess">South Indian Mess</option>
+                <option value="A la carte · 4 meals">A la carte · 4 meals</option>
+              </select>
+            </div>
+
+            <div class="input-box">
+              <label>Rating</label>
+              <div class="star-picker" id="star-picker" role="radiogroup" aria-label="Star rating">
+                <button type="button" class="star-btn lit" data-val="1">★</button>
+                <button type="button" class="star-btn lit" data-val="2">★</button>
+                <button type="button" class="star-btn lit" data-val="3">★</button>
+                <button type="button" class="star-btn lit" data-val="4">★</button>
+                <button type="button" class="star-btn lit" data-val="5">★</button>
+              </div>
+            </div>
+
+            <div class="input-box">
+              <label for="rev-comment">Your review</label>
+              <textarea id="rev-comment" rows="3" placeholder="How is the food quality, hygiene, and timing in your hostel?" maxlength="360" required></textarea>
+            </div>
+
+            <button class="button" type="submit">Submit review to DB</button>
+            <div class="form-msg" id="rev-msg" aria-live="polite"></div>
+          </form>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Feature 6: Fresher Hostel Packing & Reporting Checklist -->
+    <section class="checklist-section wrap" id="checklist">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Fresher toolkit · 2026–27</span>
+          <h2>Hostel packing &amp;<br>reporting checklist.</h2>
+        </div>
+        <p>Tick items off as you pack—your progress stays saved on your phone. Share your summary on WhatsApp or save as a PDF before boarding.</p>
+      </div>
+
+      <div class="checklist-progress-card">
+        <div class="checklist-prog-left">
+          <div class="checklist-prog-head">
+            <strong>Reporting readiness</strong>
+            <span id="checklist-count-label">0 / 16 packed (0%)</span>
+          </div>
+          <div class="checklist-track" aria-hidden="true">
+            <div class="checklist-fill" id="checklist-fill"></div>
+          </div>
+        </div>
+        <div class="checklist-actions">
+          <button class="button" id="checklist-wa-btn" type="button">Share on WhatsApp ↗</button>
+          <button class="button secondary" id="checklist-copy-btn" type="button">Copy list</button>
+          <button class="button secondary" id="checklist-print-btn" type="button">Save PDF</button>
+          <button class="button secondary" id="checklist-reset-btn" type="button">Reset</button>
+        </div>
+      </div>
+
+      <div class="checklist-grid" id="checklist-grid">
+        <article class="check-group-card">
+          <h3><span>1. Reporting Documents (Block 32)</span><span class="tag">Must carry</span></h3>
+          <div class="check-items">
+            <label class="check-row"><input type="checkbox" data-check-id="doc1"><span>10th &amp; 12th Original Marksheets + 4 self-attested Xerox sets</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="doc2"><span>LPU Provisional Admission Letter &amp; Fee Payment Receipts</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="doc3"><span>Original Aadhaar Card + 6 passport-size photographs</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="doc4"><span>Anti-Ragging Affidavit, Character &amp; Medical Fitness Certificates</span></label>
+          </div>
+        </article>
+
+        <article class="check-group-card">
+          <h3><span>2. Hostel Room Essentials</span><span class="tag">BH / GH</span></h3>
+          <div class="check-items">
+            <label class="check-row"><input type="checkbox" data-check-id="rm1"><span>2 single bedsheets, pillow cover &amp; light quilt/blanket</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="rm2"><span>2 sturdy padlocks with spare keys (for almirah + room door)</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="rm3"><span>Surge-protected extension board &amp; multi-plug adapter</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="rm4"><span>Bucket, mug, cloth hangers &amp; laundry bag (available at Uni Mall too)</span></label>
+          </div>
+        </article>
+
+        <article class="check-group-card">
+          <h3><span>3. Day-1 UMS &amp; Hostel Setup</span><span class="tag">On arrival</span></h3>
+          <div class="check-items">
+            <label class="check-row"><input type="checkbox" data-check-id="ums1"><span>Install LPU Touch app &amp; verify UMS timetable + section</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="ums2"><span>Complete Hostel Warden check-in &amp; biometric punch registration</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="ums3"><span>Activate digital Mess Card &amp; confirm assigned dining hall</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="ums4"><span>Save Warden desk &amp; Uni Hospital (Block 6) 24×7 emergency numbers</span></label>
+          </div>
+        </article>
+
+        <article class="check-group-card">
+          <h3><span>4. Personal Care &amp; Academics</span><span class="tag">Daily use</span></h3>
+          <div class="check-items">
+            <label class="check-row"><input type="checkbox" data-check-id="pr1"><span>Basic first-aid kit, personal medicines &amp; ORS sachets</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="pr2"><span>Insulated water bottle &amp; umbrella (campus walks are 8–15 mins)</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="pr3"><span>Laptop, charger, earphones, notebooks &amp; lab coat (if engineering/pharma)</span></label>
+            <label class="check-row"><input type="checkbox" data-check-id="pr4"><span>1–2 sets of formal wear (required for MSB, Law, Placement &amp; presentations)</span></label>
+          </div>
+        </article>
+      </div>
+
+      <div class="banned-alert" role="note">
+        <div>
+          <strong>⚠️ Strictly Banned in LPU Hostels — Do NOT Pack These!</strong>
+          <p>High-wattage heating appliances are confiscated at hostel gates. Hot/cold RO dispensers &amp; laundry/ironing shops operate inside every hostel.</p>
+        </div>
+        <div class="banned-pills">
+          <span>✕ Electric Kettle</span>
+          <span>✕ Clothes Iron / Press</span>
+          <span>✕ Immersion Rod</span>
+          <span>✕ Induction / Heater</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQs + Ask a Doubt Backend Form -->
+    <section class="faq wrap" id="faq">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Frequently asked questions</span>
+          <h2>Before choosing<br>a meal plan.</h2>
+        </div>
+        <p>Key details to review before locking in your hostel dining preference, plus answered student doubts.</p>
+      </div>
+
+      <div class="faq-filters" role="tablist" aria-label="Filter FAQs">
+        <button class="faq-chip active" type="button" data-faq-filter="all">All questions</button>
+        <button class="faq-chip" type="button" data-faq-filter="food">Dining &amp; menu</button>
+        <button class="faq-chip" type="button" data-faq-filter="fees">Fees &amp; plans</button>
+        <button class="faq-chip" type="button" data-faq-filter="rules">Hostel policy</button>
+      </div>
+
+      <div class="faq-grid" id="faq-grid">
+        <details class="faq-item" data-cat="food">
+          <summary>Is the hostel mess strictly vegetarian?</summary>
+          <p>Yes. All dining halls inside LPU hostels and campus food courts serve strictly vegetarian food. A non-vegetarian mess is listed adjacent to campus through an independent vendor.</p>
+        </details>
+
+        <details class="faq-item" data-cat="rules">
+          <summary>Is taking a university mess plan compulsory?</summary>
+          <p>LPU states that students may opt for a university mess plan or manage meals independently via campus food courts and kiosks. Check any scholarship or specific residential terms before booking.</p>
+        </details>
+
+        <details class="faq-item" data-cat="food">
+          <summary>Where can I check the live daily menu?</summary>
+          <p>Once enrolled, students can view their assigned mess’s daily menu and log meal feedback directly in the <strong>LPU Touch</strong> mobile app or on the hostel dining notice board.</p>
+        </details>
+
+        <details class="faq-item" data-cat="fees">
+          <summary>Is the a la carte or South Indian mess in every hostel?</summary>
+          <p>No. A la carte counters and specialized regional messes (South Indian, Rajasthani, Eastern) operate at selected residential locations and require minimum student enrolment.</p>
+        </details>
+
+        <details class="faq-item" data-cat="fees">
+          <summary>How long does one session mess fee cover?</summary>
+          <p>A listed session plan covers one regular academic year (approximately 10 months across two semesters). Winter/summer vacation stay or mid-term upgrades follow university pro-rata rules.</p>
+        </details>
+
+        <details class="faq-item" data-cat="rules">
+          <summary>Can I upgrade from 2 or 3 meals to 4 meals later?</summary>
+          <p>Upgrades to a higher meal plan (for example adding evening snacks or moving to 4 meals) are generally permitted via UMS by paying the differential fee, whereas downgrades are restricted once opted.</p>
+        </details>
+      </div>
+
+      <!-- Ask a Question (Saves to backend queries store) -->
+      <div class="ask-banner">
+        <div>
+          <span class="eyebrow">Have a doubt?</span>
+          <h3>Ask a campus or hostel question.</h3>
+          <p>Questions submitted here are saved to the store and can be answered from the <a href="admin.html" style="color:var(--green);font-weight:700;">Admin Dashboard</a>. Resolved replies automatically appear in the FAQ list above!</p>
+        </div>
+
+        <form class="ask-inline-form" id="query-form">
+          <div class="form-row-2">
+            <div class="input-box">
+              <label for="q-name">Your name</label>
+              <input id="q-name" type="text" placeholder="Name & course" maxlength="70" required>
+            </div>
+            <div class="input-box">
+              <label for="q-contact">Email or WhatsApp</label>
+              <input id="q-contact" type="text" placeholder="you@example.com" maxlength="90" required>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="input-box">
+              <label for="q-topic">Topic</label>
+              <select id="q-topic">
+                <option value="Mess Plan">Mess Plan</option>
+                <option value="Hostel Room">Hostel Room</option>
+                <option value="Arrival / Transit">Arrival / Transit</option>
+                <option value="Dietary / Special">Dietary / Special</option>
+              </select>
+            </div>
+            <div class="input-box">
+              <label for="q-text">Question</label>
+              <input id="q-text" type="text" placeholder="Type your question…" maxlength="500" required>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <button class="button" type="submit">Send question</button>
+            <span class="form-msg" id="q-msg" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Official Resources -->
+    <section class="wrap sources" aria-labelledby="sources-heading">
+      <div>
+        <h3 id="sources-heading">Official LPU resources</h3>
+        <p>Fees, plans, and service hours can change each semester. Always verify current details on LPU’s official pages.</p>
+      </div>
+      <div class="source-links">
+        <a href="https://www.lpu.in/student-services/residence.php" target="_blank" rel="noreferrer">Hostel, mess plans &amp; fees ↗</a>
+        <a href="https://www.lpu.in/SUSTAINABLE/sdg2/student-food-insecurity-hunger.php" target="_blank" rel="noreferrer">Sample menu &amp; timings ↗</a>
+        <a href="https://www.lpu.in/contact-us/" target="_blank" rel="noreferrer">LPU address &amp; contact ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><span class="footer-brand">LPU Campus Guide</span> · Full-Stack 2026–27 Edition</span>
+      <span><a class="to-top" href="admin.html">Admin Dashboard</a> · <a class="to-top" href="#top">Back to top ↑</a></span>
+    </div>
+  </footer>
+
+  <!-- Feature 4: "Ask LPU Buddy" Floating Smart Chatbot -->
+  <button class="buddy-fab" id="buddy-fab" type="button" aria-expanded="false" aria-controls="buddy-panel">
+    <span class="buddy-fab-dot" aria-hidden="true"></span>
+    <span>Ask LPU Buddy</span>
+  </button>
+
+  <section class="buddy-panel" id="buddy-panel" role="dialog" aria-label="Ask LPU Buddy Campus Assistant">
+    <div class="buddy-head">
+      <div>
+        <b>LPU Buddy · Smart Guide</b>
+        <small>Smart JS Guide · Hinglish &amp; English</small>
+      </div>
+      <button class="buddy-close" id="buddy-close" type="button" aria-label="Close chat">×</button>
+    </div>
+
+    <div class="buddy-messages" id="buddy-messages" aria-live="polite">
+      <div class="buddy-msg bot">
+        Namaste! 👋 Main <strong>LPU Buddy</strong> hoon. Aap mujhse mess menu, Block directions, 2026–27 fees, ya hostel rules Hinglish/English me pooch sakte ho!
+      </div>
+    </div>
+
+    <div class="buddy-chips" aria-label="Quick questions">
+      <button class="buddy-chip" type="button" data-ask="Aaj dinner me kya hai?">Aaj dinner me kya hai?</button>
+      <button class="buddy-chip" type="button" data-ask="Block 34 kahan hai?">Block 34 kahan hai?</button>
+      <button class="buddy-chip" type="button" data-ask="4-seater AC + 3 meal fee?">4-Seater AC + 3 Meal fee?</button>
+      <button class="buddy-chip" type="button" data-ask="Hostel me kettle allowed hai kya?">Banned items?</button>
+      <button class="buddy-chip" type="button" data-ask="Phagwara station se kaise aaye?">Phagwara Jn route</button>
+    </div>
+
+    <form class="buddy-form" id="buddy-form">
+      <input class="buddy-input" id="buddy-input" type="text" placeholder="Ask anything e.g. Block 32, fees, menu…" maxlength="260" autocomplete="off" required>
+      <button class="buddy-send" type="submit">Ask</button>
+    </form>
+  </section>
+
+  <script src="shared-store.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+```
+
+---
+
+## 3. Main Stylesheet & Dark Mode (public/style.css — CSS3)
+
+```css
+/* LPU Campus Guide (2026-27) — Main Stylesheet */
+
+:root {
+  --ink: #162925;
+  --ink-soft: #31443f;
+  --muted: #606e67;
+  --paper: #f7f6f1;
+  --paper-subtle: #efeee6;
+  --card: #fffefa;
+  --card-hover: #ffffff;
+  --green: #225a46;
+  --green-dark: #143c2f;
+  --green-mid: #2c7057;
+  --mint: #e5efe5;
+  --mint-strong: #d4e6d5;
+  --lime: #d2e88d;
+  --orange: #ee9a55;
+  --terracotta: #c86f3f;
+  --terracotta-dark: #a9582d;
+  --line: #e3e3d8;
+  --line-soft: #eeeee6;
+  --topbar-bg: rgba(247, 246, 241, 0.88);
+  --shadow-sm: 0 6px 20px rgba(22, 41, 37, 0.05);
+  --shadow: 0 20px 56px rgba(22, 41, 37, 0.08);
+  --radius: 24px;
+  --radius-sm: 16px;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+[data-theme="dark"] {
+  --ink: #edf4f0;
+  --ink-soft: #c7d6ce;
+  --muted: #95aba0;
+  --paper: #0e1916;
+  --paper-subtle: #14231f;
+  --card: #152520;
+  --card-hover: #192d27;
+  --green: #38896a;
+  --green-dark: #132d23;
+  --green-mid: #47a07e;
+  --mint: #1d352c;
+  --mint-strong: #27473b;
+  --lime: #d2e88d;
+  --orange: #f2a360;
+  --terracotta: #b96234;
+  --terracotta-dark: #944b24;
+  --line: #233931;
+  --line-soft: #1d3029;
+  --topbar-bg: rgba(14, 25, 22, 0.88);
+  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.25);
+  --shadow: 0 22px 60px rgba(0, 0, 0, 0.38);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+a { color: inherit; }
+button, select, input, textarea { font: inherit; }
+svg { display: block; flex-shrink: 0; }
+
+.wrap {
+  width: min(1160px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+/* Topbar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--line);
+  background: var(--topbar-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.nav {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: -0.035em;
+}
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  color: #fffefa;
+  background: linear-gradient(145deg, #286a52, #174334);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  box-shadow: 0 8px 18px rgba(23, 67, 52, 0.22);
+}
+.brand small {
+  display: block;
+  margin-top: 1px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.navlinks {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.navlinks a.nav-item {
+  position: relative;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  padding: 6px 0;
+  transition: color 0.2s ease;
+}
+.navlinks a.nav-item:hover,
+.navlinks a.nav-item.active {
+  color: var(--ink);
+}
+.navlinks a.nav-item.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--green);
+}
+.admin-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink) !important;
+  font-size: 12px;
+  font-weight: 750;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.admin-pill:hover {
+  border-color: var(--green);
+  background: var(--mint);
+}
+
+.button,
+a.nav-cta {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid #225a46;
+  border-radius: 999px;
+  color: #fffefa;
+  background: #225a46;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+a.nav-cta {
+  min-height: 40px;
+  padding: 0 15px;
+  color: #fffefa !important;
+}
+.button:hover,
+a.nav-cta:hover {
+  background: #163f31;
+  border-color: #163f31;
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 20px rgba(22, 63, 49, 0.2);
+}
+[data-theme="dark"] .button,
+[data-theme="dark"] a.nav-cta {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #13281f !important;
+}
+[data-theme="dark"] .button:hover,
+[data-theme="dark"] a.nav-cta:hover {
+  background: #dfefaa;
+  border-color: #dfefaa;
+}
+
+.button.secondary {
+  color: var(--ink);
+  background: var(--card);
+  border-color: var(--line);
+}
+[data-theme="dark"] .button.secondary {
+  color: var(--ink) !important;
+  background: var(--card);
+  border-color: var(--line);
+}
+.button.secondary:hover {
+  background: var(--mint);
+  border-color: var(--green);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--card);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.icon-btn:hover {
+  background: var(--mint);
+  border-color: var(--green);
+  transform: translateY(-1px);
+}
+.menu-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--ink);
+  background: var(--card);
+  place-items: center;
+  cursor: pointer;
+}
+
+/* Hero */
+.hero {
+  padding: 54px 0 40px;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.06fr 0.94fr;
+  gap: 30px;
+  align-items: stretch;
+}
+.hero-copy {
+  padding: 18px 0 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+[data-theme="dark"] .eyebrow { color: var(--lime); }
+.eyebrow::before {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--orange);
+  content: "";
+  box-shadow: 0 0 0 3px rgba(238, 154, 85, 0.2);
+}
+h1, h2, h3, h4, p { margin-top: 0; }
+h1 {
+  max-width: 630px;
+  margin: 16px 0 18px;
+  font-size: clamp(42px, 5.2vw, 64px);
+  font-weight: 800;
+  line-height: 1.03;
+  letter-spacing: -0.038em;
+}
+h1 span { color: var(--green); }
+[data-theme="dark"] h1 span { color: #7cd1ad; }
+.hero-copy > p {
+  max-width: 550px;
+  margin-bottom: 26px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 30px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+.hero-meta strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #9eab9f;
+}
+.api-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+[data-theme="dark"] .api-badge { color: var(--lime); }
+
+/* Hero Campus Artwork */
+.hero-art {
+  position: relative;
+  min-height: 425px;
+  overflow: hidden;
+  border-radius: 30px;
+  background: linear-gradient(155deg, #2e6750 0%, #173f30 68%, #102d22 100%);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.hero-art-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.floating-card {
+  position: absolute;
+  z-index: 3;
+  top: 22px;
+  right: 22px;
+  width: 228px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 20px;
+  background: rgba(255, 254, 250, 0.95);
+  color: #162925;
+  box-shadow: 0 16px 38px rgba(9, 28, 20, 0.24);
+  backdrop-filter: blur(10px);
+}
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #e5f4ea;
+  color: #1d6840;
+}
+.live-pill.closed {
+  background: #faeee2;
+  color: #9e5316;
+}
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.82); }
+}
+.floating-card strong {
+  display: block;
+  margin: 8px 0 3px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #162925;
+}
+.floating-card small {
+  display: block;
+  color: #5b6962;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+.slot-pills {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  margin-top: 12px;
+}
+.slot-pill {
+  text-align: center;
+  padding: 4px 0;
+  border-radius: 8px;
+  background: #eef2ec;
+  color: #5a6961;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+}
+.slot-pill.active {
+  background: #225a46;
+  color: #fffefa;
+}
+.slot-pill.next {
+  background: #faeee2;
+  color: #9e5316;
+  border: 1px solid rgba(158, 83, 22, 0.25);
+}
+.art-label {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 38px 26px 24px;
+  background: linear-gradient(to top, rgba(11, 33, 25, 0.92) 0%, rgba(11, 33, 25, 0.62) 58%, transparent 100%);
+  color: #fffefa;
+}
+.art-label span {
+  display: block;
+  margin-bottom: 5px;
+  color: #d6ea96;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.art-label strong {
+  font-size: clamp(21px, 2.4vw, 25px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+/* Quickbar */
+.quickbar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 13px;
+  margin: 8px 0 92px;
+}
+.quick {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  padding: 17px 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+.quick:hover {
+  transform: translateY(-2px);
+  border-color: var(--green);
+  background: var(--card-hover);
+}
+.quick-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  color: var(--green);
+  background: var(--mint);
+}
+[data-theme="dark"] .quick-icon { color: var(--lime); }
+.quick b {
+  display: block;
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: -0.015em;
+}
+.quick small {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+/* Sections */
+section { scroll-margin-top: 96px; }
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 26px;
+}
+.section-head h2 {
+  max-width: 560px;
+  margin: 9px 0 0;
+  font-size: clamp(30px, 3.8vw, 43px);
+  font-weight: 800;
+  line-height: 1.07;
+  letter-spacing: -0.036em;
+}
+.section-head p {
+  max-width: 400px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* Map & Transit Section */
+.map-section { margin-bottom: 98px; }
+.map-grid {
+  display: grid;
+  grid-template-columns: 0.88fr 1.12fr;
+  gap: 18px;
+}
+.map-info {
+  padding: 28px;
+  border-radius: var(--radius);
+  color: #fffefa;
+  background: linear-gradient(160deg, #184434 0%, #102e23 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+}
+.map-info .eyebrow { color: var(--lime); }
+.map-info h3 {
+  margin: 13px 0 8px;
+  font-size: 25px;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+.map-info > div > p {
+  color: #cfe0d7;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+.address {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  margin-bottom: 18px;
+}
+.address-left {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+}
+.address-pin {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(210, 232, 141, 0.16);
+  color: var(--lime);
+}
+.address strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12.5px;
+}
+.address small {
+  display: block;
+  color: #d2e0d8;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.copy-chip {
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fffefa;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+.copy-chip:hover { background: rgba(255, 255, 255, 0.18); }
+
+.transit-box {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
+}
+.transit-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: #acc4b8;
+  margin-bottom: 9px;
+}
+.transit-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 11px;
+}
+.transit-tab {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: transparent;
+  color: #d7e5dd;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.transit-tab:hover { border-color: rgba(210, 232, 141, 0.5); }
+.transit-tab.active {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #132c22;
+  font-weight: 750;
+}
+.transit-detail strong {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--lime);
+}
+.transit-detail span {
+  color: #c7dad0;
+  font-size: 11.5px;
+}
+.map-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.map-info .button.lime-cta {
+  color: #132c22 !important;
+  background: var(--lime);
+  border-color: var(--lime);
+}
+.map-info .button.lime-cta:hover {
+  background: #dff0a6;
+  border-color: #dff0a6;
+}
+.map-info .button.ghost-light {
+  color: #fffefa !important;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+.map-info .button.ghost-light:hover { background: rgba(255, 255, 255, 0.16); }
+
+.map-frame {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #dfe7da;
+  box-shadow: var(--shadow);
+}
+.map-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 430px;
+  border: 0;
+}
+.map-badge {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(22, 41, 37, 0.86);
+  color: #fffefa;
+  font-family: var(--mono);
+  font-size: 11px;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+/* Hostel Dining & Meal Schedule */
+.mess-section { margin-bottom: 98px; }
+.meal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 13px;
+  margin-bottom: 18px;
+}
+.meal-time {
+  position: relative;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.meal-time.is-active {
+  border-color: var(--green);
+  box-shadow: 0 12px 30px rgba(34, 90, 70, 0.12);
+}
+.meal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.meal-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--green);
+  background: var(--mint);
+}
+[data-theme="dark"] .meal-icon { color: var(--lime); }
+.meal-badge {
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: none;
+}
+.meal-time.is-active .meal-badge {
+  display: inline-block;
+  background: #e3f3e8;
+  color: #1b663e;
+}
+.meal-time.is-next .meal-badge {
+  display: inline-block;
+  background: #faeee2;
+  color: #9e5316;
+}
+.meal-time h3 {
+  margin: 14px 0 3px;
+  font-size: 14px;
+  font-weight: 750;
+}
+.meal-time strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+[data-theme="dark"] .meal-time strong { color: #7cd1ad; }
+.meal-time small {
+  display: block;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  color: var(--muted);
+  background: var(--paper-subtle);
+  font-size: 12.5px;
+}
+.note-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--mint-strong);
+  color: var(--green-dark);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+[data-theme="dark"] .note-badge { color: var(--lime); }
+.note strong { color: var(--ink); }
+
+/* Interactive Sample Menu */
+.food-layout {
+  display: grid;
+  grid-template-columns: 0.78fr 1.22fr;
+  gap: 18px;
+  margin-top: 22px;
+  scroll-margin-top: 96px;
+}
+.food-intro {
+  position: relative;
+  overflow: hidden;
+  min-height: 350px;
+  padding: 28px;
+  border-radius: var(--radius);
+  color: #fffefa;
+  background: linear-gradient(155deg, var(--terracotta) 0%, var(--terracotta-dark) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+}
+.food-intro .eyebrow { color: #fff1d6; }
+.food-intro .eyebrow::before { background: #ffe09e; }
+.food-intro h3 {
+  max-width: 270px;
+  margin: 15px 0 11px;
+  font-size: 28px;
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+}
+.food-intro p {
+  max-width: 295px;
+  color: #ffead8;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.food-tags {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 18px;
+}
+.food-tags span {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fffaf3;
+}
+.food-art {
+  position: absolute;
+  right: -18px;
+  bottom: -18px;
+  width: 175px;
+  height: 175px;
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+.menu-card {
+  padding: 25px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+.menu-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.menu-header h3 {
+  margin-bottom: 3px;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+}
+.menu-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.cuisine-switch {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper-subtle);
+}
+.cuisine-btn {
+  padding: 5px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.cuisine-btn.active {
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+.day-tabs {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.day-btn {
+  position: relative;
+  padding: 7px 4px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.day-btn:hover { border-color: var(--green); color: var(--ink); }
+.day-btn.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fffefa;
+}
+[data-theme="dark"] .day-btn.active {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #13281f;
+}
+.day-btn.is-today::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+.menu-rows { display: grid; gap: 11px; }
+.menu-row {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.menu-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.menu-row b {
+  color: var(--green);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+[data-theme="dark"] .menu-row b { color: #7cd1ad; }
+.menu-row span {
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Meal Plans & Estimator */
+.plans-section { margin-bottom: 98px; }
+.plan-wrap {
+  display: grid;
+  grid-template-columns: 1.38fr 0.82fr;
+  gap: 18px;
+}
+.plans-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+.plans-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line);
+}
+.plans-title h3 { margin: 0; font-size: 17px; letter-spacing: -0.03em; }
+.tag {
+  padding: 5px 11px;
+  border-radius: 999px;
+  color: var(--green);
+  background: var(--mint);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+[data-theme="dark"] .tag { color: var(--lime); }
+
+.price-row {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line-soft);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px 24px;
+  cursor: pointer;
+  color: var(--ink);
+  transition: background-color 0.16s ease;
+}
+.price-row:last-child { border-bottom: 0; }
+.price-row:hover { background: var(--paper-subtle); }
+.price-row.selected { background: var(--mint); }
+.radio-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--muted);
+  display: grid;
+  place-items: center;
+}
+.price-row.selected .radio-dot { border-color: var(--green); }
+.price-row.selected .radio-dot::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+}
+[data-theme="dark"] .price-row.selected .radio-dot { border-color: var(--lime); }
+[data-theme="dark"] .price-row.selected .radio-dot::after { background: var(--lime); }
+.price-row b { display: block; font-size: 13.5px; margin-bottom: 2px; }
+.price-row small { color: var(--muted); font-size: 11.5px; }
+.price {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.price em {
+  display: block;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.nonveg-card {
+  padding: 25px;
+  border-radius: var(--radius);
+  color: #fffefa;
+  background: linear-gradient(160deg, #243e32 0%, #172b22 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+}
+.nonveg-card .eyebrow { color: var(--lime); }
+.nonveg-card h3 {
+  margin: 12px 0 8px;
+  font-size: 24px;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+.nonveg-card > div > p { color: #d3dfd7; font-size: 12.5px; }
+.mini-price { display: grid; gap: 6px; margin: 14px 0 16px; }
+.mini-price div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  color: #dfeae2;
+  font-size: 12.5px;
+}
+.mini-price b { font-family: var(--mono); color: #fffefa; font-size: 13px; }
+.nonveg-card .disclaimer {
+  margin: 0;
+  padding: 12px 13px;
+  border-radius: 13px;
+  color: #ffefd9;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* Estimator */
+.estimator-card {
+  margin-top: 18px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+.estimator-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.estimator-top h3 { margin: 0 0 3px; font-size: 17px; letter-spacing: -0.03em; }
+.estimator-top p { margin: 0; color: var(--muted); font-size: 12px; }
+.edb-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  user-select: none;
+}
+.edb-toggle input { accent-color: var(--green); width: 15px; height: 15px; margin: 0; cursor: pointer; }
+.estimator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.25fr;
+  gap: 14px;
+  align-items: stretch;
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+}
+.field-group label {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+.field-group select,
+.form-input {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 13.5px;
+  font-weight: 700;
+  outline: none;
+}
+.field-group select { cursor: pointer; }
+.field-group select option { background: var(--card); color: var(--ink); }
+.estimate-result {
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: var(--mint);
+  border: 1px solid var(--mint-strong);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+.estimate-result small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.estimate-result strong {
+  display: block;
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  margin: 2px 0;
+}
+.estimate-meta { color: var(--ink-soft); font-size: 11.5px; font-weight: 600; }
+.share-est-btn {
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--green);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
+.share-est-btn:hover { background: var(--green); color: #fffefa; }
+.plan-footnote { margin: 14px 4px 0; color: var(--muted); font-size: 11.5px; line-height: 1.55; }
+
+/* Extras */
+.extras { margin-bottom: 98px; }
+.extras-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+.extra {
+  padding: 23px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.extra:hover { transform: translateY(-2px); border-color: var(--green); }
+.extra-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  color: var(--green);
+  background: var(--mint);
+}
+[data-theme="dark"] .extra-icon { color: var(--lime); }
+.extra h3 { margin-bottom: 6px; font-size: 15px; font-weight: 750; }
+.extra p { margin-bottom: 0; color: var(--muted); font-size: 12.5px; line-height: 1.55; }
+
+/* NEW: Student Mess Reviews (Student Reviews) */
+.reviews-section { margin-bottom: 98px; }
+.reviews-layout {
+  display: grid;
+  grid-template-columns: 1.18fr 0.82fr;
+  gap: 18px;
+  align-items: start;
+}
+.rating-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+.rating-score {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.rating-score strong {
+  font-family: var(--mono);
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--green);
+  letter-spacing: -0.04em;
+}
+[data-theme="dark"] .rating-score strong { color: var(--lime); }
+.rating-stars { color: #e59238; font-size: 16px; letter-spacing: 2px; }
+.reviews-list {
+  display: grid;
+  gap: 12px;
+}
+.review-card {
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+.review-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.review-author b { font-size: 13.5px; }
+.review-meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: 6px;
+}
+.chip-mini {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--green);
+  font-size: 10.5px;
+  font-weight: 750;
+}
+[data-theme="dark"] .chip-mini { color: var(--lime); }
+.review-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12.8px;
+  line-height: 1.55;
+}
+
+.form-card {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+.form-card h3 {
+  margin-bottom: 4px;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+}
+.form-card > p {
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.form-stack {
+  display: grid;
+  gap: 11px;
+}
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.input-box label {
+  font-size: 11px;
+  font-weight: 750;
+  color: var(--muted);
+}
+.input-box input,
+.input-box select,
+.input-box textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.18s ease;
+}
+.input-box input:focus,
+.input-box select:focus,
+.input-box textarea:focus {
+  border-color: var(--green);
+}
+.star-picker {
+  display: inline-flex;
+  gap: 6px;
+}
+.star-btn {
+  width: 36px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: #c4c9c2;
+  font-size: 17px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.star-btn.lit {
+  color: #e59238;
+  border-color: #e59238;
+  background: rgba(229, 146, 56, 0.1);
+}
+.form-msg {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  min-height: 18px;
+}
+.form-msg.err { color: #c0392b; }
+
+/* FAQ + Ask Doubt Form */
+.faq { margin-bottom: 92px; }
+.faq-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.faq-chip {
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.faq-chip:hover { border-color: var(--green); color: var(--ink); }
+.faq-chip.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fffefa;
+}
+[data-theme="dark"] .faq-chip.active {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #13281f;
+}
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 22px;
+}
+details.faq-item {
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+}
+details.faq-item[open] { border-color: var(--green); }
+details.faq-item[hidden] { display: none; }
+summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+  font-weight: 750;
+}
+summary::-webkit-details-marker { display: none; }
+summary::after {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--mint);
+  color: var(--green);
+  display: grid;
+  place-items: center;
+  content: "+";
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+[data-theme="dark"] summary::after { color: var(--lime); }
+details[open] summary::after { content: "−"; }
+details p {
+  margin: 12px 10px 0 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.ask-banner {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper-subtle);
+  align-items: center;
+}
+.ask-banner h3 { margin-bottom: 6px; font-size: 20px; letter-spacing: -0.03em; }
+.ask-banner p { margin: 0; color: var(--muted); font-size: 13px; }
+.ask-inline-form {
+  display: grid;
+  gap: 10px;
+}
+
+/* Official Sources */
+.sources {
+  margin: 0 0 70px;
+  padding: 24px 26px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--paper-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+.sources h3 { margin-bottom: 5px; font-size: 14px; font-weight: 800; }
+.sources p { margin: 0; color: var(--muted); font-size: 12px; }
+.source-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.source-links a {
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 750;
+  text-decoration: none;
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+[data-theme="dark"] .source-links a { color: var(--lime); }
+.source-links a:hover { border-color: var(--green); transform: translateY(-1px); }
+
+footer {
+  padding: 26px 0 36px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+}
+.footer-brand { color: var(--ink); font-weight: 800; }
+.to-top { font-weight: 700; color: var(--green); text-decoration: none; }
+[data-theme="dark"] .to-top { color: var(--lime); }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .hero-grid, .map-grid, .food-layout, .plan-wrap, .reviews-layout, .ask-banner { grid-template-columns: 1fr; }
+  .hero-art { min-height: 380px; }
+  .quickbar, .meal-grid { grid-template-columns: repeat(2, 1fr); }
+  .estimator-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .wrap { width: min(100% - 28px, 560px); }
+  .nav { height: 66px; }
+  .navlinks {
+    display: none;
+    position: absolute;
+    top: 66px;
+    left: 0;
+    right: 0;
+    padding: 16px 20px 22px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    box-shadow: var(--shadow);
+  }
+  .navlinks.open { display: flex; }
+  .navlinks a.nav-item { padding: 10px 4px; font-size: 14px; }
+  .navlinks a.nav-item.active::after { display: none; }
+  .navlinks a.nav-cta { margin-top: 8px; text-align: center; }
+  .menu-toggle { display: grid; }
+  .hero { padding-top: 28px; }
+  h1 { font-size: clamp(38px, 10.8vw, 54px); }
+  .floating-card { top: 14px; right: 14px; width: 204px; padding: 13px; }
+  .section-head { display: block; }
+  .section-head p { margin-top: 10px; }
+  .extras-grid, .faq-grid, .form-row-2 { grid-template-columns: 1fr; }
+  .menu-row { grid-template-columns: 1fr; gap: 3px; }
+  .estimate-result { flex-direction: column; align-items: flex-start; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+
+/* Feature 1: Campus Block & Landmark Finder */
+.blocks-section { margin-bottom: 98px; }
+.blocks-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.block-search-wrap {
+  position: relative;
+  flex: 1 1 310px;
+  max-width: 440px;
+}
+.block-search-wrap svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+.block-search-input {
+  width: 100%;
+  padding: 11px 36px 11px 40px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease;
+}
+.block-search-input:focus { border-color: var(--green); }
+.block-search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  display: none;
+  padding: 4px 6px;
+}
+.block-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.blocks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.block-card {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.block-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--green);
+}
+.block-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.block-code {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #fffefa;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+[data-theme="dark"] .block-code {
+  background: var(--lime);
+  color: #13281f;
+}
+.block-cat-tag {
+  font-size: 10.5px;
+  font-weight: 750;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.block-card h3 {
+  margin: 8px 0 6px;
+  font-size: 15.5px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.28;
+}
+.block-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.2px;
+  line-height: 1.5;
+}
+.block-meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.block-meta-pill {
+  padding: 4px 9px;
+  border-radius: 8px;
+  background: var(--paper-subtle);
+  border: 1px solid var(--line-soft);
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 650;
+}
+.block-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 750;
+  text-decoration: none;
+}
+[data-theme="dark"] .block-map-link { color: var(--lime); }
+.block-map-link:hover { text-decoration: underline; }
+.blocks-empty {
+  grid-column: 1 / -1;
+  padding: 28px;
+  text-align: center;
+  border: 1px dashed var(--line);
+  border-radius: 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Feature 2: Live Today's Mess Food Poll */
+.poll-box {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--paper-subtle);
+}
+.poll-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 11px;
+}
+.poll-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.poll-slot-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.poll-slot-btn {
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.poll-slot-btn.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fffefa;
+}
+[data-theme="dark"] .poll-slot-btn.active {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #13281f;
+}
+.poll-bar-wrap {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(200, 111, 63, 0.22);
+  overflow: hidden;
+  margin-bottom: 11px;
+}
+.poll-bar-fill {
+  height: 100%;
+  width: 85%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), #43a37c);
+  transition: width 0.35s ease;
+}
+.poll-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.poll-btns {
+  display: inline-flex;
+  gap: 8px;
+}
+.vote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.vote-btn:hover { border-color: var(--green); transform: translateY(-1px); }
+.vote-btn.voted-up {
+  background: var(--mint);
+  border-color: var(--green);
+  color: var(--green);
+}
+[data-theme="dark"] .vote-btn.voted-up { color: var(--lime); }
+.vote-btn.voted-down {
+  background: rgba(200, 111, 63, 0.15);
+  border-color: var(--terracotta);
+  color: var(--terracotta);
+}
+.poll-stat-text {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Feature 6: Fresher Hostel Packing & Reporting Checklist */
+.checklist-section { margin-bottom: 98px; }
+.checklist-progress-card {
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.checklist-prog-left { flex: 1 1 280px; }
+.checklist-prog-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.checklist-prog-head strong { font-size: 15px; font-weight: 800; }
+.checklist-prog-head span {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+}
+[data-theme="dark"] .checklist-prog-head span { color: var(--lime); }
+.checklist-track {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--paper-subtle);
+  border: 1px solid var(--line-soft);
+  overflow: hidden;
+}
+.checklist-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), #43a37c);
+  transition: width 0.3s ease;
+}
+.checklist-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 16px;
+}
+.check-group-card {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+.check-group-card h3 {
+  margin: 0 0 12px;
+  font-size: 15.5px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.check-items {
+  display: grid;
+  gap: 9px;
+}
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 11px;
+  border-radius: 12px;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+  user-select: none;
+}
+.check-row:hover { border-color: var(--green); }
+.check-row input {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--green);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.check-row span {
+  font-size: 12.8px;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.42;
+}
+.check-row.done {
+  background: var(--mint);
+  border-color: var(--mint-strong);
+}
+.check-row.done span {
+  text-decoration: line-through;
+  opacity: 0.72;
+}
+.banned-alert {
+  padding: 18px 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(200, 111, 63, 0.38);
+  background: rgba(200, 111, 63, 0.09);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+.banned-alert strong {
+  display: block;
+  color: var(--terracotta-dark);
+  font-size: 13.5px;
+  margin-bottom: 3px;
+}
+[data-theme="dark"] .banned-alert strong { color: var(--orange); }
+.banned-alert p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12.2px;
+}
+.banned-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.banned-pills span {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid rgba(200, 111, 63, 0.35);
+  color: var(--terracotta-dark);
+  font-size: 11px;
+  font-weight: 750;
+}
+[data-theme="dark"] .banned-pills span { color: var(--orange); }
+
+/* Feature 4: "Ask LPU Buddy" Floating Smart Chatbot */
+.buddy-fab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(145deg, #225a46, #143c2f);
+  color: #fffefa;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 14px 34px rgba(16, 45, 34, 0.34);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.buddy-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(16, 45, 34, 0.44);
+}
+.buddy-fab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 0 3px rgba(210, 232, 141, 0.28);
+}
+.buddy-panel {
+  position: fixed;
+  right: 22px;
+  bottom: 80px;
+  z-index: 95;
+  width: min(380px, calc(100vw - 28px));
+  height: 500px;
+  max-height: calc(100vh - 110px);
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: 0 24px 64px rgba(12, 28, 22, 0.28);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.buddy-panel.open { display: flex; }
+.buddy-head {
+  padding: 15px 18px;
+  background: linear-gradient(145deg, #1e523f, #133629);
+  color: #fffefa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.buddy-head b {
+  display: block;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+}
+.buddy-head small {
+  color: #cde2d7;
+  font-size: 11px;
+}
+.buddy-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fffefa;
+  font-size: 16px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.buddy-messages {
+  flex: 1;
+  padding: 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--paper);
+}
+.buddy-msg {
+  max-width: 88%;
+  padding: 10px 13px;
+  border-radius: 16px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+.buddy-msg.bot {
+  align-self: flex-start;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  border-bottom-left-radius: 5px;
+}
+.buddy-msg.user {
+  align-self: flex-end;
+  background: var(--green);
+  color: #fffefa;
+  border-bottom-right-radius: 5px;
+  font-weight: 600;
+}
+[data-theme="dark"] .buddy-msg.user {
+  background: var(--lime);
+  color: #13281f;
+}
+.buddy-chips {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  border-top: 1px solid var(--line-soft);
+  background: var(--card);
+  scrollbar-width: none;
+}
+.buddy-chips::-webkit-scrollbar { display: none; }
+.buddy-chip {
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper-subtle);
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.buddy-chip:hover { border-color: var(--green); color: var(--ink); }
+.buddy-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  border-top: 1px solid var(--line);
+  background: var(--card);
+}
+.buddy-input {
+  flex: 1;
+  padding: 9px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 12.5px;
+  outline: none;
+}
+.buddy-input:focus { border-color: var(--green); }
+.buddy-send {
+  padding: 0 15px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--green);
+  color: #fffefa;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+[data-theme="dark"] .buddy-send { background: var(--lime); color: #13281f; }
+
+@media (max-width: 960px) {
+  .blocks-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .blocks-grid, .checklist-grid { grid-template-columns: 1fr; }
+  .buddy-fab { right: 14px; bottom: 14px; padding: 11px 15px; }
+  .buddy-panel { right: 14px; bottom: 70px; }
+}
+@media print {
+  .topbar, .hero, .quickbar, .map-section, .blocks-section, .mess-section, .plans-section, .extras, .reviews-section, .faq, .sources, footer, .buddy-fab, .buddy-panel, .checklist-actions {
+    display: none !important;
+  }
+  .checklist-section { margin: 0 !important; }
+  body { background: #fff !important; color: #000 !important; }
+}
+```
+
+---
+
+## 4. Main Frontend Logic (public/script.js — JavaScript)
+
+```javascript
+// LPU Campus Guide (2026-27) — Main Frontend JavaScript
+
+(() => {
+  // 1. Mobile Nav & Theme Toggle
+  const menuBtn = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('navlinks');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+  navLinks.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const themeBtn = document.getElementById('theme-toggle');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun = document.getElementById('icon-sun');
+  const metaTheme = document.getElementById('meta-theme-color');
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      iconMoon.style.display = 'none';
+      iconSun.style.display = 'block';
+      metaTheme.setAttribute('content', '#0e1916');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      iconMoon.style.display = 'block';
+      iconSun.style.display = 'none';
+      metaTheme.setAttribute('content', '#f7f6f1');
+    }
+  }
+  const savedTheme = localStorage.getItem('lpu-guide-theme');
+  if (savedTheme) applyTheme(savedTheme);
+  themeBtn.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem('lpu-guide-theme', next);
+  });
+
+  // 2. Live IST Dining Status
+  let mealWindows = [
+    { id: 'breakfast', name: 'Breakfast', start: 435, end: 570, label: '7:15 – 9:30 AM' },
+    { id: 'lunch', name: 'Lunch', start: 675, end: 900, label: '11:15 AM – 3:00 PM' },
+    { id: 'snacks', name: 'Tea & Snacks', start: 1020, end: 1080, label: '5:00 – 6:00 PM' },
+    { id: 'dinner', name: 'Dinner', start: 1140, end: 1260, label: '7:00 – 9:00 PM' }
+  ];
+
+  function getISTTimeParts() {
+    const istString = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+    const istDate = new Date(istString);
+    return {
+      day: istDate.getDay(),
+      minutes: istDate.getHours() * 60 + istDate.getMinutes(),
+      formatted: istDate.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()
+    };
+  }
+
+  function formatDiff(mins) {
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    if (h > 0 && m > 0) return `${h}h ${m}m`;
+    return h > 0 ? `${h}h` : `${m}m`;
+  }
+
+  function updateDiningStatus() {
+    const { minutes, formatted } = getISTTimeParts();
+    const pill = document.getElementById('hero-live-pill');
+    const statusText = document.getElementById('hero-live-status');
+    const titleEl = document.getElementById('hero-meal-title');
+    const subEl = document.getElementById('hero-meal-sub');
+
+    let activeMeal = null;
+    let nextMeal = null;
+    let minsUntilNext = 0;
+
+    for (const m of mealWindows) {
+      if (minutes >= m.start && minutes < m.end) { activeMeal = m; break; }
+      if (minutes < m.start && !nextMeal) { nextMeal = m; minsUntilNext = m.start - minutes; }
+    }
+    if (!activeMeal && !nextMeal) {
+      nextMeal = mealWindows[0];
+      minsUntilNext = (24 * 60 - minutes) + nextMeal.start;
+    }
+
+    document.querySelectorAll('.slot-pill').forEach((el) => {
+      el.classList.remove('active', 'next');
+      if (activeMeal && el.dataset.slot === activeMeal.id) el.classList.add('active');
+      else if (!activeMeal && nextMeal && el.dataset.slot === nextMeal.id) el.classList.add('next');
+    });
+
+    document.querySelectorAll('[data-meal-card]').forEach((card) => {
+      card.classList.remove('is-active', 'is-next');
+      const badge = card.querySelector('.meal-badge');
+      if (activeMeal && card.dataset.mealCard === activeMeal.id) {
+        card.classList.add('is-active');
+        badge.textContent = 'Serving now';
+      } else if (!activeMeal && nextMeal && card.dataset.mealCard === nextMeal.id) {
+        card.classList.add('is-next');
+        badge.textContent = 'Up next';
+      }
+    });
+
+    if (activeMeal) {
+      pill.classList.remove('closed');
+      statusText.textContent = `Open now · ${formatted} IST`;
+      titleEl.textContent = `${activeMeal.name} is open`;
+      subEl.textContent = `Closes in ${formatDiff(activeMeal.end - minutes)} (${activeMeal.label})`;
+    } else {
+      pill.classList.add('closed');
+      statusText.textContent = `Closed · ${formatted} IST`;
+      titleEl.textContent = `Next: ${nextMeal.name}`;
+      subEl.textContent = `Opens in ${formatDiff(minsUntilNext)} (${nextMeal.label})`;
+    }
+  }
+  updateDiningStatus();
+  setInterval(updateDiningStatus, 30000);
+
+  // 3. Copy Address & Transit Tabs
+  const copyAddrBtn = document.getElementById('copy-address-btn');
+  copyAddrBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText('Lovely Professional University, Jalandhar-Delhi G.T. Road, Phagwara, Punjab 144411, India');
+      copyAddrBtn.textContent = 'Copied ✓';
+      setTimeout(() => { copyAddrBtn.textContent = 'Copy address'; }, 2000);
+    } catch {
+      copyAddrBtn.textContent = 'Phagwara 144411';
+    }
+  });
+
+  const transitData = {
+    pgw: { dist: '~7 km · 12–15 min', note: 'Direct autos & cabs outside Phagwara Railway Station right to LPU Main Gate.' },
+    jrc: { dist: '~14 km · 20–25 min', note: 'Frequent highway buses & shared autos along NH-44 from Jalandhar Cantt.' },
+    juc: { dist: '~20 km · 30–35 min', note: 'Regular Phagwara/Ludhiana-bound buses & cabs drop directly at LPU.' },
+    air: { dist: 'ATQ ~110 km · IXC ~145 km', note: 'Amritsar (ATQ) & Chandigarh (IXC) airports connect smoothly via NH-44 highway.' }
+  };
+  document.querySelectorAll('.transit-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.transit-tab').forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      const info = transitData[tab.dataset.hub];
+      document.getElementById('transit-dist').textContent = info.dist;
+      document.getElementById('transit-note').innerHTML = `<span>${info.note}</span>`;
+    });
+  });
+
+  // 4. State for Dynamic Menu, Plans, Rooms & Reviews
+  const menuDB = { north: {}, south: {} };
+  let activeCuisine = 'north';
+  let activeDay = getISTTimeParts().day;
+
+  document.querySelectorAll('.day-btn').forEach((btn) => {
+    const d = Number(btn.dataset.day);
+    if (d === activeDay) btn.classList.add('is-today', 'active');
+    btn.addEventListener('click', () => {
+      activeDay = d;
+      document.querySelectorAll('.day-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMenu();
+    });
+  });
+
+  document.querySelectorAll('.cuisine-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      activeCuisine = btn.dataset.cuisine;
+      document.querySelectorAll('.cuisine-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMenu();
+      renderPoll();
+    });
+  });
+
+  function renderMenu() {
+    const entry = menuDB[activeCuisine]?.[activeDay];
+    if (!entry) return;
+    document.getElementById('m-breakfast').textContent = entry.breakfast;
+    document.getElementById('m-lunch').textContent = entry.lunch;
+    document.getElementById('m-snacks').textContent = entry.snacks;
+    document.getElementById('m-dinner').textContent = entry.dinner;
+  }
+
+  // Feature 1: Campus Blocks State & Filter
+  let allBlocks = [];
+  let activeBlockCat = 'all';
+  const blockSearchInput = document.getElementById('block-search-input');
+  const blockSearchClear = document.getElementById('block-search-clear');
+  const blocksGrid = document.getElementById('blocks-grid');
+
+  function renderBlocks() {
+    const q = blockSearchInput.value.trim().toLowerCase();
+    blockSearchClear.style.display = q ? 'block' : 'none';
+    const filtered = allBlocks.filter((b) => {
+      const catOk = activeBlockCat === 'all' || b.category.toLowerCase() === activeBlockCat.toLowerCase();
+      if (!catOk) return false;
+      if (!q) return true;
+      return `${b.code} ${b.title} ${b.highlights} ${b.nearest_gate} ${b.category}`.toLowerCase().includes(q);
+    });
+
+    if (!filtered.length) {
+      blocksGrid.innerHTML = `<div class="blocks-empty">No campus block matched "<strong>${escapeHTML(blockSearchInput.value)}</strong>". Try "Block 34", "CSE", "Hospital", "Uni Mall", or "BH-1".</div>`;
+      return;
+    }
+
+    blocksGrid.innerHTML = filtered.map((b) => {
+      const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.map_query || (b.code + ' LPU Phagwara'))}`;
+      return `
+        <article class="block-card">
+          <div>
+            <div class="block-card-top">
+              <span class="block-code">${escapeHTML(b.code)}</span>
+              <span class="block-cat-tag">${escapeHTML(b.category)}</span>
+            </div>
+            <h3>${escapeHTML(b.title)}</h3>
+            <p>${escapeHTML(b.highlights)}</p>
+            <div class="block-meta-list">
+              <span class="block-meta-pill">🚪 ${escapeHTML(b.nearest_gate)}</span>
+              <span class="block-meta-pill">🚶 ${escapeHTML(b.walk_mins)}</span>
+              <span class="block-meta-pill">🛺 ${escapeHTML(b.erickshaw_route)}</span>
+            </div>
+          </div>
+          <a class="block-map-link" href="${mapHref}" target="_blank" rel="noreferrer">Open in Google Maps ↗</a>
+        </article>
+      `;
+    }).join('');
+  }
+
+  blockSearchInput.addEventListener('input', renderBlocks);
+  blockSearchClear.addEventListener('click', () => {
+    blockSearchInput.value = '';
+    renderBlocks();
+    blockSearchInput.focus();
+  });
+  document.querySelectorAll('[data-block-cat]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      activeBlockCat = chip.dataset.blockCat;
+      document.querySelectorAll('[data-block-cat]').forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      renderBlocks();
+    });
+  });
+
+  // Feature 2: Live Daily Meal Poll ("Aaj Ka Khana Kaisa Tha?")
+  let todayPolls = [];
+  let todayPollDate = new Date().toISOString().slice(0, 10);
+  const istMinsNow = getISTTimeParts().minutes;
+  let activePollSlot = istMinsNow < 600 ? 'breakfast' : istMinsNow < 960 ? 'lunch' : istMinsNow < 1110 ? 'snacks' : 'dinner';
+
+  document.querySelectorAll('.poll-slot-btn').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.pollSlot === activePollSlot);
+    btn.addEventListener('click', () => {
+      activePollSlot = btn.dataset.pollSlot;
+      document.querySelectorAll('.poll-slot-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderPoll();
+    });
+  });
+
+  function pollVoteStorageKey() {
+    return `lpu_poll_vote_${todayPollDate}_${activeCuisine}_${activePollSlot}`;
+  }
+
+  function renderPoll() {
+    const row = todayPolls.find((p) => p.cuisine === activeCuisine && p.meal_slot === activePollSlot) || { up_votes: 0, down_votes: 0 };
+    const up = Number(row.up_votes) || 0;
+    const down = Number(row.down_votes) || 0;
+    const total = up + down;
+    const pct = total > 0 ? Math.round((up / total) * 100) : 85;
+
+    document.getElementById('vote-up-count').textContent = String(up);
+    document.getElementById('vote-down-count').textContent = String(down);
+    document.getElementById('poll-bar-fill').style.width = `${pct}%`;
+    const cuisineName = activeCuisine === 'south' ? 'South' : 'North';
+    document.getElementById('poll-stat-text').textContent = `${pct}% Hit · ${total} votes (${cuisineName} ${activePollSlot})`;
+
+    const myVote = localStorage.getItem(pollVoteStorageKey());
+    document.getElementById('vote-up-btn').classList.toggle('voted-up', myVote === 'up');
+    document.getElementById('vote-down-btn').classList.toggle('voted-down', myVote === 'down');
+  }
+
+  async function handlePollVote(voteType) {
+    const key = pollVoteStorageKey();
+    const prev = localStorage.getItem(key) || '';
+    if (prev === voteType) return;
+    try {
+      const res = await window.CampusAPI.votePoll({
+        cuisine: activeCuisine,
+        meal_slot: activePollSlot,
+        vote: voteType,
+        previous_vote: prev
+      });
+      localStorage.setItem(key, voteType);
+      if (res && res.polls) todayPolls = res.polls;
+      renderPoll();
+    } catch {}
+  }
+  document.getElementById('vote-up-btn').addEventListener('click', () => handlePollVote('up'));
+  document.getElementById('vote-down-btn').addEventListener('click', () => handlePollVote('down'));
+
+  // Estimator Logic
+  const messSelect = document.getElementById('calc-mess');
+  const roomSelect = document.getElementById('calc-room');
+  const edbCheck = document.getElementById('edb-check');
+  const estTotalEl = document.getElementById('est-total');
+  const estBreakdownEl = document.getElementById('est-breakdown');
+
+  function formatINR(num) {
+    return '₹' + Number(num).toLocaleString('en-IN');
+  }
+
+  function updateEstimate() {
+    if (!messSelect.options.length || !roomSelect.options.length) return;
+    const messFee = Number(messSelect.value);
+    let roomFee = Number(roomSelect.value);
+    const edbApplied = edbCheck.checked && roomFee > 0;
+    if (edbApplied) roomFee = Math.max(0, roomFee - 10000);
+
+    const total = messFee + roomFee;
+    const monthly = Math.round(total / 10);
+    const selectedRoomOpt = roomSelect.options[roomSelect.selectedIndex];
+    const unitsText = selectedRoomOpt.dataset.units || '';
+
+    estTotalEl.textContent = formatINR(total);
+    estBreakdownEl.textContent = `~${formatINR(monthly)}/mo (10 mos) · ${unitsText}${edbApplied ? ' · EDB applied' : ''}`;
+
+    const selectedPlanKey = messSelect.options[messSelect.selectedIndex].dataset.planKey;
+    document.querySelectorAll('.price-row').forEach((row) => {
+      row.classList.toggle('selected', row.dataset.plan === selectedPlanKey);
+    });
+  }
+
+  messSelect.addEventListener('change', updateEstimate);
+  roomSelect.addEventListener('change', updateEstimate);
+  edbCheck.addEventListener('change', updateEstimate);
+
+  document.getElementById('copy-est-btn').addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const messLabel = messSelect.options[messSelect.selectedIndex]?.text || '';
+    const roomLabel = roomSelect.options[roomSelect.selectedIndex]?.text || '';
+    const summary = `LPU 2026–27 Estimate:\n• Mess: ${messLabel}\n• Hostel: ${roomLabel}\n• Total: ${estTotalEl.textContent} (${estBreakdownEl.textContent})`;
+    try {
+      await navigator.clipboard.writeText(summary);
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => { btn.textContent = 'Copy summary'; }, 2000);
+    } catch {
+      btn.textContent = 'Done ✓';
+    }
+  });
+
+  function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function starsString(n) {
+    return '★'.repeat(n) + '☆'.repeat(5 - n);
+  }
+
+  function renderReviews(summary, reviews) {
+    document.getElementById('avg-rating-num').textContent = Number(summary.average || 0).toFixed(1);
+    document.getElementById('avg-rating-stars').textContent = starsString(Math.round(summary.average || 0));
+    document.getElementById('total-reviews-count').textContent = `Based on ${summary.total} student review${summary.total === 1 ? '' : 's'}`;
+
+    const listEl = document.getElementById('reviews-list');
+    listEl.innerHTML = reviews.slice(0, 6).map((r) => `
+      <article class="review-card">
+        <div class="review-top">
+          <div class="review-author">
+            <b>${escapeHTML(r.student_name)}</b>
+            <span class="review-meta">
+              <span class="chip-mini">${escapeHTML(r.hostel_block)}</span>
+              <span class="chip-mini">${escapeHTML(r.mess_type)}</span>
+            </span>
+          </div>
+          <span class="rating-stars" aria-label="${r.rating} out of 5 stars">${starsString(r.rating)}</span>
+        </div>
+        <p>${escapeHTML(r.comment)}</p>
+      </article>
+    `).join('');
+  }
+
+  // Hydrate everything via CampusAPI (Express + JSON Store or Cloud Persistent Store)
+  async function loadBackendData() {
+    try {
+      const data = await window.CampusAPI.getBootstrap();
+
+      // Menu
+      data.menu.forEach((row) => {
+        if (!menuDB[row.cuisine]) menuDB[row.cuisine] = {};
+        menuDB[row.cuisine][row.day_of_week] = row;
+      });
+      renderMenu();
+
+      // Campus Blocks & Today's Live Poll
+      if (data.blocks && data.blocks.length) {
+        allBlocks = data.blocks;
+        renderBlocks();
+      }
+      if (data.todayDate) todayPollDate = data.todayDate;
+      if (data.todayPolls && data.todayPolls.length) {
+        todayPolls = data.todayPolls;
+      }
+      renderPoll();
+
+      // Plans
+      const vegPlans = data.plans.filter((p) => p.category === 'veg');
+      const nvPlans = data.plans.filter((p) => p.category === 'nonveg_vendor');
+
+      const vegContainer = document.getElementById('veg-plans-rows');
+      vegContainer.innerHTML = vegPlans.map((p, idx) => `
+        <button class="price-row ${idx === 0 ? 'selected' : ''}" type="button" data-plan="${escapeHTML(p.plan_key)}" data-fee="${p.fee}">
+          <span class="radio-dot" aria-hidden="true"></span>
+          <span>
+            <b>${escapeHTML(p.name)}</b>
+            <small>${escapeHTML(p.subtitle)}</small>
+          </span>
+          <span class="price">${formatINR(p.fee)} <em>${escapeHTML(p.period_label)}</em></span>
+        </button>
+      `).join('');
+
+      vegContainer.querySelectorAll('.price-row').forEach((row) => {
+        row.addEventListener('click', () => {
+          const key = row.dataset.plan;
+          for (let i = 0; i < messSelect.options.length; i++) {
+            if (messSelect.options[i].dataset.planKey === key) {
+              messSelect.selectedIndex = i;
+              break;
+            }
+          }
+          updateEstimate();
+        });
+      });
+
+      if (nvPlans.length) {
+        document.getElementById('nonveg-plans-rows').innerHTML = nvPlans.map((p) => `
+          <div><span>${escapeHTML(p.name)}</span><b>${formatINR(p.fee)} ${escapeHTML(p.period_label)}</b></div>
+        `).join('');
+      }
+
+      // Calculator selects
+      messSelect.innerHTML = vegPlans.map((p) =>
+        `<option value="${p.fee}" data-plan-key="${escapeHTML(p.plan_key)}">${escapeHTML(p.name)} (${formatINR(p.fee)})</option>`
+      ).join('') + `<option value="0" data-plan-key="none">Self-managed / No mess (₹0)</option>`;
+
+      roomSelect.innerHTML = data.rooms.map((r) =>
+        `<option value="${r.fee}" data-units="${escapeHTML(r.electricity_units)}" ${r.room_key === '4s_ac' ? 'selected' : ''}>${escapeHTML(r.name)}${r.fee > 0 ? ` (${formatINR(r.fee)})` : ''}</option>`
+      ).join('');
+
+      updateEstimate();
+
+      // Reviews
+      renderReviews(data.reviewSummary, data.reviews);
+
+      // Resolved Community Q&As appended into FAQ Grid
+      if (data.resolvedQueries && data.resolvedQueries.length) {
+        const faqGrid = document.getElementById('faq-grid');
+        data.resolvedQueries.forEach((q) => {
+          const det = document.createElement('details');
+          det.className = 'faq-item';
+          det.dataset.cat = 'food';
+          det.innerHTML = `
+            <summary>${escapeHTML(q.question)}</summary>
+            <p><strong>Answered for ${escapeHTML(q.name)}:</strong> ${escapeHTML(q.admin_reply)}</p>
+          `;
+          faqGrid.appendChild(det);
+        });
+      }
+
+      document.getElementById('db-status-badge').textContent =
+        data.mode === 'server' ? '● Live API Connected' : '● Live Guide Ready';
+    } catch (err) {
+      document.getElementById('db-status-badge').textContent = '● Live Guide Ready';
+    }
+  }
+  loadBackendData();
+
+  // 5. Submit Student Review Form
+  let chosenStars = 5;
+  const starBtns = document.querySelectorAll('.star-btn');
+  starBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      chosenStars = Number(btn.dataset.val);
+      starBtns.forEach((b) => b.classList.toggle('lit', Number(b.dataset.val) <= chosenStars));
+    });
+  });
+
+  document.getElementById('review-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msgEl = document.getElementById('rev-msg');
+    msgEl.className = 'form-msg';
+    msgEl.textContent = 'Saving review…';
+
+    const payload = {
+      student_name: document.getElementById('rev-name').value,
+      hostel_block: document.getElementById('rev-hostel').value,
+      mess_type: document.getElementById('rev-plan').value,
+      rating: chosenStars,
+      comment: document.getElementById('rev-comment').value
+    };
+
+    try {
+      await window.CampusAPI.postReview(payload);
+      msgEl.textContent = 'Review saved ✓';
+      e.target.reset();
+      chosenStars = 5;
+      starBtns.forEach((b) => b.classList.add('lit'));
+
+      const listData = await window.CampusAPI.getReviews();
+      renderReviews(listData.summary, listData.reviews);
+    } catch (err) {
+      msgEl.className = 'form-msg err';
+      msgEl.textContent = err.message;
+    }
+  });
+
+  // 6. Submit Student Query Form
+  document.getElementById('query-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msgEl = document.getElementById('q-msg');
+    msgEl.className = 'form-msg';
+    msgEl.textContent = 'Sending…';
+
+    const payload = {
+      name: document.getElementById('q-name').value,
+      contact: document.getElementById('q-contact').value,
+      topic: document.getElementById('q-topic').value,
+      question: document.getElementById('q-text').value
+    };
+
+    try {
+      await window.CampusAPI.postQuery(payload);
+      msgEl.textContent = 'Question saved! Open Admin Panel to reply ✓';
+      e.target.reset();
+    } catch (err) {
+      msgEl.className = 'form-msg err';
+      msgEl.textContent = err.message;
+    }
+  });
+
+  // 7. Feature 6: Fresher Hostel Packing & Reporting Checklist
+  const CHECK_STORAGE_KEY = 'lpu_fresher_checklist_v1';
+  const checkInputs = Array.from(document.querySelectorAll('[data-check-id]'));
+
+  function loadChecklistState() {
+    try {
+      return JSON.parse(localStorage.getItem(CHECK_STORAGE_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function saveChecklistState(state) {
+    try {
+      localStorage.setItem(CHECK_STORAGE_KEY, JSON.stringify(state));
+    } catch {}
+  }
+
+  function syncChecklistUI() {
+    const state = loadChecklistState();
+    let doneCount = 0;
+    checkInputs.forEach((inp) => {
+      const checked = Boolean(state[inp.dataset.checkId]);
+      inp.checked = checked;
+      inp.closest('.check-row')?.classList.toggle('done', checked);
+      if (checked) doneCount += 1;
+    });
+    const total = checkInputs.length;
+    const pct = total ? Math.round((doneCount / total) * 100) : 0;
+    document.getElementById('checklist-count-label').textContent = `${doneCount} / ${total} packed (${pct}%)`;
+    document.getElementById('checklist-fill').style.width = `${pct}%`;
+  }
+
+  checkInputs.forEach((inp) => {
+    inp.addEventListener('change', () => {
+      const state = loadChecklistState();
+      state[inp.dataset.checkId] = inp.checked;
+      saveChecklistState(state);
+      syncChecklistUI();
+    });
+  });
+  syncChecklistUI();
+
+  function buildChecklistText() {
+    const done = [];
+    const pending = [];
+    checkInputs.forEach((inp) => {
+      const txt = inp.parentElement.querySelector('span')?.textContent?.trim() || '';
+      if (inp.checked) done.push(`✅ ${txt}`);
+      else pending.push(`⬜ ${txt}`);
+    });
+    return `🎒 *LPU 2026–27 Fresher Packing & Reporting Checklist* (${done.length}/${checkInputs.length} ready)\n\n` +
+      (pending.length ? `*Remaining:*\n${pending.join('\n')}\n\n` : '') +
+      (done.length ? `*Packed:*\n${done.join('\n')}\n\n` : '') +
+      `Guide: ${location.href.split('#')[0]}`;
+  }
+
+  document.getElementById('checklist-wa-btn').addEventListener('click', () => {
+    const text = buildChecklistText();
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+  });
+
+  document.getElementById('checklist-copy-btn').addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    try {
+      await navigator.clipboard.writeText(buildChecklistText());
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => { btn.textContent = 'Copy list'; }, 2000);
+    } catch {}
+  });
+
+  document.getElementById('checklist-print-btn').addEventListener('click', () => {
+    window.print();
+  });
+
+  document.getElementById('checklist-reset-btn').addEventListener('click', () => {
+    saveChecklistState({});
+    syncChecklistUI();
+  });
+
+  // 8. Feature 4: "Ask LPU Buddy" Floating Smart Chatbot
+  const buddyFab = document.getElementById('buddy-fab');
+  const buddyPanel = document.getElementById('buddy-panel');
+  const buddyClose = document.getElementById('buddy-close');
+  const buddyForm = document.getElementById('buddy-form');
+  const buddyInput = document.getElementById('buddy-input');
+  const buddyMessages = document.getElementById('buddy-messages');
+
+  function formatBotMarkdown(raw) {
+    const safe = escapeHTML(raw);
+    return safe
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\n/g, '<br>');
+  }
+
+  function appendBuddyMsg(role, content) {
+    const bubble = document.createElement('div');
+    bubble.className = `buddy-msg ${role}`;
+    if (role === 'bot') bubble.innerHTML = formatBotMarkdown(content);
+    else bubble.textContent = content;
+    buddyMessages.appendChild(bubble);
+    buddyMessages.scrollTop = buddyMessages.scrollHeight;
+    return bubble;
+  }
+
+  function toggleBuddy(forceState) {
+    const open = typeof forceState === 'boolean' ? forceState : !buddyPanel.classList.contains('open');
+    buddyPanel.classList.toggle('open', open);
+    buddyFab.setAttribute('aria-expanded', String(open));
+    if (open) setTimeout(() => buddyInput.focus(), 60);
+  }
+
+  buddyFab.addEventListener('click', () => toggleBuddy());
+  buddyClose.addEventListener('click', () => toggleBuddy(false));
+
+  async function sendBuddyQuestion(question) {
+    const trimmed = question.trim();
+    if (!trimmed) return;
+    appendBuddyMsg('user', trimmed);
+    buddyInput.value = '';
+    const thinking = appendBuddyMsg('bot', 'Checking live LPU database…');
+    try {
+      const res = await window.CampusAPI.askBuddy(trimmed);
+      thinking.innerHTML = formatBotMarkdown(res.reply || 'Check out the sections above for details!');
+    } catch {
+      thinking.textContent = 'Could not reach server right now—try checking the Menu or Block Finder above!';
+    }
+    buddyMessages.scrollTop = buddyMessages.scrollHeight;
+  }
+
+  buddyForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    sendBuddyQuestion(buddyInput.value);
+  });
+
+  document.querySelectorAll('.buddy-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      sendBuddyQuestion(chip.dataset.ask);
+    });
+  });
+
+  // 9. FAQ Filter & Scroll Spy
+  document.querySelectorAll('[data-faq-filter]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.faqFilter;
+      document.querySelectorAll('[data-faq-filter]').forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      document.querySelectorAll('.faq-item').forEach((item) => {
+        item.hidden = !(filter === 'all' || item.dataset.cat === filter);
+      });
+    });
+  });
+
+  const sections = ['map', 'blocks', 'mess', 'menu', 'plans', 'reviews', 'checklist', 'faq']
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+  const navItems = document.querySelectorAll('.navlinks a.nav-item');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = `#${entry.target.id}`;
+          navItems.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === id));
+        }
+      });
+    },
+    { rootMargin: '-28% 0px -60% 0px' }
+  );
+  sections.forEach((sec) => observer.observe(sec));
+})();
+```
+
+---
+
+## 5. API Client & Offline Fallback (public/shared-store.js — JavaScript)
+
+```javascript
+(() => {
+  const STORAGE_KEY = 'lpu_campus_guide_store_v2';
+
+  const SEED_STATE = {
+    timings: [
+      { id: 1, slot_key: 'breakfast', title: 'Breakfast', time_label: '7:15 – 9:30 AM', start_min: 435, end_min: 570, summary: 'Parantha, idli/poha, stuffed toast, curd, tea & milk', sort_order: 1 },
+      { id: 2, slot_key: 'lunch', title: 'Lunch', time_label: '11:15 AM – 3:00 PM', start_min: 675, end_min: 900, summary: 'Rajmah/dal, seasonal subzi, raita, rice & hot chapati', sort_order: 2 },
+      { id: 3, slot_key: 'snacks', title: 'Tea & snacks', time_label: '5:00 – 6:00 PM', start_min: 1020, end_min: 1080, summary: 'Masala tea or coffee with rotating hot evening snacks', sort_order: 3 },
+      { id: 4, slot_key: 'dinner', title: 'Dinner', time_label: '7:00 – 9:00 PM', start_min: 1140, end_min: 1260, summary: 'Dal, paneer/seasonal veg, chapati, rice, salad & dessert', sort_order: 4 }
+    ],
+    menu: [
+      { cuisine: 'north', day_of_week: 1, breakfast: 'Aloo parantha, plain curd, mango pickle, bread-butter & masala tea', lunch: 'Rajmah masala, aloo jeera, boondi raita, steamed rice, salad & chapati', snacks: 'Crisp samosa with tamarind chutney & cardamom chai', dinner: 'Dal makhani, mix seasonal veg, jeera rice, chapati, salad & rice kheer' },
+      { cuisine: 'north', day_of_week: 2, breakfast: 'Vegetable poha, stuffed besan toast, boiled sweet corn, milk & tea', lunch: 'Kadhi pakora, aloo gobhi, plain rice, chapati, papad & green salad', snacks: 'Bread pakora with mint chutney & hot tea', dinner: 'Yellow dal tadka, matar paneer, steamed rice, chapati & gulab jamun' },
+      { cuisine: 'north', day_of_week: 3, breakfast: 'Gobhi parantha, curd, pickle, cornflakes with milk & masala tea', lunch: 'Amritsari chole, khatte aloo, veg raita, pulao, chapati & onion salad', snacks: 'Veg Maggi / masala pasta & evening coffee', dinner: 'Dal fry, bhindi do pyaza / seasonal veg, rice, chapati & salad' },
+      { cuisine: 'north', day_of_week: 4, breakfast: 'Puri bhaji, sweet dalia, brown bread, jam & ginger tea', lunch: 'Black chana curry, lauki kofta, curd, steamed rice, chapati & fryums', snacks: 'Khasta kachori with tangy chutney & masala chai', dinner: 'Panchratan dal, kadai paneer / soya chaap, rice, chapati & halwa' },
+      { cuisine: 'north', day_of_week: 5, breakfast: 'Paneer/onion uttapam or stuffed kulcha, chutney, milk & tea', lunch: 'Rajmah raseela, aloo matar, cucumber raita, jeera rice & chapati', snacks: 'Aloo tikki / veg cutlet with sauce & hot tea', dinner: 'Dal tadka, dum aloo Kashmiri, rice, chapati, salad & custard' },
+      { cuisine: 'north', day_of_week: 6, breakfast: 'Ajwain parantha with aloo bhaji, curd, bread-butter & tea', lunch: 'White chana, seasonal tawa veg, veg pulao, boondi raita & chapati', snacks: 'Bhel puri / chana chaat & masala tea', dinner: 'Dal makhani, veg manchurian / hakka noodles combo, rice & chapati' },
+      { cuisine: 'north', day_of_week: 0, breakfast: 'Chole bhature / stuffed paneer parantha, sweet lassi or curd & tea', lunch: 'Special veg biryani, mirchi salan / mix veg raita, papad & salad', snacks: 'Veg grilled sandwich / patty with hot coffee or tea', dinner: 'Arhar dal tadka, shahi paneer, jeera rice, chapati & ice cream / sweet' },
+      { cuisine: 'south', day_of_week: 1, breakfast: 'Steamed idli, medu vada, drumstick sambar, coconut chutney & filter coffee', lunch: 'Sambar, rasam, cabbage poriyal, steamed rice, curd, chapati & appalam', snacks: 'Onion bajji with coconut chutney & hot tea/coffee', dinner: 'Tomato pappu, veg kurma, lemon rice, plain rice, chapati & payasam' },
+      { cuisine: 'south', day_of_week: 2, breakfast: 'Masala dosa, sambar, roasted gram & tomato chutneys, milk & tea', lunch: 'Kara kuzhambu, beans carrot poriyal, rasam, rice, buttermilk & chapati', snacks: 'Masala vada & hot cardamom tea', dinner: 'Dal fry, paneer chettinad-style veg, steamed rice, chapati & banana' },
+      { cuisine: 'south', day_of_week: 3, breakfast: 'Rava upma, kesari bath, coconut chutney, bread-butter & coffee', lunch: 'Arachuvitta sambar, aloo podimas, pepper rasam, rice, curd & papad', snacks: 'Sweet corn sundal & evening tea', dinner: 'Spinach dal (keerai kootu), mix veg curry, tamarind rice & chapati' },
+      { cuisine: 'south', day_of_week: 4, breakfast: 'Onion uttapam, sambar, ginger chutney, boiled sprouts & tea', lunch: 'Mor kuzhambu, beetroot poriyal, rasam, steamed rice, curd & chapati', snacks: 'Punugulu / mysore bonda with peanut chutney & tea', dinner: 'Toor dal tadka, meal-maker / paneer masala, jeera rice, chapati & sweet' },
+      { cuisine: 'south', day_of_week: 5, breakfast: 'Pongal, medu vada, sambar, coconut chutney & hot coffee', lunch: 'Vegetable sambar, tindora fry, garlic rasam, rice, curd & fryums', snacks: 'Veg puff / samosa & hot tea', dinner: 'Dal tadka, avial, steamed rice, chapati, pickle & semiya payasam' },
+      { cuisine: 'south', day_of_week: 6, breakfast: 'Set dosa, vegetable sagu, coconut chutney & filter coffee', lunch: 'Vatha kuzhambu, snake gourd kootu, rasam, steamed rice, curd & chapati', snacks: 'Murukku / masala peanuts & ginger chai', dinner: 'Tomato dal, gobi masala, veg fried rice, plain rice & chapati' },
+      { cuisine: 'south', day_of_week: 0, breakfast: 'Paper roast dosa / poori masala, sambar, chutney & coffee', lunch: 'Hyderabadi veg dum biryani, onion pachadi, mirchi gravy & papad', snacks: 'Banana bajji / pakora & hot tea', dinner: 'Sambar, paneer butter masala, puliyodarai, steamed rice, chapati & sweet' }
+    ],
+    plans: [
+      { id: 1, plan_key: 'std4', name: 'Standard · 4 meals', subtitle: 'Breakfast, lunch, evening snacks & dinner (~₹150/day)', fee: 45000, category: 'veg', period_label: '/ session', sort_order: 1 },
+      { id: 2, plan_key: 'std3', name: 'Standard · 3 meals', subtitle: 'Breakfast, lunch & dinner (~₹138/day)', fee: 41400, category: 'veg', period_label: '/ session', sort_order: 2 },
+      { id: 3, plan_key: 'std2', name: 'Standard · 2 meals', subtitle: 'Breakfast + dinner, lunch + dinner, or breakfast + lunch', fee: 37800, category: 'veg', period_label: '/ session', sort_order: 3 },
+      { id: 4, plan_key: 'alacarte', name: 'A la carte · 4 meals', subtitle: 'Choice of dishes across offered cuisines at selected locations', fee: 52200, category: 'veg', period_label: '/ session', sort_order: 4 },
+      { id: 5, plan_key: 'nv3', name: '3 meals plan', subtitle: 'Independent vendor outside campus', fee: 75000, category: 'nonveg_vendor', period_label: '/ year', sort_order: 5 },
+      { id: 6, plan_key: 'nv2', name: '2 meals plan', subtitle: 'Independent vendor outside campus', fee: 65000, category: 'nonveg_vendor', period_label: '/ year', sort_order: 6 },
+      { id: 7, plan_key: 'nv1', name: '1 meal plan', subtitle: 'Independent vendor outside campus', fee: 55000, category: 'nonveg_vendor', period_label: '/ year', sort_order: 7 }
+    ],
+    rooms: [
+      { id: 1, room_key: 'none', name: 'Mess only (Exclude room fee)', fee: 0, electricity_units: 'Mess only', sort_order: 1 },
+      { id: 2, room_key: '4s_cooler', name: '4-Seater Air-Cooled', fee: 93000, electricity_units: '300 free electricity units', sort_order: 2 },
+      { id: 3, room_key: '4s_ac', name: '4-Seater AC Room', fee: 103000, electricity_units: '500 free electricity units', sort_order: 3 },
+      { id: 4, room_key: '3s_cooler', name: '3-Seater Air-Cooled', fee: 108000, electricity_units: '350 free electricity units', sort_order: 4 },
+      { id: 5, room_key: '3s_ac', name: '3-Seater AC Room', fee: 123000, electricity_units: '550 free electricity units', sort_order: 5 },
+      { id: 6, room_key: '2s_ac', name: '2-Seater AC Room', fee: 143000, electricity_units: '750 free electricity units', sort_order: 6 },
+      { id: 7, room_key: '1s_ac', name: '1-Seater AC Room', fee: 163000, electricity_units: '1,000 free electricity units', sort_order: 7 },
+      { id: 8, room_key: 'apt_4s', name: '4-Seater AC Apartment', fee: 110000, electricity_units: 'Studio apartment policy', sort_order: 8 }
+    ],
+    reviews: [
+      { id: 4, student_name: 'Simran Kaur', hostel_block: 'GH-2', mess_type: 'Standard · 3 meals', rating: 4, comment: 'Clean dining hall and Sunday veg biryani + paneer dinner is great. Packed breakfast works well when 8 AM labs are scheduled.' },
+      { id: 3, student_name: 'Harshvardhan Verma', hostel_block: 'BH-5', mess_type: 'A la carte · 4 meals', rating: 4, comment: 'Slightly higher fee than standard mess, but picking paneer/chaap dishes and skipping fixed plates is worth it during exams.' },
+      { id: 2, student_name: 'Ananya Nair', hostel_block: 'GH-3', mess_type: 'South Indian Mess', rating: 5, comment: 'Really glad LPU has a dedicated South Indian mess option—morning idli/dosa with filter coffee feels close to home.' },
+      { id: 1, student_name: 'Rohan Sharma', hostel_block: 'BH-1', mess_type: 'Standard · 4 meals (North)', rating: 4, comment: 'Breakfast aloo parantha and evening samosa + chai slot are genuinely solid. Automated chapatis stay soft during peak hours.' }
+    ],
+    queries: [
+      { id: 1, name: 'Aman Gupta (B.Tech CSE Fresher)', contact: 'aman.fresher@example.com', topic: 'Mess Plan', question: 'Can I book Standard 3 meals right now during Early Decision and upgrade to 4 meals after reaching campus?', status: 'resolved', admin_reply: 'Yes! UMS allows upgrading from 2/3 meals to 4 meals or A la carte by paying the pro-rata difference.' }
+    ],
+    blocks: [
+      { code: 'Block 32', title: 'Admission & UMS Student Relationship Hub', category: 'Admin', nearest_gate: 'Main Gate 1A', walk_mins: '6 min walk', erickshaw_route: 'Gate 1A → Block 32 Plaza (₹10)', highlights: 'Fresher reporting, document verification, fee counter, ID card & biometric desk', map_query: 'Block 32 Lovely Professional University Phagwara' },
+      { code: 'Block 34', title: 'School of Computer Science & Engineering (CSE)', category: 'Academic', nearest_gate: 'Main Gate 1B', walk_mins: '11 min walk', erickshaw_route: 'Gate 1B → Block 34 Stand (₹10)', highlights: 'CSE/IT labs, coding studios, placement cells, basement Nescafe & print shop', map_query: 'Block 34 Lovely Professional University Phagwara' },
+      { code: 'Block 33 & 36', title: 'ECE, Robotics & Mechanical Engineering', category: 'Academic', nearest_gate: 'Main Gate 1B', walk_mins: '12 min walk', erickshaw_route: 'Gate 1B → Engineering Spine (₹10)', highlights: 'Electronics labs, CAD studios, workshops & student innovation garages', map_query: 'Block 33 Lovely Professional University Phagwara' },
+      { code: 'Block 14', title: 'Mittal School of Business (MSB)', category: 'Academic', nearest_gate: 'Main Gate 1A', walk_mins: '7 min walk', erickshaw_route: 'Gate 1A → MSB Chowk (₹10)', highlights: 'MBA/BBA/B.Com lecture theatres, finance terminal lab & corporate auditoriums', map_query: 'Mittal School of Business LPU Phagwara' },
+      { code: 'Block 15 · Uni Mall', title: 'Uni Mall & Central Food Plaza', category: 'Food & Retail', nearest_gate: 'Main Gate 1A', walk_mins: '8 min walk', erickshaw_route: 'Gate 1A → Uni Mall Drop (₹10)', highlights: 'Multi-storey student mall: food courts, banks/ATMs, stationery, salon & bowling', map_query: 'Uni Mall Lovely Professional University' },
+      { code: 'Block 37', title: 'Central Library & Knowledge Centre', category: 'Academic', nearest_gate: 'Main Gate 1B', walk_mins: '10 min walk', erickshaw_route: 'Uni Mall → Library Square (₹10)', highlights: '9-storey central library, silent reading halls, e-journals & exam study zones', map_query: 'Central Library Lovely Professional University' },
+      { code: 'Block 6 · Hospital', title: 'Uni Hospital (24×7 Medical & Pharmacy)', category: 'Medical', nearest_gate: 'Main Gate 1A', walk_mins: '4 min walk', erickshaw_route: 'Right inside Gate 1A · 24×7 Ambulance', highlights: '24×7 emergency & OPD doctors, in-house chemist shop, physiotherapy & sick bay', map_query: 'Uni Hospital Lovely Professional University' },
+      { code: 'Unipolis & SDM', title: 'Baldev Raj Mittal Unipolis & SDM Auditorium', category: 'Landmarks', nearest_gate: 'Main Gate 1A', walk_mins: '5 min walk', erickshaw_route: 'Gate 1A Main Avenue', highlights: 'Freshers Induction, convocations, YouthVibe fests & major celebrity events', map_query: 'Unipolis Lovely Professional University' },
+      { code: 'RoboPark', title: 'RoboPark & Innovation Lawn', category: 'Landmarks', nearest_gate: 'Main Gate 1B', walk_mins: '9 min walk', erickshaw_route: 'Uni Mall → Block 32 Crossing (₹10)', highlights: 'Giant scrap-metal robot sculptures, open-air hangout lawn & tech expos', map_query: 'Lovely Professional University Phagwara' },
+      { code: 'Indoor Stadium', title: 'Shanti Devi Mittal Sports Complex & Pool', category: 'Landmarks', nearest_gate: 'Gate 2', walk_mins: '13 min walk', erickshaw_route: 'Gate 1B → Sports Complex Shuttle (₹10)', highlights: 'Olympic-size pool, badminton courts, gym, shooting range & basketball arena', map_query: 'Indoor Sports Complex Lovely Professional University' },
+      { code: 'BH-1 to BH-4', title: 'Boys Hostels (Central Residential Zone)', category: 'Hostels', nearest_gate: 'Main Gate 1B', walk_mins: '13 min walk', erickshaw_route: 'Gate 1B → Boys Hostel Spine (₹10)', highlights: '4/3/2-seater AC & cooler rooms, North/South mess halls, laundry, tuck shop & gym', map_query: 'Boys Hostel BH1 Lovely Professional University' },
+      { code: 'BH-5 to BH-8 & Apts', title: 'Boys Hostels (North Spine) & Studio Apartments', category: 'Hostels', nearest_gate: 'Gate 2', walk_mins: '17 min walk', erickshaw_route: 'Gate 1B / Gate 2 → BH-6 Shuttle (₹10)', highlights: 'High-rise hostel blocks, A la carte dining counters, night canteens & outdoor courts', map_query: 'Boys Hostel BH5 Lovely Professional University' },
+      { code: 'GH-1 to GH-6', title: 'Girls Hostels (Gated Central Zone)', category: 'Hostels', nearest_gate: 'Main Gate 1A', walk_mins: '8 min walk', erickshaw_route: 'Gate 1A → Girls Hostel Gate (₹10)', highlights: '24×7 biometric security near Uni Mall, in-house mess, tuck shops, parlor & study room', map_query: 'Girls Hostel GH1 Lovely Professional University' },
+      { code: 'Block 29 & 30', title: 'Chancellor’s Office & Examination Wing', category: 'Admin', nearest_gate: 'Main Gate 1A', walk_mins: '6 min walk', erickshaw_route: 'Gate 1A → Admin Plaza', highlights: 'Examination controller, transcripts, international office & central administration', map_query: 'Block 30 Lovely Professional University' },
+      { code: 'Block 25–28', title: 'Law, Architecture, Design & Hotel Mgmt', category: 'Academic', nearest_gate: 'Main Gate 1A', walk_mins: '9 min walk', erickshaw_route: 'Uni Mall → Design Spine (₹10)', highlights: 'Moot court, fashion & interior studios, culinary kitchens & training restaurant', map_query: 'School of Design Lovely Professional University' },
+      { code: 'Block 55–57', title: 'Agriculture, Pharmacy & Bioengineering', category: 'Academic', nearest_gate: 'Gate 2', walk_mins: '15 min walk', erickshaw_route: 'Main Gate → Block 55 E-Rickshaw (₹10)', highlights: 'Pharmaceutical labs, polyhouses, agronomy research plots & food-tech labs', map_query: 'Block 55 Lovely Professional University' }
+    ],
+    todayPolls: [
+      { cuisine: 'north', meal_slot: 'breakfast', up_votes: 22, down_votes: 3 },
+      { cuisine: 'north', meal_slot: 'lunch', up_votes: 29, down_votes: 5 },
+      { cuisine: 'north', meal_slot: 'snacks', up_votes: 19, down_votes: 2 },
+      { cuisine: 'north', meal_slot: 'dinner', up_votes: 34, down_votes: 4 },
+      { cuisine: 'south', meal_slot: 'breakfast', up_votes: 18, down_votes: 2 },
+      { cuisine: 'south', meal_slot: 'lunch', up_votes: 21, down_votes: 3 },
+      { cuisine: 'south', meal_slot: 'snacks', up_votes: 15, down_votes: 2 },
+      { cuisine: 'south', meal_slot: 'dinner', up_votes: 24, down_votes: 3 }
+    ]
+  };
+
+  function readLocalStore() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    const copy = JSON.parse(JSON.stringify(SEED_STATE));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(copy)); } catch {}
+    return copy;
+  }
+
+  function writeLocalStore(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+  }
+
+  function summarize(reviews) {
+    const total = reviews.length;
+    const average = total ? Math.round((reviews.reduce((s, r) => s + Number(r.rating), 0) / total) * 10) / 10 : 0;
+    return { total, average };
+  }
+
+  const CLOUD_API_ORIGIN = 'https://lpu-campus-guide-app-production.up.railway.app';
+  let activeApiBase = null;
+  let serverAvailable = null;
+
+  async function probeAndFetch(base, cleanPath, options = {}) {
+    const url = `${base}${cleanPath}`;
+    const res = await fetch(url, options);
+    const ct = res.headers.get('content-type') || '';
+    if (!ct.includes('application/json')) {
+      return { notApi: true };
+    }
+    const data = await res.json();
+    if (!res.ok) {
+      if (res.status === 404 && cleanPath.includes('bootstrap')) {
+        return { notApi: true };
+      }
+      const apiErr = new Error(data.error || 'Request failed');
+      apiErr.isApiError = true;
+      throw apiErr;
+    }
+    return { data };
+  }
+
+  async function tryServer(path, options = {}) {
+    if (serverAvailable === false) return null;
+    const cleanPath = path.replace(/^\./, '');
+
+    if (activeApiBase !== null) {
+      try {
+        const out = await probeAndFetch(activeApiBase, cleanPath, options);
+        if (out.notApi) return null;
+        return out.data;
+      } catch (err) {
+        if (err.isApiError || serverAvailable === true) throw err;
+        return null;
+      }
+    }
+
+    const candidates = ['.'];
+    if (typeof location !== 'undefined' && location.origin !== CLOUD_API_ORIGIN) {
+      candidates.push(CLOUD_API_ORIGIN);
+    }
+
+    for (const base of candidates) {
+      try {
+        const out = await probeAndFetch(base, cleanPath, options);
+        if (!out.notApi) {
+          activeApiBase = base;
+          serverAvailable = true;
+          return out.data;
+        }
+      } catch (err) {
+        if (err.isApiError) {
+          activeApiBase = base;
+          serverAvailable = true;
+          throw err;
+        }
+        // Network failure: try next candidate before falling back to localStorage
+      }
+    }
+
+    serverAvailable = false;
+    return null;
+  }
+
+  window.CampusAPI = {
+    isServerMode: () => serverAvailable === true,
+
+    async getBootstrap() {
+      const srv = await tryServer('./api/bootstrap');
+      if (srv) return { ...srv, mode: 'server' };
+      const st = readLocalStore();
+      return {
+        timings: st.timings,
+        menu: st.menu,
+        plans: st.plans,
+        rooms: st.rooms,
+        blocks: st.blocks || SEED_STATE.blocks,
+        todayPolls: st.todayPolls || SEED_STATE.todayPolls,
+        reviewSummary: summarize(st.reviews),
+        reviews: st.reviews.slice(0, 12),
+        resolvedQueries: st.queries.filter((q) => q.status === 'resolved' && q.admin_reply),
+        mode: 'cloud-static'
+      };
+    },
+
+    async votePoll(payload) {
+      const srv = await tryServer('./api/polls/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (srv) return srv;
+
+      const st = readLocalStore();
+      if (!st.todayPolls) st.todayPolls = JSON.parse(JSON.stringify(SEED_STATE.todayPolls));
+      const row = st.todayPolls.find((p) => p.cuisine === payload.cuisine && p.meal_slot === payload.meal_slot);
+      if (row && payload.previous_vote !== payload.vote) {
+        if (payload.previous_vote === 'up') row.up_votes = Math.max(0, row.up_votes - 1);
+        if (payload.previous_vote === 'down') row.down_votes = Math.max(0, row.down_votes - 1);
+        if (payload.vote === 'up') row.up_votes += 1;
+        if (payload.vote === 'down') row.down_votes += 1;
+        writeLocalStore(st);
+      }
+      return { message: 'Vote saved!', polls: st.todayPolls };
+    },
+
+    async askBuddy(message) {
+      const srv = await tryServer('./api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      if (srv) return srv;
+
+      const st = readLocalStore();
+      const blocks = st.blocks || SEED_STATE.blocks;
+      const q = String(message || '').toLowerCase();
+      const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
+      const istNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+      const todayDay = istNow.getDay();
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+      if (/(kettle|iron|press|heater|induction|rod|banned|allowed|document|reporting|pack|checklist)/.test(q)) {
+        return {
+          reply: '⚠️ **Hostel Rules & Checklist:**\n• **Banned:** Electric kettle, clothes iron, immersion rod, induction & heater.\n• **Available inside Hostel:** Hot/cold RO water dispensers + laundry/ironing shop.\n• **Reporting Docs (Block 32):** 10th/12th marksheets, allotment letter, Aadhaar + 6 photos, medical & anti-ragging forms.'
+        };
+      }
+
+      const matchedBlock = blocks.find((b) =>
+        q.includes(b.code.toLowerCase()) ||
+        (b.code === 'Block 34' && /\b(34|cse|computer)\b/.test(q)) ||
+        (b.code === 'Block 32' && /\b(32|ums|admission)\b/.test(q)) ||
+        (b.code.includes('Uni Mall') && /mall|atm|food court/.test(q)) ||
+        (b.code.includes('Hospital') && /hospital|medical|doctor/.test(q)) ||
+        (b.code === 'Block 37' && /library/.test(q))
+      );
+      if (matchedBlock && !/(fee|kitna|price|cost)/.test(q)) {
+        return {
+          reply: `📍 **${matchedBlock.code} — ${matchedBlock.title}**\n• **Nearest Gate:** ${matchedBlock.nearest_gate} (${matchedBlock.walk_mins})\n• **E-Rickshaw:** ${matchedBlock.erickshaw_route}\n• **Inside:** ${matchedBlock.highlights}`
+        };
+      }
+
+      if (/(phagwara|jalandhar|cantt|station|train|airport|reach|kaise aaye|auto)/.test(q)) {
+        return {
+          reply: '🚆 **How to Reach LPU (NH-44):**\n• **Phagwara Jn:** ~7 km (12–15 min by direct auto/cab)\n• **Jalandhar Cantt:** ~14 km (20–25 min via NH-44 bus/auto)\n• **Jalandhar City:** ~20 km (30–35 min).'
+        };
+      }
+
+      if (/(fee|fees|kitna|price|cost|seater|cooler|mess plan|carte|non-?veg|edb)/.test(q)) {
+        const r = /3\s*-?\s*seater/.test(q) ? st.rooms.find((x) => x.room_key === '3s_ac') : st.rooms.find((x) => x.room_key === '4s_ac');
+        const p = /3\s*meal/.test(q) ? st.plans.find((x) => x.plan_key === 'std3') : st.plans.find((x) => x.plan_key === 'std4');
+        const tot = (r?.fee || 103000) + (p?.fee || 45000);
+        return {
+          reply: `💰 **2026–27 Session Estimate:**\n• **Hostel:** ${r.name} (${inr(r.fee)})\n• **Mess:** ${p.name} (${inr(p.fee)})\n• **Total:** **${inr(tot)}** (~${inr(Math.round(tot / 10))}/mo · With EDB: **${inr(tot - 10000)}**)`
+        };
+      }
+
+      if (/(menu|khana|breakfast|lunch|snack|dinner|aaj|sunday|monday|tuesday|wednesday|thursday|friday|saturday)/.test(q)) {
+        const cuisine = /south|dosa|idli/.test(q) ? 'south' : 'north';
+        const row = st.menu.find((m) => m.cuisine === cuisine && m.day_of_week === todayDay);
+        if (row) {
+          return {
+            reply: `🍴 **Today (${dayNames[todayDay]}) · ${cuisine === 'south' ? 'South' : 'North'} Indian Menu:**\n• **Breakfast:** ${row.breakfast}\n• **Lunch:** ${row.lunch}\n• **Snacks:** ${row.snacks}\n• **Dinner:** ${row.dinner}`
+          };
+        }
+      }
+
+      return {
+        reply: '👋 **Namaste! Main LPU Buddy hoon.** Aap mujhse *"Aaj dinner me kya hai?"*, *"Block 34 kahan hai?"*, *"4-seater AC + 3 meal fee?"*, ya *"Banned items?"* pooch sakte hain!'
+      };
+    },
+
+    async getReviews() {
+      const srv = await tryServer('./api/reviews');
+      if (srv) return srv;
+      const st = readLocalStore();
+      return { summary: summarize(st.reviews), reviews: st.reviews };
+    },
+
+    async postReview(payload) {
+      const srv = await tryServer('./api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (srv) return srv;
+
+      const st = readLocalStore();
+      const created = {
+        id: Date.now(),
+        student_name: String(payload.student_name || '').trim(),
+        hostel_block: String(payload.hostel_block || '').trim(),
+        mess_type: String(payload.mess_type || '').trim(),
+        rating: Number(payload.rating) || 5,
+        comment: String(payload.comment || '').trim()
+      };
+      st.reviews.unshift(created);
+      writeLocalStore(st);
+      return { message: 'Review saved!', review: created, summary: summarize(st.reviews) };
+    },
+
+    async postQuery(payload) {
+      const srv = await tryServer('./api/queries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (srv) return srv;
+
+      const st = readLocalStore();
+      const created = {
+        id: Date.now(),
+        name: String(payload.name || '').trim(),
+        contact: String(payload.contact || '').trim(),
+        topic: String(payload.topic || 'General').trim(),
+        question: String(payload.question || '').trim(),
+        status: 'pending',
+        admin_reply: ''
+      };
+      st.queries.unshift(created);
+      writeLocalStore(st);
+      return { message: 'Question saved!', id: created.id };
+    },
+
+    async adminOverview(key) {
+      const srv = await tryServer('./api/admin/overview', {
+        headers: { 'x-admin-key': key }
+      });
+      if (srv) return srv;
+      if (key !== 'lpu2026' && key !== 'aryan2026') {
+        throw new Error('Invalid admin passcode.');
+      }
+      const st = readLocalStore();
+      return {
+        counts: {
+          menuItems: st.menu.length,
+          plans: st.plans.length,
+          reviews: st.reviews.length,
+          pendingQueries: st.queries.filter((q) => q.status === 'pending').length,
+          totalQueries: st.queries.length
+        },
+        menu: st.menu,
+        plans: st.plans,
+        reviews: st.reviews,
+        queries: st.queries
+      };
+    },
+
+    async adminSaveMenu(key, payload) {
+      const srv = await tryServer('./api/admin/menu', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
+        body: JSON.stringify(payload)
+      });
+      if (srv) return srv;
+      const st = readLocalStore();
+      const idx = st.menu.findIndex((m) => m.cuisine === payload.cuisine && m.day_of_week === Number(payload.day_of_week));
+      if (idx >= 0) st.menu[idx] = { ...st.menu[idx], ...payload };
+      writeLocalStore(st);
+      return { message: 'Saved!' };
+    },
+
+    async adminSavePlan(key, id, payload) {
+      const srv = await tryServer(`./api/admin/plans/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
+        body: JSON.stringify(payload)
+      });
+      if (srv) return srv;
+      const st = readLocalStore();
+      const idx = st.plans.findIndex((p) => String(p.id) === String(id));
+      if (idx >= 0) st.plans[idx] = { ...st.plans[idx], fee: Number(payload.fee), subtitle: payload.subtitle };
+      writeLocalStore(st);
+      return { message: 'Updated!' };
+    },
+
+    async adminResolveQuery(key, id, payload) {
+      const srv = await tryServer(`./api/admin/queries/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
+        body: JSON.stringify(payload)
+      });
+      if (srv) return srv;
+      const st = readLocalStore();
+      const idx = st.queries.findIndex((q) => String(q.id) === String(id));
+      if (idx >= 0) st.queries[idx] = { ...st.queries[idx], status: payload.status, admin_reply: payload.admin_reply };
+      writeLocalStore(st);
+      return { message: 'Resolved!' };
+    },
+
+    async adminDeleteReview(key, id) {
+      const srv = await tryServer(`./api/admin/reviews/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-key': key }
+      });
+      if (srv) return srv;
+      const st = readLocalStore();
+      st.reviews = st.reviews.filter((r) => String(r.id) !== String(id));
+      writeLocalStore(st);
+      return { message: 'Deleted!' };
+    }
+  };
+})();
+```
+
+---
+
+## 6. Admin Control Panel (public/admin.html — HTML5/CSS3/JS)
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — LPU Campus Guide (Admin Panel)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #162925;
+      --muted: #606e67;
+      --paper: #f7f6f1;
+      --paper-subtle: #efeee6;
+      --card: #fffefa;
+      --green: #225a46;
+      --green-dark: #143c2f;
+      --mint: #e5efe5;
+      --orange: #ee9a55;
+      --line: #e3e3d8;
+      --mono: "JetBrains Mono", monospace;
+      --sans: "Plus Jakarta Sans", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.5;
+    }
+    button, input, select, textarea { font: inherit; }
+    .wrap { width: min(1120px, calc(100% - 36px)); margin-inline: auto; }
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: rgba(247, 246, 241, 0.92);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .nav {
+      height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--green);
+      color: #fffefa;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+    }
+    .brand small {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--green);
+      background: var(--green);
+      color: #fffefa;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--green-dark); }
+    .btn.ghost {
+      background: var(--card);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+    .btn.ghost:hover { border-color: var(--green); background: var(--mint); }
+    .btn.danger {
+      background: #fdf0ee;
+      color: #b53424;
+      border-color: #f1c6c0;
+      min-height: 32px;
+      padding: 0 12px;
+      font-size: 11.5px;
+    }
+
+    main { padding: 36px 0 64px; }
+
+    .auth-box {
+      max-width: 440px;
+      margin: 48px auto;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--card);
+      box-shadow: 0 16px 44px rgba(22, 41, 37, 0.07);
+    }
+    .auth-box h1 { margin: 0 0 6px; font-size: 24px; letter-spacing: -0.03em; }
+    .auth-box p { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .field label { font-size: 11px; font-weight: 750; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .field input, .field select, .field textarea {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 13.5px;
+      outline: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--green); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+    }
+    .stat-card small { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    .stat-card strong { display: block; margin-top: 4px; font-family: var(--mono); font-size: 26px; color: var(--green); }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fffefa;
+    }
+
+    .panel {
+      display: none;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--card);
+    }
+    .panel.active { display: block; }
+    .panel h2 { margin: 0 0 4px; font-size: 20px; letter-spacing: -0.03em; }
+    .panel > p { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+
+    .item-list { display: grid; gap: 12px; }
+    .item-card {
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--paper);
+    }
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .badge.pending { background: #faeee2; color: #9e5316; }
+    .badge.resolved { background: #e3f3e8; color: #1b663e; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .plan-edit-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.4fr 140px auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+    }
+    .status-toast {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--green);
+      margin-left: 10px;
+    }
+
+    @media (max-width: 780px) {
+      .stats-grid, .grid-2 { grid-template-columns: 1fr 1fr; }
+      .plan-edit-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .stats-grid, .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="./">
+        <span class="brand-mark">LPU</span>
+        <span>Admin Control Panel<small>Campus Guide Manager</small></span>
+      </a>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a class="btn ghost" href="./">← Open Live Site</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Passcode Login -->
+    <section class="auth-box" id="auth-box">
+      <h1>Unlock Admin Panel</h1>
+      <p>Manage weekly mess menus, 2026–27 fee rates, student reviews, and fresher queries in the live database.</p>
+      <form id="auth-form">
+        <div class="field">
+          <label for="admin-key">Admin Passcode</label>
+          <input id="admin-key" type="password" placeholder="Enter admin passcode…" required>
+        </div>
+        <button class="btn" type="submit" style="width:100%;">Unlock Admin Dashboard</button>
+        <div id="auth-err" style="color:#b53424;font-size:12px;font-weight:700;margin-top:10px;"></div>
+      </form>
+    </section>
+
+    <!-- Dashboard -->
+    <div id="dashboard" style="display:none;">
+      <div class="stats-grid">
+        <div class="stat-card"><small>Pending Queries</small><strong id="st-pending">0</strong></div>
+        <div class="stat-card"><small>Total Queries</small><strong id="st-queries">0</strong></div>
+        <div class="stat-card"><small>Student Reviews</small><strong id="st-reviews">0</strong></div>
+        <div class="stat-card"><small>Weekly Menu Slots</small><strong id="st-menu">14</strong></div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" type="button" data-tab="queries">1. Student Queries</button>
+        <button class="tab-btn" type="button" data-tab="menu">2. Weekly Menu Editor</button>
+        <button class="tab-btn" type="button" data-tab="plans">3. Mess Fee Manager</button>
+        <button class="tab-btn" type="button" data-tab="reviews">4. Moderate Reviews</button>
+      </div>
+
+      <!-- Tab 1: Queries -->
+      <section class="panel active" id="tab-queries">
+        <h2>Student &amp; Fresher Queries</h2>
+        <p>Write an answer and mark as resolved—resolved answers automatically display in the public FAQs on the main page.</p>
+        <div class="item-list" id="queries-container"></div>
+      </section>
+
+      <!-- Tab 2: Menu Editor -->
+      <section class="panel" id="tab-menu">
+        <h2>Weekly Menu Editor</h2>
+        <p>Select any cuisine and day of the week, update dishes, and save directly to the live store.</p>
+        <form id="menu-edit-form">
+          <div class="grid-2">
+            <div class="field">
+              <label for="ed-cuisine">Cuisine</label>
+              <select id="ed-cuisine">
+                <option value="north">North Indian</option>
+                <option value="south">South Indian</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ed-day">Day of Week</label>
+              <select id="ed-day">
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+                <option value="0">Sunday</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field"><label for="ed-b">Breakfast</label><input id="ed-b" type="text" required></div>
+          <div class="field"><label for="ed-l">Lunch</label><input id="ed-l" type="text" required></div>
+          <div class="field"><label for="ed-s">Tea &amp; Snacks</label><input id="ed-s" type="text" required></div>
+          <div class="field"><label for="ed-d">Dinner</label><input id="ed-d" type="text" required></div>
+
+          <button class="btn" type="submit">Save Menu Changes</button>
+          <span class="status-toast" id="menu-save-msg"></span>
+        </form>
+      </section>
+
+      <!-- Tab 3: Mess Fee Manager -->
+      <section class="panel" id="tab-plans">
+        <h2>2026–27 Mess Plans &amp; Fees</h2>
+        <p>Updating any fee here immediately updates the comparison table and budget calculator on the home page.</p>
+        <div class="item-list" id="plans-container"></div>
+      </section>
+
+      <!-- Tab 4: Reviews -->
+      <section class="panel" id="tab-reviews">
+        <h2>Moderate Student Reviews</h2>
+        <p>Inspect or remove student reviews submitted by students.</p>
+        <div class="item-list" id="reviews-admin-container"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="shared-store.js"></script>
+  <script>
+    (() => {
+      let adminKey = sessionStorage.getItem('lpu-admin-key') || '';
+      let stateData = null;
+
+      const authBox = document.getElementById('auth-box');
+      const dashboard = document.getElementById('dashboard');
+
+      function escapeHTML(s) {
+        const d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+      }
+
+      async function loadOverview() {
+        const data = await window.CampusAPI.adminOverview(adminKey);
+        stateData = data;
+        authBox.style.display = 'none';
+        dashboard.style.display = 'block';
+
+        document.getElementById('st-pending').textContent = data.counts.pendingQueries;
+        document.getElementById('st-queries').textContent = data.counts.totalQueries;
+        document.getElementById('st-reviews').textContent = data.counts.reviews;
+        document.getElementById('st-menu').textContent = data.counts.menuItems;
+
+        renderQueries();
+        populateMenuForm();
+        renderPlans();
+        renderAdminReviews();
+      }
+
+      document.getElementById('auth-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        adminKey = document.getElementById('admin-key').value.trim();
+        try {
+          await loadOverview();
+          sessionStorage.setItem('lpu-admin-key', adminKey);
+        } catch (err) {
+          document.getElementById('auth-err').textContent = err.message;
+        }
+      });
+
+      if (adminKey) {
+        loadOverview().catch(() => sessionStorage.removeItem('lpu-admin-key'));
+      }
+
+      // Tabs
+      document.querySelectorAll('.tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+          document.querySelectorAll('.panel').forEach((p) => p.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+        });
+      });
+
+      // 1. Queries
+      function renderQueries() {
+        const el = document.getElementById('queries-container');
+        if (!stateData.queries.length) {
+          el.innerHTML = '<p style="color:var(--muted);font-size:13px;">No student queries submitted yet.</p>';
+          return;
+        }
+        el.innerHTML = stateData.queries.map((q) => `
+          <div class="item-card">
+            <div class="item-head">
+              <div>
+                <strong>${escapeHTML(q.name)}</strong>
+                <span style="color:var(--muted);font-size:12px;"> · ${escapeHTML(q.contact)} · <b>${escapeHTML(q.topic)}</b></span>
+              </div>
+              <span class="badge ${q.status === 'resolved' ? 'resolved' : 'pending'}">${escapeHTML(q.status)}</span>
+            </div>
+            <p style="margin:0 0 10px;font-size:13.5px;"><strong>Q:</strong> ${escapeHTML(q.question)}</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <input type="text" id="reply-${q.id}" value="${escapeHTML(q.admin_reply || '')}" placeholder="Write public/helpful reply…" style="flex:1;min-width:220px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);">
+              <button class="btn" type="button" data-resolve="${q.id}">Save &amp; Resolve</button>
+            </div>
+          </div>
+        `).join('');
+
+        el.querySelectorAll('[data-resolve]').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.resolve;
+            const reply = document.getElementById(`reply-${id}`).value;
+            btn.textContent = 'Saving…';
+            await window.CampusAPI.adminResolveQuery(adminKey, id, { status: 'resolved', admin_reply: reply });
+            await loadOverview();
+          });
+        });
+      }
+
+      // 2. Menu Editor
+      const edCuisine = document.getElementById('ed-cuisine');
+      const edDay = document.getElementById('ed-day');
+
+      function populateMenuForm() {
+        const c = edCuisine.value;
+        const d = Number(edDay.value);
+        const found = stateData.menu.find((m) => m.cuisine === c && m.day_of_week === d);
+        if (!found) return;
+        document.getElementById('ed-b').value = found.breakfast;
+        document.getElementById('ed-l').value = found.lunch;
+        document.getElementById('ed-s').value = found.snacks;
+        document.getElementById('ed-d').value = found.dinner;
+      }
+      edCuisine.addEventListener('change', populateMenuForm);
+      edDay.addEventListener('change', populateMenuForm);
+
+      document.getElementById('menu-edit-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById('menu-save-msg');
+        msg.textContent = 'Saving…';
+        await window.CampusAPI.adminSaveMenu(adminKey, {
+          cuisine: edCuisine.value,
+          day_of_week: Number(edDay.value),
+          breakfast: document.getElementById('ed-b').value,
+          lunch: document.getElementById('ed-l').value,
+          snacks: document.getElementById('ed-s').value,
+          dinner: document.getElementById('ed-d').value
+        });
+        msg.textContent = 'Saved ✓';
+        setTimeout(() => { msg.textContent = ''; }, 2500);
+        await loadOverview();
+      });
+
+      // 3. Plans Editor
+      function renderPlans() {
+        const el = document.getElementById('plans-container');
+        el.innerHTML = stateData.plans.map((p) => `
+          <div class="plan-edit-row">
+            <strong>${escapeHTML(p.name)} <small style="display:block;color:var(--muted);font-weight:500;">${escapeHTML(p.category)}</small></strong>
+            <input type="text" id="psub-${p.id}" value="${escapeHTML(p.subtitle)}" style="padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);">
+            <input type="number" id="pfee-${p.id}" value="${p.fee}" style="padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-family:var(--mono);font-weight:700;">
+            <button class="btn" type="button" data-save-plan="${p.id}">Update</button>
+          </div>
+        `).join('');
+
+        el.querySelectorAll('[data-save-plan]').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.savePlan;
+            btn.textContent = '…';
+            await window.CampusAPI.adminSavePlan(adminKey, id, {
+              subtitle: document.getElementById(`psub-${id}`).value,
+              fee: Number(document.getElementById(`pfee-${id}`).value)
+            });
+            btn.textContent = 'Saved ✓';
+            setTimeout(() => { btn.textContent = 'Update'; }, 1500);
+          });
+        });
+      }
+
+      // 4. Moderate Reviews
+      function renderAdminReviews() {
+        const el = document.getElementById('reviews-admin-container');
+        el.innerHTML = stateData.reviews.map((r) => `
+          <div class="item-card">
+            <div class="item-head">
+              <div>
+                <strong>${escapeHTML(r.student_name)}</strong>
+                <span style="color:var(--muted);font-size:12px;"> · ${escapeHTML(r.hostel_block)} · ${escapeHTML(r.mess_type)} · ★ ${r.rating}/5</span>
+              </div>
+              <button class="btn danger" type="button" data-del-rev="${r.id}">Delete</button>
+            </div>
+            <p style="margin:0;font-size:13px;">${escapeHTML(r.comment)}</p>
+          </div>
+        `).join('');
+
+        el.querySelectorAll('[data-del-rev]').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            await window.CampusAPI.adminDeleteReview(adminKey, btn.dataset.delRev);
+            await loadOverview();
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
+```
+
+---
+
+## 7. JSON Data Store & Initial Data (db.js — Node.js / JSON)
+
+```javascript
+const fs = require('node:fs');
+const path = require('node:path');
+
+const dataDir = process.env.DATA_DIR || path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
+const jsonPath = path.join(dataDir, 'campus-data.json');
+
+function getISTDateKey() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(new Date());
+  const y = parts.find((p) => p.type === 'year')?.value;
+  const m = parts.find((p) => p.type === 'month')?.value;
+  const d = parts.find((p) => p.type === 'day')?.value;
+  return `${y}-${m}-${d}`;
+}
+
+const INITIAL_DATA = {
+  meal_timings: [
+    { id: 1, slot_key: 'breakfast', title: 'Breakfast', time_label: '7:15 – 9:30 AM', start_min: 435, end_min: 570, summary: 'Parantha, idli/poha, stuffed toast, curd, tea & milk', sort_order: 1 },
+    { id: 2, slot_key: 'lunch', title: 'Lunch', time_label: '11:15 AM – 3:00 PM', start_min: 675, end_min: 900, summary: 'Rajmah/dal, seasonal subzi, raita, rice & hot chapati', sort_order: 2 },
+    { id: 3, slot_key: 'snacks', title: 'Tea & snacks', time_label: '5:00 – 6:00 PM', start_min: 1020, end_min: 1080, summary: 'Masala tea or coffee with rotating hot evening snacks', sort_order: 3 },
+    { id: 4, slot_key: 'dinner', title: 'Dinner', time_label: '7:00 – 9:00 PM', start_min: 1140, end_min: 1260, summary: 'Dal, paneer/seasonal veg, chapati, rice, salad & dessert', sort_order: 4 }
+  ],
+  weekly_menu: [
+    { id: 1, cuisine: 'north', day_of_week: 1, breakfast: 'Aloo parantha, plain curd, mango pickle, bread-butter & masala tea', lunch: 'Rajmah masala, aloo jeera, boondi raita, steamed rice, salad & chapati', snacks: 'Crisp samosa with tamarind chutney & cardamom chai', dinner: 'Dal makhani, mix seasonal veg, jeera rice, chapati, salad & rice kheer' },
+    { id: 2, cuisine: 'north', day_of_week: 2, breakfast: 'Vegetable poha, stuffed besan toast, boiled sweet corn, milk & tea', lunch: 'Kadhi pakora, aloo gobhi, plain rice, chapati, papad & green salad', snacks: 'Bread pakora with mint chutney & hot tea', dinner: 'Yellow dal tadka, matar paneer, steamed rice, chapati & gulab jamun' },
+    { id: 3, cuisine: 'north', day_of_week: 3, breakfast: 'Gobhi parantha, curd, pickle, cornflakes with milk & masala tea', lunch: 'Amritsari chole, khatte aloo, veg raita, pulao, chapati & onion salad', snacks: 'Veg Maggi / masala pasta & evening coffee', dinner: 'Dal fry, bhindi do pyaza / seasonal veg, rice, chapati & salad' },
+    { id: 4, cuisine: 'north', day_of_week: 4, breakfast: 'Puri bhaji, sweet dalia, brown bread, jam & ginger tea', lunch: 'Black chana curry, lauki kofta, curd, steamed rice, chapati & fryums', snacks: 'Khasta kachori with tangy chutney & masala chai', dinner: 'Panchratan dal, kadai paneer / soya chaap, rice, chapati & halwa' },
+    { id: 5, cuisine: 'north', day_of_week: 5, breakfast: 'Paneer/onion uttapam or stuffed kulcha, chutney, milk & tea', lunch: 'Rajmah raseela, aloo matar, cucumber raita, jeera rice & chapati', snacks: 'Aloo tikki / veg cutlet with sauce & hot tea', dinner: 'Dal tadka, dum aloo Kashmiri, rice, chapati, salad & custard' },
+    { id: 6, cuisine: 'north', day_of_week: 6, breakfast: 'Ajwain parantha with aloo bhaji, curd, bread-butter & tea', lunch: 'White chana, seasonal tawa veg, veg pulao, boondi raita & chapati', snacks: 'Bhel puri / chana chaat & masala tea', dinner: 'Dal makhani, veg manchurian / hakka noodles combo, rice & chapati' },
+    { id: 7, cuisine: 'north', day_of_week: 0, breakfast: 'Chole bhature / stuffed paneer parantha, sweet lassi or curd & tea', lunch: 'Special veg biryani, mirchi salan / mix veg raita, papad & salad', snacks: 'Veg grilled sandwich / patty with hot coffee or tea', dinner: 'Arhar dal tadka, shahi paneer, jeera rice, chapati & ice cream / sweet' },
+    { id: 8, cuisine: 'south', day_of_week: 1, breakfast: 'Steamed idli, medu vada, drumstick sambar, coconut chutney & filter coffee', lunch: 'Sambar, rasam, cabbage poriyal, steamed rice, curd, chapati & appalam', snacks: 'Onion bajji with coconut chutney & hot tea/coffee', dinner: 'Tomato pappu, veg kurma, lemon rice, plain rice, chapati & payasam' },
+    { id: 9, cuisine: 'south', day_of_week: 2, breakfast: 'Masala dosa, sambar, roasted gram & tomato chutneys, milk & tea', lunch: 'Kara kuzhambu, beans carrot poriyal, rasam, rice, buttermilk & chapati', snacks: 'Masala vada & hot cardamom tea', dinner: 'Dal fry, paneer chettinad-style veg, steamed rice, chapati & banana' },
+    { id: 10, cuisine: 'south', day_of_week: 3, breakfast: 'Rava upma, kesari bath, coconut chutney, bread-butter & coffee', lunch: 'Arachuvitta sambar, aloo podimas, pepper rasam, rice, curd & papad', snacks: 'Sweet corn sundal & evening tea', dinner: 'Spinach dal (keerai kootu), mix veg curry, tamarind rice & chapati' },
+    { id: 11, cuisine: 'south', day_of_week: 4, breakfast: 'Onion uttapam, sambar, ginger chutney, boiled sprouts & tea', lunch: 'Mor kuzhambu, beetroot poriyal, rasam, steamed rice, curd & chapati', snacks: 'Punugulu / mysore bonda with peanut chutney & tea', dinner: 'Toor dal tadka, meal-maker / paneer masala, jeera rice, chapati & sweet' },
+    { id: 12, cuisine: 'south', day_of_week: 5, breakfast: 'Pongal, medu vada, sambar, coconut chutney & hot coffee', lunch: 'Vegetable sambar, tindora fry, garlic rasam, rice, curd & fryums', snacks: 'Veg puff / samosa & hot tea', dinner: 'Dal tadka, avial, steamed rice, chapati, pickle & semiya payasam' },
+    { id: 13, cuisine: 'south', day_of_week: 6, breakfast: 'Set dosa, vegetable sagu, coconut chutney & filter coffee', lunch: 'Vatha kuzhambu, snake gourd kootu, rasam, steamed rice, curd & chapati', snacks: 'Murukku / masala peanuts & ginger chai', dinner: 'Tomato dal, gobi masala, veg fried rice, plain rice & chapati' },
+    { id: 14, cuisine: 'south', day_of_week: 0, breakfast: 'Paper roast dosa / poori masala, sambar, chutney & coffee', lunch: 'Hyderabadi veg dum biryani, onion pachadi, mirchi gravy & papad', snacks: 'Banana bajji / pakora & hot tea', dinner: 'Sambar, paneer butter masala, puliyodarai, steamed rice, chapati & sweet' }
+  ],
+  mess_plans: [
+    { id: 1, plan_key: 'std4', name: 'Standard · 4 meals', subtitle: 'Breakfast, lunch, evening snacks & dinner (~₹150/day)', fee: 45000, category: 'veg', period_label: '/ session', sort_order: 1 },
+    { id: 2, plan_key: 'std3', name: 'Standard · 3 meals', subtitle: 'Breakfast, lunch & dinner (~₹138/day)', fee: 41400, category: 'veg', period_label: '/ session', sort_order: 2 },
+    { id: 3, plan_key: 'std2', name: 'Standard · 2 meals', subtitle: 'Breakfast + dinner, lunch + dinner, or breakfast + lunch', fee: 37800, category: 'veg', period_label: '/ session', sort_order: 3 },
+    { id: 4, plan_key: 'alacarte', name: 'A la carte · 4 meals', subtitle: 'Choice of dishes across offered cuisines at selected locations', fee: 52200, category: 'veg', period_label: '/ session', sort_order: 4 },
+    { id: 5, plan_key: 'nv3', name: '3 meals plan', subtitle: 'Independent vendor outside campus', fee: 75000, category: 'nonveg_vendor', period_label: '/ year', sort_order: 5 },
+    { id: 6, plan_key: 'nv2', name: '2 meals plan', subtitle: 'Independent vendor outside campus', fee: 65000, category: 'nonveg_vendor', period_label: '/ year', sort_order: 6 },
+    { id: 7, plan_key: 'nv1', name: '1 meal plan', subtitle: 'Independent vendor outside campus', fee: 55000, category: 'nonveg_vendor', period_label: '/ year', sort_order: 7 }
+  ],
+  hostel_rooms: [
+    { id: 1, room_key: 'none', name: 'Mess only (Exclude room fee)', fee: 0, electricity_units: 'Mess only', sort_order: 1 },
+    { id: 2, room_key: '4s_cooler', name: '4-Seater Air-Cooled', fee: 93000, electricity_units: '300 free electricity units', sort_order: 2 },
+    { id: 3, room_key: '4s_ac', name: '4-Seater AC Room', fee: 103000, electricity_units: '500 free electricity units', sort_order: 3 },
+    { id: 4, room_key: '3s_cooler', name: '3-Seater Air-Cooled', fee: 108000, electricity_units: '350 free electricity units', sort_order: 4 },
+    { id: 5, room_key: '3s_ac', name: '3-Seater AC Room', fee: 123000, electricity_units: '550 free electricity units', sort_order: 5 },
+    { id: 6, room_key: '2s_ac', name: '2-Seater AC Room', fee: 143000, electricity_units: '750 free electricity units', sort_order: 6 },
+    { id: 7, room_key: '1s_ac', name: '1-Seater AC Room', fee: 163000, electricity_units: '1,000 free electricity units', sort_order: 7 },
+    { id: 8, room_key: 'apt_4s', name: '4-Seater AC Apartment', fee: 110000, electricity_units: 'Studio apartment policy', sort_order: 8 }
+  ],
+  reviews: [
+    { id: 1, student_name: 'Rohan Sharma', hostel_block: 'BH-1', mess_type: 'Standard · 4 meals (North)', rating: 4, comment: 'Breakfast aloo parantha and evening samosa + chai slot are genuinely solid. Automated chapatis stay soft during peak hours.', created_at: '2026-11-10T10:00:00Z' },
+    { id: 2, student_name: 'Ananya Nair', hostel_block: 'GH-3', mess_type: 'South Indian Mess', rating: 5, comment: 'Really glad LPU has a dedicated South Indian mess option—morning idli/dosa with filter coffee feels close to home.', created_at: '2026-11-10T10:05:00Z' },
+    { id: 3, student_name: 'Harshvardhan Verma', hostel_block: 'BH-5', mess_type: 'A la carte · 4 meals', rating: 4, comment: 'Slightly higher fee than standard mess, but picking paneer/chaap dishes and skipping fixed plates is worth it during exams.', created_at: '2026-11-10T10:10:00Z' },
+    { id: 4, student_name: 'Simran Kaur', hostel_block: 'GH-2', mess_type: 'Standard · 3 meals', rating: 4, comment: 'Clean dining hall and Sunday veg biryani + paneer dinner is great. Packed breakfast works well when 8 AM labs are scheduled.', created_at: '2026-11-10T10:15:00Z' }
+  ],
+  queries: [
+    {
+      id: 1,
+      name: 'Aman Gupta (B.Tech CSE Fresher)',
+      contact: 'aman.fresher@example.com',
+      topic: 'Mess Plan',
+      question: 'Can I book Standard 3 meals right now during Early Decision and upgrade to 4 meals after reaching campus?',
+      status: 'resolved',
+      admin_reply: 'Yes! UMS allows upgrading from 2/3 meals to 4 meals or A la carte by paying the pro-rata difference.',
+      created_at: '2026-11-10T09:00:00Z'
+    }
+  ],
+  campus_blocks: [
+    { id: 1, code: 'Block 32', title: 'Admission & UMS Student Relationship Hub', category: 'Admin', nearest_gate: 'Main Gate 1A', walk_mins: '6 min walk', erickshaw_route: 'Gate 1A → Block 32 Plaza (₹10)', highlights: 'Fresher reporting, document verification, fee counter, ID card & biometric desk', map_query: 'Block 32 Lovely Professional University Phagwara', sort_order: 1 },
+    { id: 2, code: 'Block 34', title: 'School of Computer Science & Engineering (CSE)', category: 'Academic', nearest_gate: 'Main Gate 1B', walk_mins: '11 min walk', erickshaw_route: 'Gate 1B → Block 34 Stand (₹10)', highlights: 'CSE/IT labs, coding studios, placement cells, basement Nescafe & print shop', map_query: 'Block 34 Lovely Professional University Phagwara', sort_order: 2 },
+    { id: 3, code: 'Block 33 & 36', title: 'ECE, Robotics & Mechanical Engineering', category: 'Academic', nearest_gate: 'Main Gate 1B', walk_mins: '12 min walk', erickshaw_route: 'Gate 1B → Engineering Spine (₹10)', highlights: 'Electronics labs, CAD studios, workshops & student innovation garages', map_query: 'Block 33 Lovely Professional University Phagwara', sort_order: 3 },
+    { id: 4, code: 'Block 14', title: 'Mittal School of Business (MSB)', category: 'Academic', nearest_gate: 'Main Gate 1A', walk_mins: '7 min walk', erickshaw_route: 'Gate 1A → MSB Chowk (₹10)', highlights: 'MBA/BBA/B.Com lecture theatres, finance terminal lab & corporate auditoriums', map_query: 'Mittal School of Business LPU Phagwara', sort_order: 4 },
+    { id: 5, code: 'Block 15 · Uni Mall', title: 'Uni Mall & Central Food Plaza', category: 'Food & Retail', nearest_gate: 'Main Gate 1A', walk_mins: '8 min walk', erickshaw_route: 'Gate 1A → Uni Mall Drop (₹10)', highlights: 'Multi-storey student mall: food courts, banks/ATMs, stationery, salon & bowling', map_query: 'Uni Mall Lovely Professional University', sort_order: 5 },
+    { id: 6, code: 'Block 37', title: 'Central Library & Knowledge Centre', category: 'Academic', nearest_gate: 'Main Gate 1B', walk_mins: '10 min walk', erickshaw_route: 'Uni Mall → Library Square (₹10)', highlights: '9-storey central library, silent reading halls, e-journals & exam study zones', map_query: 'Central Library Lovely Professional University', sort_order: 6 },
+    { id: 7, code: 'Block 6 · Hospital', title: 'Uni Hospital (24×7 Medical & Pharmacy)', category: 'Medical', nearest_gate: 'Main Gate 1A', walk_mins: '4 min walk', erickshaw_route: 'Right inside Gate 1A · 24×7 Ambulance', highlights: '24×7 emergency & OPD doctors, in-house chemist shop, physiotherapy & sick bay', map_query: 'Uni Hospital Lovely Professional University', sort_order: 7 },
+    { id: 8, code: 'Unipolis & SDM', title: 'Baldev Raj Mittal Unipolis & SDM Auditorium', category: 'Landmarks', nearest_gate: 'Main Gate 1A', walk_mins: '5 min walk', erickshaw_route: 'Gate 1A Main Avenue', highlights: 'Freshers Induction, convocations, YouthVibe fests & major celebrity events', map_query: 'Unipolis Lovely Professional University', sort_order: 8 },
+    { id: 9, code: 'RoboPark', title: 'RoboPark & Innovation Lawn', category: 'Landmarks', nearest_gate: 'Main Gate 1B', walk_mins: '9 min walk', erickshaw_route: 'Uni Mall → Block 32 Crossing (₹10)', highlights: 'Giant scrap-metal robot sculptures, open-air hangout lawn & tech expos', map_query: 'Lovely Professional University Phagwara', sort_order: 9 },
+    { id: 10, code: 'Indoor Stadium', title: 'Shanti Devi Mittal Sports Complex & Pool', category: 'Landmarks', nearest_gate: 'Gate 2', walk_mins: '13 min walk', erickshaw_route: 'Gate 1B → Sports Complex Shuttle (₹10)', highlights: 'Olympic-size pool, badminton courts, gym, shooting range & basketball arena', map_query: 'Indoor Sports Complex Lovely Professional University', sort_order: 10 },
+    { id: 11, code: 'BH-1 to BH-4', title: 'Boys Hostels (Central Residential Zone)', category: 'Hostels', nearest_gate: 'Main Gate 1B', walk_mins: '13 min walk', erickshaw_route: 'Gate 1B → Boys Hostel Spine (₹10)', highlights: '4/3/2-seater AC & cooler rooms, North/South mess halls, laundry, tuck shop & gym', map_query: 'Boys Hostel BH1 Lovely Professional University', sort_order: 11 },
+    { id: 12, code: 'BH-5 to BH-8 & Apts', title: 'Boys Hostels (North Spine) & Studio Apartments', category: 'Hostels', nearest_gate: 'Gate 2', walk_mins: '17 min walk', erickshaw_route: 'Gate 1B / Gate 2 → BH-6 Shuttle (₹10)', highlights: 'High-rise hostel blocks, A la carte dining counters, night canteens & outdoor courts', map_query: 'Boys Hostel BH5 Lovely Professional University', sort_order: 12 },
+    { id: 13, code: 'GH-1 to GH-6', title: 'Girls Hostels (Gated Central Zone)', category: 'Hostels', nearest_gate: 'Main Gate 1A', walk_mins: '8 min walk', erickshaw_route: 'Gate 1A → Girls Hostel Gate (₹10)', highlights: '24×7 biometric security near Uni Mall, in-house mess, tuck shops, parlor & study room', map_query: 'Girls Hostel GH1 Lovely Professional University', sort_order: 13 },
+    { id: 14, code: 'Block 29 & 30', title: 'Chancellor’s Office & Examination Wing', category: 'Admin', nearest_gate: 'Main Gate 1A', walk_mins: '6 min walk', erickshaw_route: 'Gate 1A → Admin Plaza', highlights: 'Examination controller, transcripts, international office & central administration', map_query: 'Block 30 Lovely Professional University', sort_order: 14 },
+    { id: 15, code: 'Block 25–28', title: 'Law, Architecture, Design & Hotel Mgmt', category: 'Academic', nearest_gate: 'Main Gate 1A', walk_mins: '9 min walk', erickshaw_route: 'Uni Mall → Design Spine (₹10)', highlights: 'Moot court, fashion & interior studios, culinary kitchens & training restaurant', map_query: 'School of Design Lovely Professional University', sort_order: 15 },
+    { id: 16, code: 'Block 55–57', title: 'Agriculture, Pharmacy & Bioengineering', category: 'Academic', nearest_gate: 'Gate 2', walk_mins: '15 min walk', erickshaw_route: 'Main Gate → Block 55 E-Rickshaw (₹10)', highlights: 'Pharmaceutical labs, polyhouses, agronomy research plots & food-tech labs', map_query: 'Block 55 Lovely Professional University', sort_order: 16 }
+  ],
+  meal_polls: []
+};
+
+function loadStore() {
+  if (fs.existsSync(jsonPath)) {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      return { ...INITIAL_DATA, ...parsed };
+    } catch {}
+  }
+  const copy = JSON.parse(JSON.stringify(INITIAL_DATA));
+  fs.writeFileSync(jsonPath, JSON.stringify(copy, null, 2), 'utf8');
+  return copy;
+}
+
+let state = loadStore();
+
+function saveStore() {
+  const tmpPath = `${jsonPath}.tmp`;
+  fs.writeFileSync(tmpPath, JSON.stringify(state, null, 2), 'utf8');
+  fs.renameSync(tmpPath, jsonPath);
+}
+
+function ensureTodayPolls(dateKey = getISTDateKey()) {
+  const todayRows = state.meal_polls.filter((p) => p.poll_date === dateKey);
+  if (todayRows.length === 0) {
+    const baseline = [
+      ['north', 'breakfast', 22, 3],
+      ['north', 'lunch', 29, 5],
+      ['north', 'snacks', 19, 2],
+      ['north', 'dinner', 34, 4],
+      ['south', 'breakfast', 18, 2],
+      ['south', 'lunch', 21, 3],
+      ['south', 'snacks', 15, 2],
+      ['south', 'dinner', 24, 3]
+    ];
+    for (const [cuisine, meal_slot, up_votes, down_votes] of baseline) {
+      state.meal_polls.push({ poll_date: dateKey, cuisine, meal_slot, up_votes, down_votes });
+    }
+    saveStore();
+  }
+  return state.meal_polls.filter((p) => p.poll_date === dateKey);
+}
+
+ensureTodayPolls();
+
+module.exports = { state, saveStore, jsonPath, getISTDateKey, ensureTodayPolls };
+```
+
+---
+
+## 8. Express REST API Server (server.js — Node.js / Express)
+
+```javascript
+const path = require('node:path');
+const express = require('express');
+const { state, saveStore, getISTDateKey, ensureTodayPolls } = require('./db');
+
+const app = express();
+const PORT = Number(process.env.PORT) || 3000;
+const ADMIN_KEY = process.env.ADMIN_KEY || 'lpu2026';
+
+app.use(express.json({ limit: '64kb' }));
+app.use('/api', (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+app.use(express.static(path.join(__dirname, 'public')));
+
+function cleanText(val, maxLen = 400) {
+  return String(val ?? '').trim().replace(/\s+/g, ' ').slice(0, maxLen);
+}
+
+function summarizeReviews() {
+  const total = state.reviews.length;
+  const sum = state.reviews.reduce((acc, r) => acc + Number(r.rating || 0), 0);
+  const average = total > 0 ? Math.round((sum / total) * 10) / 10 : 0;
+  return { total, average };
+}
+
+function requireAdmin(req, res, next) {
+  const provided = req.headers['x-admin-key'];
+  if (!provided || provided !== ADMIN_KEY) {
+    return res.status(401).json({ error: 'Invalid admin passcode. Default local key is lpu2026.' });
+  }
+  next();
+}
+
+// Health check
+app.get('/api/health', (_req, res) => {
+  res.json({
+    ok: true,
+    engine: 'Node.js + Express + JSON Store',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Single fast bootstrap payload for frontend hydration
+app.get('/api/bootstrap', (_req, res) => {
+  const todayDate = getISTDateKey();
+  const todayPolls = ensureTodayPolls(todayDate);
+  const reviewsSorted = [...state.reviews].sort((a, b) => b.id - a.id);
+  const resolvedQueries = state.queries
+    .filter((q) => q.status === 'resolved' && q.admin_reply)
+    .sort((a, b) => b.id - a.id)
+    .slice(0, 6);
+
+  res.json({
+    timings: state.meal_timings,
+    menu: state.weekly_menu,
+    plans: state.mess_plans,
+    rooms: state.hostel_rooms,
+    blocks: state.campus_blocks,
+    todayDate,
+    todayPolls,
+    reviewSummary: summarizeReviews(),
+    reviews: reviewsSorted.slice(0, 12),
+    resolvedQueries
+  });
+});
+
+// Query weekly menu
+app.get('/api/menu', (req, res) => {
+  const { cuisine, day } = req.query;
+  if (cuisine && day !== undefined) {
+    const row = state.weekly_menu.find(
+      (m) => m.cuisine === String(cuisine) && m.day_of_week === Number(day)
+    );
+    if (!row) return res.status(404).json({ error: 'Menu entry not found.' });
+    return res.json(row);
+  }
+  res.json(state.weekly_menu);
+});
+
+// Query mess plans & hostel rooms
+app.get('/api/plans', (_req, res) => {
+  res.json({ plans: state.mess_plans, rooms: state.hostel_rooms });
+});
+
+// List student mess reviews
+app.get('/api/reviews', (_req, res) => {
+  const reviews = [...state.reviews].sort((a, b) => b.id - a.id).slice(0, 20);
+  res.json({ summary: summarizeReviews(), reviews });
+});
+
+// Submit a new student mess review
+app.post('/api/reviews', (req, res) => {
+  const studentName = cleanText(req.body.student_name, 60);
+  const hostelBlock = cleanText(req.body.hostel_block, 30);
+  const messType = cleanText(req.body.mess_type, 50);
+  const rating = Number(req.body.rating);
+  const comment = cleanText(req.body.comment, 360);
+
+  if (!studentName || !hostelBlock || !messType || !comment) {
+    return res.status(400).json({ error: 'Please fill in your name, hostel block, mess plan, and review comment.' });
+  }
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+    return res.status(400).json({ error: 'Rating must be between 1 and 5 stars.' });
+  }
+
+  const nextId = state.reviews.reduce((mx, r) => Math.max(mx, r.id), 0) + 1;
+  const created = {
+    id: nextId,
+    student_name: studentName,
+    hostel_block: hostelBlock,
+    mess_type: messType,
+    rating,
+    comment,
+    created_at: new Date().toISOString()
+  };
+  state.reviews.push(created);
+  saveStore();
+
+  res.status(201).json({
+    message: 'Review posted!',
+    review: created,
+    summary: summarizeReviews()
+  });
+});
+
+// Submit a student / fresher query
+app.post('/api/queries', (req, res) => {
+  const name = cleanText(req.body.name, 70);
+  const contact = cleanText(req.body.contact, 90);
+  const topic = cleanText(req.body.topic, 40) || 'General';
+  const question = cleanText(req.body.question, 500);
+
+  if (!name || !contact || !question) {
+    return res.status(400).json({ error: 'Please enter your name, email/phone, and question.' });
+  }
+
+  const nextId = state.queries.reduce((mx, q) => Math.max(mx, q.id), 0) + 1;
+  state.queries.push({
+    id: nextId,
+    name,
+    contact,
+    topic,
+    question,
+    status: 'pending',
+    admin_reply: '',
+    created_at: new Date().toISOString()
+  });
+  saveStore();
+
+  res.status(201).json({
+    message: 'Question saved! You can view & answer it in the Admin Dashboard (/admin).',
+    id: nextId
+  });
+});
+
+// Campus Blocks & Landmarks Directory
+app.get('/api/blocks', (req, res) => {
+  const q = cleanText(req.query.q || '', 80).toLowerCase();
+  const category = cleanText(req.query.category || '', 40);
+  let rows = [...state.campus_blocks];
+  if (category && category.toLowerCase() !== 'all') {
+    rows = rows.filter((b) => b.category.toLowerCase() === category.toLowerCase());
+  }
+  if (q) {
+    rows = rows.filter((b) =>
+      `${b.code} ${b.title} ${b.highlights} ${b.nearest_gate}`.toLowerCase().includes(q)
+    );
+  }
+  res.json({ blocks: rows });
+});
+
+// Live Daily Meal Poll
+app.get('/api/polls', (_req, res) => {
+  const todayDate = getISTDateKey();
+  const polls = ensureTodayPolls(todayDate);
+  res.json({ todayDate, polls });
+});
+
+app.post('/api/polls/vote', (req, res) => {
+  const cuisine = cleanText(req.body.cuisine, 20).toLowerCase();
+  const mealSlot = cleanText(req.body.meal_slot, 20).toLowerCase();
+  const vote = cleanText(req.body.vote, 10).toLowerCase();
+  const prevVote = cleanText(req.body.previous_vote || '', 10).toLowerCase();
+
+  if (!['north', 'south'].includes(cuisine)) {
+    return res.status(400).json({ error: 'Valid cuisine (north/south) required.' });
+  }
+  if (!['breakfast', 'lunch', 'snacks', 'dinner'].includes(mealSlot)) {
+    return res.status(400).json({ error: 'Valid meal_slot required.' });
+  }
+  if (!['up', 'down'].includes(vote)) {
+    return res.status(400).json({ error: 'Vote must be up or down.' });
+  }
+
+  const todayDate = getISTDateKey();
+  ensureTodayPolls(todayDate);
+
+  const row = state.meal_polls.find(
+    (p) => p.poll_date === todayDate && p.cuisine === cuisine && p.meal_slot === mealSlot
+  );
+
+  if (row && prevVote !== vote) {
+    if (prevVote === 'up') row.up_votes = Math.max(0, row.up_votes - 1);
+    if (prevVote === 'down') row.down_votes = Math.max(0, row.down_votes - 1);
+    if (vote === 'up') row.up_votes += 1;
+    if (vote === 'down') row.down_votes += 1;
+    saveStore();
+  }
+
+  const polls = state.meal_polls.filter((p) => p.poll_date === todayDate);
+  res.json({ message: 'Vote recorded!', todayDate, polls });
+});
+
+// "Ask LPU Buddy" Smart Campus Assistant (JavaScript JSON Store backed)
+function buildBuddyAnswer(rawMessage) {
+  const q = rawMessage.toLowerCase();
+  const istNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const todayDay = istNow.getDay();
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
+
+  if (/(kettle|iron|press|heater|induction|rod|toaster|banned|not allowed|mana hai|curfew|in-time|intime|document|reporting|pack|checklist|laundry)/.test(q)) {
+    if (/(document|reporting|admission doc)/.test(q)) {
+      return `📋 **Reporting Documents Checklist (Block 32):**\n• 10th & 12th Original Marksheets + 4 self-attested copies\n• Provisional Allotment Letter & Fee Receipt\n• Aadhaar Card + 6 passport-size photos\n• Anti-Ragging Affidavit & Medical Fitness Certificate`;
+    }
+    return `⚠️ **Hostel Rules & Banned Items:**\n• **Strictly Banned:** Electric kettle, immersion rod, clothes iron/press, induction cooktop, heater & toaster.\n• **Campus Alternatives:** Hot/cold RO water dispensers on every hostel floor + dedicated **Laundry & Pressing shop** inside each hostel.\n• **Must Pack:** 2 strong padlocks, single bedsheets, surge-protected extension board & toiletries.`;
+  }
+
+  const blockKeywords = [
+    { re: /\b(block\s*32|\b32\b|ums|reporting|admission block)/, code: 'Block 32' },
+    { re: /\b(block\s*34|\b34\b|cse|computer science|\bit\b|coding)/, code: 'Block 34' },
+    { re: /\b(block\s*33|block\s*36|\b33\b|\b36\b|ece|mechanical|robotics)/, code: 'Block 33 & 36' },
+    { re: /\b(block\s*14|\b14\b|msb|mba|bba|business|mittal school)/, code: 'Block 14' },
+    { re: /\b(block\s*15|\b15\b|uni\s*mall|unimall|mall|atm|bank|food court)/, code: 'Block 15 · Uni Mall' },
+    { re: /\b(block\s*37|\b37\b|library|central library|study room)/, code: 'Block 37' },
+    { re: /\b(block\s*6|\b6\b|hospital|medical|doctor|chemist|ambulance|sick)/, code: 'Block 6 · Hospital' },
+    { re: /\b(unipolis|auditorium|sdm|orientation|freshers venue)/, code: 'Unipolis & SDM' },
+    { re: /\b(robopark|robo park|helipad)/, code: 'RoboPark' },
+    { re: /\b(stadium|sports|swimming|pool|badminton|shooting)/, code: 'Indoor Stadium' },
+    { re: /\b(bh-?[1-4]|boys hostel 1|boys hostel 2|boys hostel 3|boys hostel 4)/, code: 'BH-1 to BH-4' },
+    { re: /\b(bh-?[5-8]|studio apartment|apartments)/, code: 'BH-5 to BH-8 & Apts' },
+    { re: /\b(gh-?[1-6]|girls hostel)/, code: 'GH-1 to GH-6' },
+    { re: /\b(block\s*29|block\s*30|\b29\b|\b30\b|chancellor|exam wing|transcript)/, code: 'Block 29 & 30' },
+    { re: /\b(block\s*2[5-8]|law|design|architecture|hotel management|fashion)/, code: 'Block 25–28' },
+    { re: /\b(block\s*5[5-7]|agriculture|pharmacy|bioengineering)/, code: 'Block 55–57' }
+  ];
+  for (const item of blockKeywords) {
+    if (item.re.test(q) && !/(fee|kitna|price|cost|budget)/.test(q)) {
+      const b = state.campus_blocks.find((row) => row.code === item.code);
+      if (b) {
+        return `📍 **${b.code} — ${b.title}**\n• **Nearest Entry:** ${b.nearest_gate} (${b.walk_mins})\n• **E-Rickshaw:** ${b.erickshaw_route}\n• **Inside:** ${b.highlights}`;
+      }
+    }
+  }
+
+  if (/(phagwara|jalandhar|cantt|station|train|airport|amritsar|chandigarh|reach|kaise aaye|kaise pahunch|auto|cab|nh-?44|address)/.test(q)) {
+    return `🚆 **How to Reach LPU (NH-44, Phagwara):**\n• **Phagwara Jn (PGW):** ~7 km (12–15 min by direct auto/cab to Main Gate)\n• **Jalandhar Cantt (JRC):** ~14 km (20–25 min via NH-44 highway bus or shared auto)\n• **Jalandhar City (JUC):** ~20 km (30–35 min)\n• **Airports:** Amritsar (ATQ ~110 km) & Chandigarh (IXC ~145 km).`;
+  }
+
+  if (/(fee|fees|kitna|price|cost|kharcha|budget|seater|cooler|mess plan|a la carte|alacarte|non-?veg|chicken|edb)/.test(q)) {
+    const plans = state.mess_plans;
+    const rooms = state.hostel_rooms;
+
+    if (/(non-?veg|chicken|egg|mutton)/.test(q)) {
+      return `🍗 **Non-Veg Option Info:**\nInside campus all dining halls are 100% vegetarian, while an independent vendor adjacent to campus offers:\n• **3 Meals:** ₹75,000/yr · **2 Meals:** ₹65,000/yr · **1 Meal:** ₹55,000/yr.`;
+    }
+
+    let pickedRoom = null;
+    if (/1\s*-?\s*seater|single/.test(q)) pickedRoom = rooms.find((r) => r.room_key === '1s_ac');
+    else if (/2\s*-?\s*seater/.test(q)) pickedRoom = rooms.find((r) => r.room_key === '2s_ac');
+    else if (/3\s*-?\s*seater.*cooler/.test(q)) pickedRoom = rooms.find((r) => r.room_key === '3s_cooler');
+    else if (/3\s*-?\s*seater/.test(q)) pickedRoom = rooms.find((r) => r.room_key === '3s_ac');
+    else if (/4\s*-?\s*seater.*cooler/.test(q)) pickedRoom = rooms.find((r) => r.room_key === '4s_cooler');
+    else if (/apartment/.test(q)) pickedRoom = rooms.find((r) => r.room_key === 'apt_4s');
+    else if (/4\s*-?\s*seater/.test(q)) pickedRoom = rooms.find((r) => r.room_key === '4s_ac');
+
+    let pickedPlan = null;
+    if (/carte|choice/.test(q)) pickedPlan = plans.find((p) => p.plan_key === 'alacarte');
+    else if (/2\s*meal/.test(q)) pickedPlan = plans.find((p) => p.plan_key === 'std2');
+    else if (/3\s*meal/.test(q)) pickedPlan = plans.find((p) => p.plan_key === 'std3');
+    else if (/4\s*meal/.test(q)) pickedPlan = plans.find((p) => p.plan_key === 'std4');
+
+    if (pickedRoom || pickedPlan) {
+      const r = pickedRoom || rooms.find((x) => x.room_key === '4s_ac');
+      const p = pickedPlan || plans.find((x) => x.plan_key === 'std4');
+      const total = r.fee + p.fee;
+      const withEdb = Math.max(0, r.fee - 10000) + p.fee;
+      return `💰 **2026–27 Estimated Session Fee (~10 Months):**\n• **Hostel:** ${r.name} — **${inr(r.fee)}** (${r.electricity_units})\n• **Mess:** ${p.name} — **${inr(p.fee)}**\n• **Combined Total:** **${inr(total)}** (~${inr(Math.round(total / 10))}/month)\n• **With EDB Benefit (−₹10k):** **${inr(withEdb)}**`;
+    }
+
+    return `💰 **2026–27 Mess & Hostel Rates Overview:**\n• **Veg Mess Plans:** Standard 2-Meal (**₹37,800**), 3-Meal (**₹41,400**), 4-Meal (**₹45,000**), A la carte (**₹52,200**)\n• **Hostel Rooms:** 4-Seater Cooler (**₹93,000**), 4-Seater AC (**₹1,03,000**), 3-Seater AC (**₹1,23,000**), 2-Seater AC (**₹1,43,000**), 1-Seater AC (**₹1,63,000**).`;
+  }
+
+  if (/(menu|khana|breakfast|nashta|lunch|snacks|chai|dinner|raat|parantha|paneer|biryani|dosa|south indian|north indian|timing|kab khulta|mess open|aaj|kal|sunday|monday|tuesday|wednesday|thursday|friday|saturday)/.test(q)) {
+    const cuisine = /south|dosa|idli|sambar|uttapam/.test(q) ? 'south' : 'north';
+    let targetDay = todayDay;
+    if (/kal|tomorrow/.test(q)) targetDay = (todayDay + 1) % 7;
+    dayNames.forEach((name, idx) => {
+      if (q.includes(name.toLowerCase())) targetDay = idx;
+    });
+
+    const row = state.weekly_menu.find((m) => m.cuisine === cuisine && m.day_of_week === targetDay);
+    const cuisineLabel = cuisine === 'south' ? 'South Indian' : 'North Indian';
+    const dayLabel = targetDay === todayDay ? `Today (${dayNames[targetDay]})` : dayNames[targetDay];
+
+    if (row) {
+      if (/dinner|raat/.test(q)) return `🍽️ **${dayLabel} · ${cuisineLabel} Dinner (7:00 – 9:00 PM):**\n${row.dinner}`;
+      if (/lunch|dopahar/.test(q)) return `🍛 **${dayLabel} · ${cuisineLabel} Lunch (11:15 AM – 3:00 PM):**\n${row.lunch}`;
+      if (/breakfast|nashta|subah/.test(q)) return `🥞 **${dayLabel} · ${cuisineLabel} Breakfast (7:15 – 9:30 AM):**\n${row.breakfast}`;
+      if (/snack|chai|sham/.test(q)) return `☕ **${dayLabel} · ${cuisineLabel} Snacks (5:00 – 6:00 PM):**\n${row.snacks}`;
+      return `🍴 **${dayLabel} · ${cuisineLabel} Mess Menu:**\n• **Breakfast:** ${row.breakfast}\n• **Lunch:** ${row.lunch}\n• **Snacks:** ${row.snacks}\n• **Dinner:** ${row.dinner}`;
+    }
+  }
+
+  if (/(review|rating|worth|kaisa hai|accha hai|poll)/.test(q)) {
+    const stats = summarizeReviews();
+    const todayPolls = ensureTodayPolls(getISTDateKey());
+    const totUp = todayPolls.reduce((s, r) => s + r.up_votes, 0);
+    const totAll = todayPolls.reduce((s, r) => s + r.up_votes + r.down_votes, 0);
+    const hitPct = totAll ? Math.round((totUp / totAll) * 100) : 86;
+    return `⭐ **Live Student Mess Pulse:**\n• **Overall Rating:** **${stats.average} / 5 ★** (${stats.total} student reviews)\n• **Today's Live Food Poll:** **${hitPct}% Worth it 👍** across campus kitchens.`;
+  }
+
+  return `👋 **Hello! I am LPU Buddy** (Live API connected). Ask me in English or Hinglish:\n• *"What's for dinner today?"* or *"Sunday South Indian menu"*\n• *"Where is Block 34?"* or *"Nearest gate to Uni Hospital?"*\n• *"4-seater AC + 3 meal total fee?"*\n• *"Hostel banned items?"* or *"Route from Phagwara Jn?"*`;
+}
+
+app.post('/api/chat', (req, res) => {
+  const message = cleanText(req.body.message, 300);
+  if (!message) return res.status(400).json({ error: 'Please enter a question.' });
+  res.json({ reply: buildBuddyAnswer(message), timestamp: new Date().toISOString() });
+});
+
+// ---------------- ADMIN API ----------------
+
+app.get('/api/admin/overview', requireAdmin, (_req, res) => {
+  const reviews = [...state.reviews].sort((a, b) => b.id - a.id);
+  const queries = [...state.queries].sort((a, b) => {
+    if (a.status !== b.status) return a.status === 'pending' ? -1 : 1;
+    return b.id - a.id;
+  });
+
+  res.json({
+    counts: {
+      menuItems: state.weekly_menu.length,
+      plans: state.mess_plans.length,
+      reviews: reviews.length,
+      pendingQueries: queries.filter((q) => q.status === 'pending').length,
+      totalQueries: queries.length
+    },
+    menu: state.weekly_menu,
+    plans: state.mess_plans,
+    reviews,
+    queries
+  });
+});
+
+app.put('/api/admin/menu', requireAdmin, (req, res) => {
+  const cuisine = cleanText(req.body.cuisine, 20);
+  const day = Number(req.body.day_of_week);
+  const breakfast = cleanText(req.body.breakfast, 250);
+  const lunch = cleanText(req.body.lunch, 250);
+  const snacks = cleanText(req.body.snacks, 250);
+  const dinner = cleanText(req.body.dinner, 250);
+
+  if (!['north', 'south'].includes(cuisine) || !Number.isInteger(day) || day < 0 || day > 6) {
+    return res.status(400).json({ error: 'Valid cuisine (north/south) and day (0-6) required.' });
+  }
+  if (!breakfast || !lunch || !snacks || !dinner) {
+    return res.status(400).json({ error: 'All four meal descriptions are required.' });
+  }
+
+  const row = state.weekly_menu.find((m) => m.cuisine === cuisine && m.day_of_week === day);
+  if (!row) return res.status(404).json({ error: 'Menu slot not found.' });
+  row.breakfast = breakfast;
+  row.lunch = lunch;
+  row.snacks = snacks;
+  row.dinner = dinner;
+  saveStore();
+
+  res.json({ message: 'Menu updated in JSON data store.', entry: row });
+});
+
+app.put('/api/admin/plans/:id', requireAdmin, (req, res) => {
+  const id = Number(req.params.id);
+  const fee = Number(req.body.fee);
+  const subtitle = cleanText(req.body.subtitle, 180);
+
+  if (!Number.isInteger(id) || !Number.isFinite(fee) || fee < 0 || !subtitle) {
+    return res.status(400).json({ error: 'Valid plan ID, non-negative fee, and subtitle are required.' });
+  }
+
+  const plan = state.mess_plans.find((p) => p.id === id);
+  if (!plan) return res.status(404).json({ error: 'Plan not found.' });
+  plan.fee = Math.round(fee);
+  plan.subtitle = subtitle;
+  saveStore();
+
+  res.json({ message: 'Mess plan updated.', plan });
+});
+
+app.patch('/api/admin/queries/:id', requireAdmin, (req, res) => {
+  const id = Number(req.params.id);
+  const status = req.body.status === 'pending' ? 'pending' : 'resolved';
+  const adminReply = cleanText(req.body.admin_reply, 500);
+
+  const query = state.queries.find((q) => q.id === id);
+  if (!query) return res.status(404).json({ error: 'Query not found.' });
+  query.status = status;
+  query.admin_reply = adminReply;
+  saveStore();
+
+  res.json({ message: 'Query updated.', query });
+});
+
+app.delete('/api/admin/reviews/:id', requireAdmin, (req, res) => {
+  const id = Number(req.params.id);
+  const idx = state.reviews.findIndex((r) => r.id === id);
+  if (idx < 0) return res.status(404).json({ error: 'Review not found.' });
+  state.reviews.splice(idx, 1);
+  saveStore();
+  res.json({ message: 'Review removed.' });
+});
+
+app.get('/admin', (_req, res) => {
+  res.sendFile('admin.html', { root: path.join(__dirname, 'public') });
+});
+
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`LPU Campus Guide Server running on port ${PORT}`);
+  console.log(`Admin Dashboard available at /admin`);
+});
+
+function gracefulShutdown() {
+  try { saveStore(); } catch {}
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(0), 3000).unref();
+}
+
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
+```
+
+---
+
