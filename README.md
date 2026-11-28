@@ -2,11 +2,13 @@
 
 An interactive student guide for **Lovely Professional University (LPU), Phagwara** built with **HTML5, CSS3, Vanilla JavaScript (ES6+), Node.js, and Express 5** with persistent **JSON data storage (`data/campus-data.json`)**. It pairs a warm editorial UI (plus Dark Mode) with live IST dining hours, North & South Indian weekly menus, an interactive 2026–27 Mess + Hostel + EDB fee estimator, student mess reviews, a fresher checklist, a smart campus assistant, and an **Admin Control Panel (`/admin`)**.
 
-## Live Deployments
+## Live Deployments & Presentation Files
 
 - **Live Cloud Web App (Railway):** https://lpu-campus-guide-app-production.up.railway.app
 - **GitHub Pages Mirror:** https://iamaryaann.github.io/lpu-campus-guide-2026/
 - **Admin Control Panel:** https://lpu-campus-guide-app-production.up.railway.app/admin
+- **Team PowerPoint Deck (11 Slides):** [LPU-Campus-Guide-Presentation.pptx](./LPU-Campus-Guide-Presentation.pptx)
+- **Team Presentation Video (1080p · Aryan, Rimjhim & Piyush):** [LPU-Team-All-In-One-Video.mp4](./LPU-Team-All-In-One-Video.mp4)
 
 ![LPU Campus Guide preview](preview.png)
 

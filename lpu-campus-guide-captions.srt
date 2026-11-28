@@ -1,0 +1,79 @@
+1
+00:00:00,000 --> 00:00:12,215
+[Aryan] Welcome to LPU Campus Guide (2026–27) — presented by Aryan, Rimjhim & Piyush.
+
+2
+00:00:12,215 --> 00:00:24,430
+[Aryan] Full-stack portal built with HTML5, CSS3, Vanilla JS, Node.js, Express & Cloud JSON Store.
+
+3
+00:00:24,430 --> 00:00:33,665
+[Aryan] Campus Location & Transit Hub Guide on the Jalandhar–Delhi G.T. Road (NH-44).
+
+4
+00:00:33,665 --> 00:00:42,900
+[Aryan] Interactive tabs show travel times from Phagwara Junction, Jalandhar Cantt & nearby airports.
+
+5
+00:00:42,900 --> 00:00:53,840
+[Aryan] Searchable 600+ acre Block Finder showing nearest gates, walk times & ₹10 shuttle routes.
+
+6
+00:00:53,840 --> 00:01:04,780
+[Aryan] Handing over to Rimjhim to present our Dining, Budget Estimator & Fresher Toolkit modules.
+
+7
+00:01:04,780 --> 00:01:12,950
+[Rimjhim] Live IST Mess Clock + 7-Day North & South Indian Menus loaded dynamically from the JSON store.
+
+8
+00:01:12,950 --> 00:01:21,120
+[Rimjhim] Includes a live daily meal feedback poll where students rate dishes in real time.
+
+9
+00:01:21,120 --> 00:01:30,430
+[Rimjhim] 2026–27 Hostel & Mess Fee Comparison with an Interactive Session Budget Estimator.
+
+10
+00:01:30,430 --> 00:01:39,740
+[Rimjhim] Calculates combined room + mess totals, free electricity quotas & Early Decision benefits.
+
+11
+00:01:39,740 --> 00:01:47,275
+[Rimjhim] Real-Time Student Mess Reviews & Star Ratings powered by POST /api/reviews.
+
+12
+00:01:47,275 --> 00:01:54,810
+[Rimjhim] Every review persists in Cloud JSON Store and updates the campus-wide rating live.
+
+13
+00:01:54,810 --> 00:02:03,735
+[Rimjhim] 16-Point Fresher Checklist with banned appliance alerts, WhatsApp share & PDF export.
+
+14
+00:02:03,735 --> 00:02:12,660
+[Rimjhim] Handing over to Piyush for the Smart Assistant, Admin Panel & Cloud Deployment.
+
+15
+00:02:12,660 --> 00:02:22,495
+[Piyush] Full Dark Mode Theme paired with the floating 'Ask LPU Buddy' Smart Campus Assistant.
+
+16
+00:02:22,495 --> 00:02:32,330
+[Piyush] Queries live JSON data collections via /api/chat to answer menu, block & fee questions instantly.
+
+17
+00:02:32,330 --> 00:02:41,820
+[Piyush] Passcode-Protected Admin Control Panel (/admin) guarded by x-admin-key middleware.
+
+18
+00:02:41,820 --> 00:02:51,310
+[Piyush] Enables live CRUD updates for Student Queries, Weekly Menus, Mess Fees & Reviews.
+
+19
+00:02:51,310 --> 00:03:02,215
+[Piyush] Permanently hosted 24/7 on Railway Cloud JSON Store + GitHub Pages automated CI/CD.
+
+20
+00:03:02,215 --> 00:03:13,120
+[Piyush] Thank you from Team Aryan, Rimjhim & Piyush — Questions & Live Demo Welcome!
